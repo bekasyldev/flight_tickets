@@ -2,9 +2,6 @@
 
 import { useState } from 'react';
 
-// TODO: Add your Duffel access token here
-const DUFFEL_ACCESS_TOKEN = process.env.NEXT_PUBLIC_DUFFEL_ACCESS_TOKEN || 'YOUR_ACCESS_TOKEN_HERE';
-
 // Types based on Duffel API documentation
 interface Passenger {
   type: 'adult' | 'child' | 'infant_without_seat';
@@ -110,12 +107,10 @@ export default function FlightSearch() {
         cabin_class: formData.cabinClass
       };
 
-      const response = await fetch('https://api.duffel.com/air/offer_requests', {
+      const response = await fetch('/api/duffel/offer-requests', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${DUFFEL_ACCESS_TOKEN}`,
-          'Content-Type': 'application/json',
-          'Duffel-Version': 'v2'
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           data: offerRequest
@@ -292,7 +287,7 @@ export default function FlightSearch() {
                   </label>
                   <select
                     value={formData.cabinClass}
-                    onChange={(e) => setFormData({...formData, cabinClass: e.target.value as any})}
+                    onChange={(e) => setFormData({...formData, cabinClass: e.target.value as 'economy' | 'premium_economy' | 'business' | 'first'})}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="economy">Economy</option>
@@ -328,12 +323,7 @@ export default function FlightSearch() {
             </div>
           )}
 
-          {/* Access Token Warning */}
-          {DUFFEL_ACCESS_TOKEN === 'YOUR_ACCESS_TOKEN_HERE' && (
-            <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
-              <strong>Notice:</strong> Please add your Duffel access token to the NEXT_PUBLIC_DUFFEL_ACCESS_TOKEN environment variable or update the token in the code.
-            </div>
-          )}
+
 
           {/* Results */}
           {offers.length > 0 && (
@@ -357,7 +347,7 @@ export default function FlightSearch() {
                       <div className="text-sm font-medium text-gray-500 mb-2">
                         {sliceIndex === 0 ? 'Outbound' : 'Return'} Journey
                       </div>
-                      {slice.segments.map((segment, segmentIndex) => (
+                      {slice.segments.map((segment) => (
                         <div key={segment.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg mb-2 last:mb-0">
                           <div className="flex-1">
                             <div className="flex items-center space-x-4">
