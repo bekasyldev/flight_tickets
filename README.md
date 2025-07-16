@@ -1,36 +1,167 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flight Search Application ✈️
+
+A modern, responsive flight search application built with Next.js and the Duffel API.
+
+## Features
+
+- **Flight Search**: Search for flights using airport codes or city codes
+- **Trip Types**: Support for both one-way and round-trip flights
+- **Flexible Options**: Choose cabin class, number of passengers, and travel dates
+- **Real-time Results**: Get live flight data from 300+ airlines via Duffel API
+- **Responsive Design**: Beautiful UI that works on desktop and mobile devices
+- **TypeScript**: Fully typed for better development experience
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+1. Sign up for a Duffel account at [https://app.duffel.com/join](https://app.duffel.com/join)
+2. Create a test access token from the "Access tokens" page in your Duffel dashboard
+3. Node.js 18+ installed on your system
+
+### Installation
+
+1. Clone or download this project
+2. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Add your Duffel access token:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Option 1: Environment Variable (Recommended)**
+Create a `.env.local` file in the root directory:
+```env
+NEXT_PUBLIC_DUFFEL_ACCESS_TOKEN=your_access_token_here
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Option 2: Direct Code Update**
+Edit `app/page.tsx` and replace `YOUR_ACCESS_TOKEN_HERE` with your actual token:
+```typescript
+const DUFFEL_ACCESS_TOKEN = 'your_actual_duffel_token_here';
+```
 
-## Learn More
+4. Run the development server:
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How to Use
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Search for Flights
 
-## Deploy on Vercel
+1. **Choose Trip Type**: Select either "Round Trip" or "One Way"
+2. **Enter Locations**: Use IATA airport codes (e.g., JFK, LHR, NYC) or city codes
+3. **Select Dates**: Choose your departure date (and return date for round trips)
+4. **Passengers & Class**: Specify number of passengers and cabin class
+5. **Search**: Click "Search Flights" to get results
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Popular Airport Codes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **New York**: JFK, LGA, EWR, NYC (city code)
+- **London**: LHR, LGW, STN, LTN, LCY
+- **Los Angeles**: LAX
+- **San Francisco**: SFO
+- **Chicago**: ORD, MDW
+- **Miami**: MIA
+- **Atlanta**: ATL
+- **Barcelona**: BCN
+- **Paris**: CDG, ORY
+- **Tokyo**: NRT, HND
+
+### Understanding Results
+
+Each flight result shows:
+- **Price**: Total cost in the airline's currency
+- **Flight Details**: Departure/arrival times, airports, and duration
+- **Airline Information**: Carrier name and aircraft type
+- **Journey Segments**: Individual flights (including connections)
+
+## Duffel API Integration
+
+This application uses the Duffel API v2 to:
+
+1. **Create Offer Requests**: Search for flights based on your criteria
+2. **Receive Flight Offers**: Get real-time flight options from airlines
+3. **Display Results**: Show formatted flight information with pricing
+
+### API Endpoints Used
+
+- `POST /air/offer_requests` - Search for flights
+
+### Key Concepts
+
+- **Slices**: Journey segments (e.g., NYC to ATL)
+- **Passengers**: Travelers with types (adult, child, infant)
+- **Offers**: Bookable flight options with pricing
+- **Segments**: Individual flights within a journey
+
+## Development
+
+### Project Structure
+
+```
+├── app/
+│   ├── page.tsx          # Main flight search component
+│   ├── layout.tsx        # App layout
+│   └── globals.css       # Global styles
+├── package.json          # Dependencies
+└── README.md            # This file
+```
+
+### Technologies Used
+
+- **Next.js 15**: React framework with App Router
+- **TypeScript**: Type-safe development
+- **Tailwind CSS**: Utility-first CSS framework
+- **Duffel API**: Flight search and booking platform
+
+### TypeScript Interfaces
+
+The application includes comprehensive TypeScript interfaces for:
+- Flight offers and segments
+- Search parameters
+- API responses
+- Form data
+
+## Troubleshooting
+
+### Common Issues
+
+1. **"Access token" error**: Make sure you've added your Duffel access token
+2. **"No flights found"**: Try different airport codes or dates
+3. **CORS errors**: The API calls are made server-side to avoid CORS issues
+
+### Testing
+
+For testing purposes, try searching:
+- **From**: LHR (London Heathrow)
+- **To**: JFK (New York JFK)
+- **Date**: Any future date
+- **Passengers**: 1 adult
+
+## Next Steps
+
+Once you have the basic search working, you can extend the application with:
+
+1. **Flight Booking**: Implement the Duffel booking flow
+2. **Payment Integration**: Add payment processing
+3. **User Accounts**: Save searches and bookings
+4. **Filters**: Add price, airline, and time filters
+5. **Ancillaries**: Offer seat selection and baggage options
+
+## Resources
+
+- [Duffel API Documentation](https://duffel.com/docs)
+- [Duffel Getting Started Guide](https://duffel.com/docs/guides/getting-started-with-flights)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+
+## Support
+
+For Duffel API issues:
+- [Duffel Help Centre](https://help.duffel.com)
+- [Duffel Slack Community](https://slack.duffel.com)
+- Email: help@duffel.com
