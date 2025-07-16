@@ -110,12 +110,10 @@ export default function FlightSearch() {
         cabin_class: formData.cabinClass
       };
 
-      const response = await fetch('https://api.duffel.com/air/offer_requests', {
+      const response = await fetch('/api/search-flights', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${DUFFEL_ACCESS_TOKEN}`,
           'Content-Type': 'application/json',
-          'Duffel-Version': 'v2'
         },
         body: JSON.stringify({
           data: offerRequest
