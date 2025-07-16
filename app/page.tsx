@@ -1,103 +1,427 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+
+// TODO: Add your Duffel access token here
+const DUFFEL_ACCESS_TOKEN = process.env.NEXT_PUBLIC_DUFFEL_ACCESS_TOKEN || 'YOUR_ACCESS_TOKEN_HERE';
+
+// Types based on Duffel API documentation
+interface Passenger {
+  type: 'adult' | 'child' | 'infant_without_seat';
+  age?: number;
+}
+
+interface Slice {
+  origin: string;
+  destination: string;
+  departure_date: string;
+}
+
+interface OfferRequest {
+  slices: Slice[];
+  passengers: Passenger[];
+  cabin_class?: 'first' | 'business' | 'premium_economy' | 'economy';
+}
+
+interface FlightSegment {
+  id: string;
+  origin: {
+    iata_code: string;
+    name: string;
+  };
+  destination: {
+    iata_code: string;
+    name: string;
+  };
+  departing_at: string;
+  arriving_at: string;
+  airline: {
+    name: string;
+    iata_code: string;
+  };
+  aircraft: {
+    name: string;
+  };
+  duration: string;
+}
+
+interface FlightOffer {
+  id: string;
+  total_amount: string;
+  total_currency: string;
+  slices: Array<{
+    segments: FlightSegment[];
+  }>;
+}
+
+interface SearchFormData {
+  origin: string;
+  destination: string;
+  departureDate: string;
+  returnDate: string;
+  tripType: 'one-way' | 'round-trip';
+  passengers: number;
+  cabinClass: 'economy' | 'premium_economy' | 'business' | 'first';
+}
+
+export default function FlightSearch() {
+  const [formData, setFormData] = useState<SearchFormData>({
+    origin: '',
+    destination: '',
+    departureDate: '',
+    returnDate: '',
+    tripType: 'round-trip',
+    passengers: 1,
+    cabinClass: 'economy'
+  });
+
+  const [offers, setOffers] = useState<FlightOffer[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const searchFlights = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // Build the slices based on trip type
+      const slices: Slice[] = [
+        {
+          origin: formData.origin.toUpperCase(),
+          destination: formData.destination.toUpperCase(),
+          departure_date: formData.departureDate
+        }
+      ];
+
+      if (formData.tripType === 'round-trip' && formData.returnDate) {
+        slices.push({
+          origin: formData.destination.toUpperCase(),
+          destination: formData.origin.toUpperCase(),
+          departure_date: formData.returnDate
+        });
+      }
+
+      // Build passengers array
+      const passengers: Passenger[] = Array(formData.passengers).fill({ type: 'adult' });
+
+      const offerRequest: OfferRequest = {
+        slices,
+        passengers,
+        cabin_class: formData.cabinClass
+      };
+
+      const response = await fetch('https://api.duffel.com/air/offer_requests', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${DUFFEL_ACCESS_TOKEN}`,
+          'Content-Type': 'application/json',
+          'Duffel-Version': 'v2'
+        },
+        body: JSON.stringify({
+          data: offerRequest
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      setOffers(data.data.offers || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      console.error('Flight search error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formData.origin || !formData.destination || !formData.departureDate) {
+      setError('Please fill in all required fields');
+      return;
+    }
+    if (formData.tripType === 'round-trip' && !formData.returnDate) {
+      setError('Please select a return date for round-trip flights');
+      return;
+    }
+    searchFlights();
+  };
+
+  const formatDateTime = (dateTimeString: string) => {
+    return new Date(dateTimeString).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const formatDuration = (duration: string) => {
+    // Convert ISO 8601 duration to readable format
+    const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?/);
+    if (!match) return duration;
+    const hours = match[1] ? `${match[1]}h` : '';
+    const minutes = match[2] ? `${match[2]}m` : '';
+    return `${hours} ${minutes}`.trim();
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="container mx-auto px-4 py-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+              ✈️ Flight Search
+            </h1>
+            <p className="text-gray-600">
+              Search flights powered by Duffel API
+            </p>
+          </div>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+          {/* Search Form */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Trip Type */}
+              <div className="flex gap-4">
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="tripType"
+                    value="round-trip"
+                    checked={formData.tripType === 'round-trip'}
+                    onChange={(e) => setFormData({...formData, tripType: e.target.value as 'round-trip'})}
+                    className="mr-2"
+                  />
+                  Round Trip
+                </label>
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="tripType"
+                    value="one-way"
+                    checked={formData.tripType === 'one-way'}
+                    onChange={(e) => setFormData({...formData, tripType: e.target.value as 'one-way'})}
+                    className="mr-2"
+                  />
+                  One Way
+                </label>
+              </div>
+
+              {/* Origin and Destination */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    From (Airport Code)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., JFK, LHR, NYC"
+                    value={formData.origin}
+                    onChange={(e) => setFormData({...formData, origin: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    To (Airport Code)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g., ATL, BCN, LAX"
+                    value={formData.destination}
+                    onChange={(e) => setFormData({...formData, destination: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Dates */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Departure Date
+                  </label>
+                  <input
+                    type="date"
+                    value={formData.departureDate}
+                    onChange={(e) => setFormData({...formData, departureDate: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    required
+                  />
+                </div>
+                {formData.tripType === 'round-trip' && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Return Date
+                    </label>
+                    <input
+                      type="date"
+                      value={formData.returnDate}
+                      onChange={(e) => setFormData({...formData, returnDate: e.target.value})}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      required={formData.tripType === 'round-trip'}
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Passengers and Cabin Class */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Passengers
+                  </label>
+                  <select
+                    value={formData.passengers}
+                    onChange={(e) => setFormData({...formData, passengers: parseInt(e.target.value)})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    {[1, 2, 3, 4, 5, 6].map(num => (
+                      <option key={num} value={num}>{num} Passenger{num > 1 ? 's' : ''}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Cabin Class
+                  </label>
+                  <select
+                    value={formData.cabinClass}
+                    onChange={(e) => setFormData({...formData, cabinClass: e.target.value as any})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="economy">Economy</option>
+                    <option value="premium_economy">Premium Economy</option>
+                    <option value="business">Business</option>
+                    <option value="first">First Class</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Search Button */}
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+              >
+                {loading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                    Searching...
+                  </>
+                ) : (
+                  'Search Flights'
+                )}
+              </button>
+            </form>
+          </div>
+
+          {/* Error Display */}
+          {error && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+              <strong>Error:</strong> {error}
+            </div>
+          )}
+
+          {/* Access Token Warning */}
+          {DUFFEL_ACCESS_TOKEN === 'YOUR_ACCESS_TOKEN_HERE' && (
+            <div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-6">
+              <strong>Notice:</strong> Please add your Duffel access token to the NEXT_PUBLIC_DUFFEL_ACCESS_TOKEN environment variable or update the token in the code.
+            </div>
+          )}
+
+          {/* Results */}
+          {offers.length > 0 && (
+            <div className="space-y-4">
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                Flight Results ({offers.length} found)
+              </h2>
+              {offers.map((offer) => (
+                <div key={offer.id} className="bg-white rounded-lg shadow-lg p-6">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="text-2xl font-bold text-green-600">
+                      {offer.total_currency} {offer.total_amount}
+                    </div>
+                    <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+                      Select Flight
+                    </button>
+                  </div>
+
+                  {offer.slices.map((slice, sliceIndex) => (
+                    <div key={sliceIndex} className="mb-4 last:mb-0">
+                      <div className="text-sm font-medium text-gray-500 mb-2">
+                        {sliceIndex === 0 ? 'Outbound' : 'Return'} Journey
+                      </div>
+                      {slice.segments.map((segment, segmentIndex) => (
+                        <div key={segment.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg mb-2 last:mb-0">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-4">
+                              <div className="text-center">
+                                <div className="font-bold text-lg">
+                                  {formatDateTime(segment.departing_at)}
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                  {segment.origin.iata_code}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  {segment.origin.name}
+                                </div>
+                              </div>
+                              
+                              <div className="flex-1 text-center">
+                                <div className="text-sm text-gray-600">
+                                  {formatDuration(segment.duration)}
+                                </div>
+                                <div className="flex items-center justify-center my-1">
+                                  <div className="h-px bg-gray-400 flex-1"></div>
+                                  <div className="mx-2">✈️</div>
+                                  <div className="h-px bg-gray-400 flex-1"></div>
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  {segment.airline.name} • {segment.aircraft.name}
+                                </div>
+                              </div>
+                              
+                              <div className="text-center">
+                                <div className="font-bold text-lg">
+                                  {formatDateTime(segment.arriving_at)}
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                  {segment.destination.iata_code}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  {segment.destination.name}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* No Results */}
+          {!loading && offers.length === 0 && formData.origin && (
+            <div className="text-center py-12">
+              <div className="text-gray-500 text-lg">
+                No flights found for your search criteria.
+              </div>
+              <div className="text-gray-400 text-sm mt-2">
+                Try adjusting your search parameters.
+              </div>
+            </div>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
     </div>
   );
 }
