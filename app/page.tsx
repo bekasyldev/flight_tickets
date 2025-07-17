@@ -1,25 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 // Types based on Duffel API documentation
-interface Passenger {
-  type: 'adult' | 'child' | 'infant_without_seat';
-  age?: number;
-}
-
-interface Slice {
-  origin: string;
-  destination: string;
-  departure_date: string;
-}
-
-interface OfferRequest {
-  slices: Slice[];
-  passengers: Passenger[];
-  cabin_class?: 'first' | 'business' | 'premium_economy' | 'economy';
-}
-
 interface FlightSegment {
   id: string;
   origin: {
@@ -81,44 +65,17 @@ export default function FlightSearch() {
     setError(null);
     
     try {
-      // Build the slices based on trip type
-      const slices: Slice[] = [
-        {
-          origin: formData.origin.toUpperCase(),
-          destination: formData.destination.toUpperCase(),
-          departure_date: formData.departureDate
-        }
-      ];
-
-      if (formData.tripType === 'round-trip' && formData.returnDate) {
-        slices.push({
-          origin: formData.destination.toUpperCase(),
-          destination: formData.origin.toUpperCase(),
-          departure_date: formData.returnDate
-        });
-      }
-
-      // Build passengers array
-      const passengers: Passenger[] = Array(formData.passengers).fill({ type: 'adult' });
-
-      const offerRequest: OfferRequest = {
-        slices,
-        passengers,
-        cabin_class: formData.cabinClass
-      };
-
-      const response = await fetch('/api/duffel/offer-requests', {
+      const response = await fetch('/api/search-flights', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          data: offerRequest
-        })
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) {
-        throw new Error(`API Error: ${response.status} ${response.statusText}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || `API Error: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
@@ -174,6 +131,14 @@ export default function FlightSearch() {
             <p className="text-gray-600">
               Search flights powered by Duffel API
             </p>
+            <div className="mt-4">
+              <Link 
+                href="/airports" 
+                className="text-blue-600 hover:text-blue-800 underline"
+              >
+                Browse Airports →
+              </Link>
+            </div>
           </div>
 
           {/* Search Form */}
