@@ -1,9 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
+import CountryModal from './components/CountryModal';
 
-// Types based on Duffel API documentation
 interface FlightSegment {
   id: string;
   origin: {
@@ -45,6 +44,12 @@ interface SearchFormData {
   cabinClass: 'economy' | 'premium_economy' | 'business' | 'first';
 }
 
+interface LocationSelection {
+  countryName: string;
+  airportCode: string;
+  airportName: string;
+}
+
 export default function FlightSearch() {
   const [formData, setFormData] = useState<SearchFormData>({
     origin: '',
@@ -56,9 +61,16 @@ export default function FlightSearch() {
     cabinClass: 'economy'
   });
 
+  const [originSelection, setOriginSelection] = useState<LocationSelection | null>(null);
+  const [destinationSelection, setDestinationSelection] = useState<LocationSelection | null>(null);
+
   const [offers, setOffers] = useState<FlightOffer[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Modal states
+  const [isOriginModalOpen, setIsOriginModalOpen] = useState(false);
+  const [isDestinationModalOpen, setIsDestinationModalOpen] = useState(false);
 
   const searchFlights = async () => {
     setLoading(true);
@@ -91,7 +103,7 @@ export default function FlightSearch() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.origin || !formData.destination || !formData.departureDate) {
-      setError('Please fill in all required fields');
+      setError('Please select origin, destination, and departure date');
       return;
     }
     if (formData.tripType === 'round-trip' && !formData.returnDate) {
@@ -99,6 +111,16 @@ export default function FlightSearch() {
       return;
     }
     searchFlights();
+  };
+
+  const handleOriginSelect = (countryName: string, airportCode: string, airportName: string) => {
+    setOriginSelection({ countryName, airportCode, airportName });
+    setFormData({ ...formData, origin: airportCode });
+  };
+
+  const handleDestinationSelect = (countryName: string, airportCode: string, airportName: string) => {
+    setDestinationSelection({ countryName, airportCode, airportName });
+    setFormData({ ...formData, destination: airportCode });
   };
 
   const formatDateTime = (dateTimeString: string) => {
@@ -131,14 +153,6 @@ export default function FlightSearch() {
             <p className="text-gray-600">
               Search flights powered by Duffel API
             </p>
-            <div className="mt-4">
-              <Link 
-                href="/airports" 
-                className="text-blue-600 hover:text-blue-800 underline"
-              >
-                Browse Airports →
-              </Link>
-            </div>
           </div>
 
           {/* Search Form */}
@@ -174,29 +188,53 @@ export default function FlightSearch() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    From (Airport Code)
+                    From
                   </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., JFK, LHR, NYC"
-                    value={formData.origin}
-                    onChange={(e) => setFormData({...formData, origin: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setIsOriginModalOpen(true)}
+                    className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-left hover:bg-gray-50 transition-colors"
+                  >
+                    {originSelection ? (
+                      <div>
+                        <div className="font-medium text-gray-900">
+                          {originSelection.airportName}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {originSelection.countryName}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-gray-500">
+                        Select departure country
+                      </div>
+                    )}
+                  </button>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    To (Airport Code)
+                    To
                   </label>
-                  <input
-                    type="text"
-                    placeholder="e.g., ATL, BCN, LAX"
-                    value={formData.destination}
-                    onChange={(e) => setFormData({...formData, destination: e.target.value})}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
+                  <button
+                    type="button"
+                    onClick={() => setIsDestinationModalOpen(true)}
+                    className="w-full px-3 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white text-left hover:bg-gray-50 transition-colors"
+                  >
+                    {destinationSelection ? (
+                      <div>
+                        <div className="font-medium text-gray-900">
+                          {destinationSelection.airportName}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {destinationSelection.countryName}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-gray-500">
+                        Select destination country
+                      </div>
+                    )}
+                  </button>
                 </div>
               </div>
 
@@ -290,8 +328,6 @@ export default function FlightSearch() {
             </div>
           )}
 
-
-
           {/* Results */}
           {offers.length > 0 && (
             <div className="space-y-4">
@@ -339,11 +375,7 @@ export default function FlightSearch() {
                                   <div className="mx-2">✈️</div>
                                   <div className="h-px bg-gray-400 flex-1"></div>
                                 </div>
-                                <div className="text-xs text-black">
-                                  {segment.airline?.name || 'Unknown Airline'}
-                                  {' • '}
-                                  {segment.aircraft?.name || 'Unknown Aircraft'}
-                                </div>
+
                               </div>
                               
                               <div className="text-center">
@@ -381,6 +413,21 @@ export default function FlightSearch() {
           )}
         </div>
       </div>
+
+      {/* Modals */}
+      <CountryModal
+        isOpen={isOriginModalOpen}
+        onClose={() => setIsOriginModalOpen(false)}
+        onSelect={handleOriginSelect}
+        title="Select Departure Country"
+      />
+
+      <CountryModal
+        isOpen={isDestinationModalOpen}
+        onClose={() => setIsDestinationModalOpen(false)}
+        onSelect={handleDestinationSelect}
+        title="Select Destination Country"
+      />
     </div>
   );
 }
