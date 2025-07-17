@@ -156,7 +156,7 @@ export default function FlightSearch() {
           </div>
 
           {/* Search Form */}
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-8 text-black">
+          <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 mb-8 text-black">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Trip Type */}
               <div className="flex gap-4">
@@ -335,12 +335,12 @@ export default function FlightSearch() {
                 Flight Results ({offers.length} found)
               </h2>
               {offers.map((offer) => (
-                <div key={offer.id} className="bg-white rounded-lg shadow-lg p-6">
-                  <div className="flex justify-between items-start mb-4">
-                    <div className="text-2xl font-bold text-green-600">
+                <div key={offer.id} className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
+                    <div className="text-xl sm:text-2xl font-bold text-green-600">
                       {offer.total_currency} {offer.total_amount}
                     </div>
-                    <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+                    <button className="bg-blue-600 text-white px-4 py-2 sm:px-6 rounded-md hover:bg-blue-700 w-full sm:w-auto">
                       Select Flight
                     </button>
                   </div>
@@ -351,9 +351,33 @@ export default function FlightSearch() {
                         {sliceIndex === 0 ? 'Outbound' : 'Return'} Journey
                       </div>
                       {slice.segments.map((segment) => (
-                        <div key={segment.id} className="flex text-black items-center justify-between p-4 bg-gray-50 rounded-lg mb-2 last:mb-0">
-                          <div className="flex-1">
-                            <div className="flex items-center space-x-4">
+                        <div key={segment.id} className="p-3 sm:p-4 bg-gray-50 rounded-lg mb-2 last:mb-0">
+                          <div className="text-black">
+                            {/* Mobile layout: departure and arrival on same line */}
+                            <div className="flex justify-between items-start mb-2 sm:hidden">
+                              <div>
+                                <div className="font-bold text-base">
+                                  {formatDateTime(segment.departing_at)}
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                  {segment.origin.iata_code}
+                                </div>
+                              </div>
+                              <div className="text-center px-4">
+                                <div className="text-xs text-gray-600">✈️ {formatDuration(segment.duration)}</div>
+                              </div>
+                              <div className="text-right">
+                                <div className="font-bold text-base">
+                                  {formatDateTime(segment.arriving_at)}
+                                </div>
+                                <div className="text-sm text-gray-600">
+                                  {segment.destination.iata_code}
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Desktop layout: horizontal with center divider */}
+                            <div className="hidden sm:flex items-center space-x-4">
                               <div className="text-center">
                                 <div className="font-bold text-lg">
                                   {formatDateTime(segment.departing_at)}
@@ -361,7 +385,7 @@ export default function FlightSearch() {
                                 <div className="text-sm text-gray-600">
                                   {segment.origin.iata_code}
                                 </div>
-                                <div className="text-xs text-gray-500">
+                                <div className="text-xs text-gray-500 truncate max-w-24">
                                   {segment.origin.name}
                                 </div>
                               </div>
@@ -375,7 +399,6 @@ export default function FlightSearch() {
                                   <div className="mx-2">✈️</div>
                                   <div className="h-px bg-gray-400 flex-1"></div>
                                 </div>
-
                               </div>
                               
                               <div className="text-center">
@@ -385,10 +408,15 @@ export default function FlightSearch() {
                                 <div className="text-sm text-gray-600">
                                   {segment.destination.iata_code}
                                 </div>
-                                <div className="text-xs text-gray-500">
+                                <div className="text-xs text-gray-500 truncate max-w-24">
                                   {segment.destination.name}
                                 </div>
                               </div>
+                            </div>
+                            
+                            {/* Airline info for mobile */}
+                            <div className="text-xs text-gray-600 text-center mt-1 sm:hidden">
+                              {/* {segment.airline?.name || 'Unknown Airline'} */}
                             </div>
                           </div>
                         </div>
