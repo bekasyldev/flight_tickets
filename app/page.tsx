@@ -124,12 +124,9 @@ export default function FlightSearch() {
   };
 
   const formatDateTime = (dateTimeString: string) => {
-    return new Date(dateTimeString).toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    const date = new Date(dateTimeString);
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
   };
 
   const formatDuration = (duration: string) => {
@@ -416,7 +413,14 @@ export default function FlightSearch() {
                             
                             {/* Airline info for mobile */}
                             <div className="text-xs text-gray-600 text-center mt-1 sm:hidden">
-                              {/* {segment.airline?.name || 'Unknown Airline'} */}
+                              {(() => {
+                                const dep = new Date(segment.departing_at);
+                                const arr = new Date(segment.arriving_at);
+                                const pad = (n: number) => n.toString().padStart(2, '0');
+                                const depTime = `${pad(dep.getHours())}:${pad(dep.getMinutes())}`;
+                                const arrTime = `${pad(arr.getHours())}:${pad(arr.getMinutes())}`;
+                                return `${depTime} - ${arrTime}`;
+                              })()}
                             </div>
                           </div>
                         </div>
