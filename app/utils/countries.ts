@@ -250,6 +250,24 @@ export const POPULAR_COUNTRIES: Country[] = [
             { code: 'DME', name: 'Domodedovo International Airport', city: 'Moscow' },
             { code: 'LED', name: 'Pulkovo Airport', city: 'St. Petersburg' }
         ]
+    },
+    {
+        code: 'RO',
+        name: 'Romania',
+        flag: '🇷🇴',
+        majorAirports: [
+            { code: 'OTP', name: 'Henri Coandă International Airport', city: 'Bucharest' },
+            { code: 'CLJ', name: 'Cluj International Airport', city: 'Cluj-Napoca' },
+            { code: 'IAS', name: 'Iași International Airport', city: 'Iași' }
+        ]
+    },
+    {
+        code: 'MD',
+        name: 'Moldova',
+        flag: '🇲🇩',
+        majorAirports: [
+            { code: 'RMO', name: 'Chișinău International Airport', city: 'Chișinău' }
+        ]
     }
 ];
 
