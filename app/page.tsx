@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import CountryModal from './components/CountryModal';
+import { convertCurrency } from './utils/currencyTransform';
 
 interface FlightSegment {
   id: string;
@@ -335,7 +336,7 @@ export default function FlightSearch() {
                 <div key={offer.id} className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
                   <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-3 mb-4">
                     <div className="text-xl sm:text-2xl font-bold text-green-600">
-                      {offer.total_currency} {offer.total_amount}
+                      {convertCurrency(Number(offer.total_amount), offer.total_currency as "EUR" | "USD")}
                     </div>
                     <button className="bg-blue-600 text-white px-4 py-2 sm:px-6 rounded-md hover:bg-blue-700 w-full sm:w-auto">
                       Select Flight
@@ -411,7 +412,6 @@ export default function FlightSearch() {
                               </div>
                             </div>
                             
-                            {/* Airline info for mobile */}
                             <div className="text-xs text-gray-600 text-center mt-1 sm:hidden">
                               {(() => {
                                 const dep = new Date(segment.departing_at);

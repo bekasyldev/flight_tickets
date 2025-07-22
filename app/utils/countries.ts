@@ -170,6 +170,86 @@ export const POPULAR_COUNTRIES: Country[] = [
             { code: 'BOM', name: 'Chhatrapati Shivaji Maharaj International Airport', city: 'Mumbai' },
             { code: 'BLR', name: 'Kempegowda International Airport', city: 'Bangalore' }
         ]
+    },
+    {
+        code: 'KZ',
+        name: 'Kazakhstan',
+        flag: '🇰🇿',
+        majorAirports: [
+            { code: 'NQZ', name: 'Nursultan Nazarbayev International Airport', city: 'Astana' },
+            { code: 'ALA', name: 'Almaty International Airport', city: 'Almaty' },
+            { code: 'CIT', name: 'Shymkent International Airport', city: 'Shymkent' }
+        ]
+    },
+    {
+        code: 'KG',
+        name: 'Kyrgyzstan',
+        flag: '🇰🇬',
+        majorAirports: [
+            { code: 'FRU', name: 'Manas International Airport', city: 'Bishkek' },
+            { code: 'OSS', name: 'Osh Airport', city: 'Osh' }
+        ]
+    },
+    {
+        code: 'UZ',
+        name: 'Uzbekistan',
+        flag: '🇺🇿',
+        majorAirports: [
+            { code: 'TAS', name: 'Tashkent International Airport', city: 'Tashkent' },
+            { code: 'SKD', name: 'Samarkand International Airport', city: 'Samarkand' }
+        ]
+    },
+    {
+        code: 'TJ',
+        name: 'Tajikistan',
+        flag: '🇹🇯',
+        majorAirports: [
+            { code: 'DYU', name: 'Dushanbe International Airport', city: 'Dushanbe' }
+        ]
+    },
+    {
+        code: 'TM',
+        name: 'Turkmenistan',
+        flag: '🇹🇲',
+        majorAirports: [
+            { code: 'ASB', name: 'Ashgabat International Airport', city: 'Ashgabat' }
+        ]
+    },
+    {
+        code: 'AM',
+        name: 'Armenia',
+        flag: '🇦🇲',
+        majorAirports: [
+            { code: 'EVN', name: 'Zvartnots International Airport', city: 'Yerevan' }
+        ]
+    },
+    {
+        code: 'AZ',
+        name: 'Azerbaijan',
+        flag: '🇦🇿',
+        majorAirports: [
+            { code: 'GYD', name: 'Heydar Aliyev International Airport', city: 'Baku' }
+        ]
+    },
+    {
+        code: 'TR',
+        name: 'Turkey',
+        flag: '🇹🇷',
+        majorAirports: [
+            { code: 'IST', name: 'Istanbul Airport', city: 'Istanbul' },
+            { code: 'SAW', name: 'Sabiha Gökçen International Airport', city: 'Istanbul' },
+            { code: 'ESB', name: 'Esenboğa Airport', city: 'Ankara' }
+        ]
+    },
+    {
+        code: 'RU',
+        name: 'Russia',
+        flag: '🇷🇺',
+        majorAirports: [
+            { code: 'SVO', name: 'Sheremetyevo International Airport', city: 'Moscow' },
+            { code: 'DME', name: 'Domodedovo International Airport', city: 'Moscow' },
+            { code: 'LED', name: 'Pulkovo Airport', city: 'St. Petersburg' }
+        ]
     }
 ];
 
