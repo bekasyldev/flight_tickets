@@ -248,7 +248,8 @@ export const POPULAR_COUNTRIES: Country[] = [
         majorAirports: [
             { code: 'SVO', name: 'Sheremetyevo International Airport', city: 'Moscow' },
             { code: 'DME', name: 'Domodedovo International Airport', city: 'Moscow' },
-            { code: 'LED', name: 'Pulkovo Airport', city: 'St. Petersburg' }
+            { code: 'LED', name: 'Pulkovo Airport', city: 'St. Petersburg' },
+            { code: 'VKO', name: 'Vnukovo International Airport', city: 'Moscow' }
         ]
     },
     {
