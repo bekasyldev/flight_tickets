@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Calendar } from "lucide-react";
 import PassengerDropdown from "./PassengerDropdown";
+import FlightCalendar from "./FlightCalendar";
 
 interface SearchFormData {
   origin: string;
@@ -40,6 +41,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   loading
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [calendarType, setCalendarType] = useState<'departure' | 'return' | null>(null);
 
   const handlePassengersChange = (adults: number, childrens: number, infants: number) => {
     const totalPassengers = adults + childrens + infants;
@@ -56,11 +58,36 @@ const BookingForm: React.FC<BookingFormProps> = ({
     setFormData({ ...formData, cabinClass: cabinClassMap[serviceClass] || 'economy' });
   };
 
+  const handleDateSelect = (date: string, isReturnTicketNeeded: boolean) => {
+    if (calendarType === 'departure') {
+      setFormData({ 
+        ...formData, 
+        departureDate: date,
+        returnDate: isReturnTicketNeeded ? formData.returnDate : ''
+      });
+    } else if (calendarType === 'return') {
+      setFormData({ 
+        ...formData, 
+        returnDate: date
+      });
+    }
+    setCalendarType(null);
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', { 
+      day: 'numeric', 
+      month: 'short' 
+    });
+  };
+
   return (
     <div className="w-full max-w-6xl mx-auto">
-      <div className="bg-white rounded-2xl shadow-lg p-2 flex flex-wrap items-center gap-0">
+      <div className="flex flex-wrap items-center gap-1 sticky top-16 z-20 shadow-md bg-transparent">
         {/* From City */}
-        <div className="flex-1 min-w-48 px-4 border-r border-gray-200">
+        <div className="flex-1 min-w-32 px-2 bg-white rounded-l-2xl">
           <button
             type="button"
             onClick={onOriginClick}
@@ -68,22 +95,20 @@ const BookingForm: React.FC<BookingFormProps> = ({
           >
             {originSelection ? (
               <>
-                <div className="text-lg font-medium text-gray-800">
+                <div className="text-md font-medium text-gray-800 py-3 px-2">
                   {originSelection.airportName}
                 </div>
-                <div className="text-sm text-gray-400 mt-1">{originSelection.airportCode}</div>
               </>
             ) : (
               <>
-                <div className="text-lg font-medium text-gray-400">Откуда</div>
-                <div className="text-sm text-gray-400 mt-1">Выберите страну</div>
+                <div className="text-md font-medium text-gray-400 py-3 px-2">Откуда</div>
               </>
             )}
           </button>
         </div>
 
         {/* To City */}
-        <div className="flex-1 min-w-48 px-4 border-r border-gray-200">
+        <div className="flex-1 min-w-32 px-2 bg-white ">
           <button
             type="button"
             onClick={onDestinationClick}
@@ -91,78 +116,86 @@ const BookingForm: React.FC<BookingFormProps> = ({
           >
             {destinationSelection ? (
               <>
-                <div className="text-lg font-medium text-gray-800">
+                <div className="text-md font-medium text-gray-800 py-3 px-2">
                   {destinationSelection.airportName}
                 </div>
-                <div className="text-sm text-gray-400 mt-1">{destinationSelection.airportCode}</div>
               </>
             ) : (
               <>
-                <div className="text-lg font-medium text-gray-400">Куда</div>
-                <div className="text-sm text-gray-400 mt-1">Выберите страну</div>
+                <div className="text-md font-medium text-gray-400 py-3 px-2">Куда</div>
               </>
             )}
           </button>
         </div>
 
-        {/* Departure Date */}
-        <div className="flex-1 min-w-48 px-4 border-r border-gray-200">
-          <div className="relative">
-            <input
-              type="date"
-              value={formData.departureDate}
-              onChange={(e) => setFormData({ ...formData, departureDate: e.target.value })}
-              className={`w-full text-lg font-medium text-gray-800 bg-transparent border-none outline-none cursor-pointer ${!formData.departureDate ? 'text-transparent' : ''}`}
-              style={{ colorScheme: 'light' }}
-              onClick={(e) => {
-                const input = e.target as HTMLInputElement;
-                input.showPicker();
-              }}
-            />
-            {!formData.departureDate && (
-              <>
-                <div className="absolute top-0 left-0 pointer-events-none text-lg font-medium text-gray-400">
-                  Когда
-                </div>
-                <div className="absolute top-1 right-0 pointer-events-none text-gray-400">
-                  <Calendar className="w-5 h-5" />
-                </div>
-              </>
-            )}
+        {/* Dates (shared wrapper) */}
+        <div className="relative flex gap-1">
+          {/* Departure Date */}
+          <div className="min-w-42 px-2 bg-white">
+            <button
+              type="button"
+              onClick={() => setCalendarType(calendarType === 'departure' ? null : 'departure')}
+              className="w-full text-left py-2 relative"
+            >
+              {formData.departureDate ? (
+                <>
+                  <div className="text-md font-medium text-gray-800 py-3 px-2">
+                    {formatDate(formData.departureDate)}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-md font-medium text-gray-400 py-3 px-2">Когда</div>
+                </>
+              )}
+              <div className="absolute top-1/3 right-0 text-gray-400">
+                <Calendar className="w-5 h-5" />
+              </div>
+            </button>
           </div>
-        </div>
 
-        {/* Return Date */}
-        <div className="flex-1 min-w-48 px-4 border-r border-gray-200">
-          <div className="relative">
-            <input
-              type="date"
-              value={formData.returnDate}
-              onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
-              className={`w-full text-lg font-medium text-gray-800 bg-transparent border-none outline-none cursor-pointer ${!formData.returnDate ? 'text-transparent' : ''}`}
-              style={{ colorScheme: 'light' }}
-              onClick={(e) => {
-                const input = e.target as HTMLInputElement;
-                input.showPicker();
-              }}
-            />
-            {!formData.returnDate && (
-              <>
-                <div className="absolute top-0 left-0 pointer-events-none text-lg font-medium text-gray-400">
-                  Обратно
-                </div>
-                <div className="absolute top-1 right-0 pointer-events-none text-gray-400">
-                  <Calendar className="w-5 h-5" />
-                </div>
-              </>
-            )}
+          {/* Return Date */}
+          <div className="min-w-42 px-2 bg-white">
+            <button
+              type="button"
+              onClick={() => setCalendarType(calendarType === 'return' ? null : 'return')}
+              className="text-left py-2 min-w-32 relative"
+            >
+              {formData.returnDate ? (
+                <>
+                  <div className="text-md font-medium text-gray-800 py-3 px-2">
+                    {formatDate(formData.returnDate)}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="text-md font-medium text-gray-400 py-3 px-2">Обратно</div>
+                </>
+              )}
+              <div className="absolute top-1/3 right-0 text-gray-400">
+                <Calendar className="w-5 h-5" />
+              </div>
+            </button>
           </div>
+
+          {/* Shared Calendar Dropdown */}
+          {calendarType && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 z-50 mt-2">
+              <FlightCalendar
+                type={calendarType}
+                onSelect={handleDateSelect}
+                onClose={() => setCalendarType(null)}
+                selectedDate={calendarType === 'departure' ? formData.departureDate : formData.returnDate}
+                minDate={calendarType === 'return' ? formData.departureDate : undefined}
+              />
+            </div>
+          )}
         </div>
 
         {/* Passengers Dropdown */}
-        <div className="flex-1 min-w-48 px-4 relative">
+        <div className="flex-1 min-w-32 px-2 py-[6px] relative bg-white rounded-r-2xl">
           <PassengerDropdown
-            adults={Math.max(1, formData.passengers - 0)} // Simplified for now
+            adults={Math.max(1, formData.passengers - 0)}
             childrens={0}
             infants={0}
             serviceClass={formData.cabinClass === 'premium_economy' ? 'comfort' : formData.cabinClass}
@@ -172,24 +205,25 @@ const BookingForm: React.FC<BookingFormProps> = ({
             onToggle={() => setIsDropdownOpen(!isDropdownOpen)}
           />
         </div>
-      </div>
 
-      {/* Search Button */}
-      <div className="flex justify-center mt-6">
-        <button
-          onClick={onSubmit}
-          disabled={loading}
-          className="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg px-12 py-4 rounded-2xl transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-        >
-          {loading ? (
-            <>
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-              Поиск...
-            </>
-          ) : (
-            'Найти билеты'
-          )}
-        </button>
+        {/* Search Button */}
+        <div className="px-2">
+          <button
+            onClick={onSubmit}
+            disabled={loading}
+            className="bg-orange-500 hover:bg-orange-600 text-white font-semibold text-lg px-6 py-5 rounded-2xl transition-colors shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center h-full"
+            style={{ minWidth: 140 }}
+          >
+            {loading ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                Поиск...
+              </>
+            ) : (
+              'Найти билеты'
+            )}
+          </button>
+        </div>
       </div>
     </div>
   );
