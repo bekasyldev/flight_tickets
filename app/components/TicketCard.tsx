@@ -129,7 +129,7 @@ const TicketCard: React.FC<TicketCardProps> = ({
   convertCurrency, 
   formatDuration 
 }) => (
-  <div className="bg-white rounded-2xl shadow-sm border border-gray-100 max-w-4xl w-full p-6 mb-4">
+  <div className="bg-white rounded-2xl shadow-sm border border-gray-100 max-w-2xl w-full p-6 mb-4">
     {/* Header */}
     <div className="flex items-start justify-between mb-6">
       <div className="flex items-center space-x-4">
@@ -154,10 +154,9 @@ const TicketCard: React.FC<TicketCardProps> = ({
         </div>            
       </div>
       <div className="flex items-center space-x-2">
-      <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-xl font-medium text-lg transition-colors duration-200">
-            Выбрать билет
-            </button>
-        {/* TODO: Add time and direction */}
+        <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200">
+                Выбрать билет
+        </button>
       </div>
     </div>
 
