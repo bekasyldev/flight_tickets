@@ -141,7 +141,6 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
           </div>
 
           {/* Return Date */}
-          {formData.tripType === 'round-trip' && (
             <div className="relative py-3 border-b border-gray-200">
               <button
                 type="button"
@@ -154,7 +153,7 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
                   </div>
                 ) : (
                   <div className="text-xl font-medium text-gray-400">
-                    Дата возвращения
+                    {formData.tripType === 'round-trip' ? 'Дата возвращения' : ''}
                   </div>
                 )}
                 <div className="absolute top-3 right-0 text-gray-400">
@@ -162,7 +161,6 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
                 </div>
               </button>
             </div>
-          )}
 
           {/* Passengers */}
           <div className="py-3">

@@ -18,7 +18,7 @@ const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange }) => {
         >
           <Plane className="w-5 h-5 inline mr-2" />
           Авиабилеты
-    </button>
+        </button>
         <button 
           onClick={() => onTabChange('favorites')}
           className={`px-8 py-3 rounded-full font-medium transition-all ${

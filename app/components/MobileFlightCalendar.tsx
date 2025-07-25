@@ -19,7 +19,9 @@ const MobileFlightCalendar: React.FC<MobileFlightCalendarProps> = ({
   tripType = 'round-trip'
 }) => {
   const [currentMonth, setCurrentMonth] = useState(() => {
+    // Use a stable date to avoid hydration mismatch
     const now = new Date();
+    now.setHours(0, 0, 0, 0);
     return new Date(now.getFullYear(), now.getMonth(), 1);
   });
   const [isReturnTicketNeeded, setIsReturnTicketNeeded] = useState(tripType === 'round-trip');
@@ -38,6 +40,7 @@ const MobileFlightCalendar: React.FC<MobileFlightCalendarProps> = ({
   const isDateDisabled = (date: Date) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+    date.setHours(0, 0, 0, 0);
     if (date < today) return true;
 
     if (type === 'return' && minDate) {
@@ -50,7 +53,11 @@ const MobileFlightCalendar: React.FC<MobileFlightCalendarProps> = ({
   const handleDateClick = (date: Date) => {
     if (isDateDisabled(date)) return;
     
-    const dateString = date.toISOString().split('T')[0];
+    // Use local date to avoid timezone issues
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const dateString = `${year}-${month}-${day}`;
     onSelect(dateString, isReturnTicketNeeded);
   };
 
@@ -87,6 +94,7 @@ const MobileFlightCalendar: React.FC<MobileFlightCalendarProps> = ({
 
   const isPrevDisabled = (() => {
     const now = new Date();
+    now.setHours(0, 0, 0, 0);
     return (
       currentMonth.getFullYear() === now.getFullYear() &&
       currentMonth.getMonth() === now.getMonth()

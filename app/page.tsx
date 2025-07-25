@@ -129,7 +129,7 @@ interface LocationSelection {
 
 export default function FlightSearch() {
   const [activeTab, setActiveTab] = useState('flights');
-  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' && window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
 
   const [formData, setFormData] = useState<SearchFormData>({
     origin: '',
@@ -157,6 +157,9 @@ export default function FlightSearch() {
       setIsMobile(window.innerWidth < 768);
     };
 
+    // Set initial mobile state
+    handleResize();
+    
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -239,7 +242,7 @@ export default function FlightSearch() {
 
   return (
     <div className="min-h-screen bg-white">
-      {!isMobile && <Header />}
+      <Header />
       <div className="bg-gradient-to-br from-blue-600 via-blue-600 to-blue-700 pb-8">
         <main className="flex flex-col items-center justify-center px-4 pt-12">
           <div className="text-center mb-12">
