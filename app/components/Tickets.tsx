@@ -90,11 +90,13 @@ const Tickets: React.FC<TicketsProps> = ({
   });
 
   return (
-    <div className="w-full flex justify-center items-start gap-6">
-      <TicketFilters 
-        filters={filters}
-        onFilterChange={handleFilterChange}
-      />
+      <div className="w-full flex flex-col lg:flex-row justify-center items-start gap-4 lg:gap-6 px-4 lg:px-0">
+      <div className="w-full lg:w-auto lg:sticky lg:top-24">
+        <TicketFilters 
+          filters={filters}
+          onFilterChange={handleFilterChange}
+        />
+      </div>
       <div className="space-y-0 flex flex-col items-center w-full max-w-2xl">
         {filteredOffers.slice(0, 10).map((offer) => (
           <TicketCard

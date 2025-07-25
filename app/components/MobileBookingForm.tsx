@@ -1,4 +1,6 @@
 import { Calendar } from "lucide-react";
+import { useState } from "react";
+import MobileFlightCalendar from "./MobileFlightCalendar";
 
 interface SearchFormData {
   origin: string;
@@ -37,6 +39,34 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
   onSubmit,
   loading
 }) => {
+  const [calendarType, setCalendarType] = useState<'departure' | 'return' | null>(null);
+
+  const handleDateSelect = (date: string, isReturnTicketNeeded: boolean) => {
+    if (calendarType === 'departure') {
+      setFormData({ 
+        ...formData, 
+        departureDate: date,
+        returnDate: isReturnTicketNeeded ? formData.returnDate : '',
+        tripType: isReturnTicketNeeded ? 'round-trip' : 'one-way'
+      });
+    } else if (calendarType === 'return') {
+      setFormData({ 
+        ...formData, 
+        returnDate: date,
+        tripType: date && isReturnTicketNeeded ? 'round-trip' : 'one-way'
+      });
+    }
+    setCalendarType(null);
+  };
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ru-RU', { 
+      day: 'numeric', 
+      month: 'short' 
+    });
+  };
 
   return (
     <div className="w-full max-w-md mx-auto px-4">
@@ -90,53 +120,49 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
 
           {/* Departure Date */}
           <div className="relative py-3 border-b border-gray-200">
-            <input
-              type="date"
-              value={formData.departureDate}
-              onChange={(e) => setFormData({ ...formData, departureDate: e.target.value })}
-              className={`w-full text-xl font-medium text-gray-800 bg-transparent border-none outline-none cursor-pointer ${!formData.departureDate ? 'text-transparent' : ''}`}
-              style={{ colorScheme: 'light' }}
-              onClick={(e) => {
-                const input = e.target as HTMLInputElement;
-                input.showPicker();
-              }}
-            />
-            {!formData.departureDate && (
-              <>
-                <div className="absolute top-3 left-0 pointer-events-none text-xl font-medium text-gray-400">
+            <button
+              type="button"
+              onClick={() => setCalendarType(calendarType === 'departure' ? null : 'departure')}
+              className="w-full text-left"
+            >
+              {formData.departureDate ? (
+                <div className="text-xl font-medium text-gray-800">
+                  {formatDate(formData.departureDate)}
+                </div>
+              ) : (
+                <div className="text-xl font-medium text-gray-400">
                   Дата отправления
                 </div>
-                <div className="absolute top-3 right-0 pointer-events-none text-gray-400">
-                  <Calendar className="w-6 h-6" />
-                </div>
-              </>
-            )}
+              )}
+              <div className="absolute top-3 right-0 text-gray-400">
+                <Calendar className="w-6 h-6" />
+              </div>
+            </button>
           </div>
 
           {/* Return Date */}
-          <div className="relative py-3 border-b border-gray-200">
-            <input
-              type="date"
-              value={formData.returnDate}
-              onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
-              className={`w-full text-xl font-medium text-gray-800 bg-transparent border-none outline-none cursor-pointer ${!formData.returnDate ? 'text-transparent' : ''}`}
-              style={{ colorScheme: 'light' }}
-              onClick={(e) => {
-                const input = e.target as HTMLInputElement;
-                input.showPicker();
-              }}
-            />
-            {!formData.returnDate && (
-              <>
-                <div className="absolute top-3 left-0 pointer-events-none text-xl font-medium text-gray-400">
-                  Дата возвращения
-                </div>
-                <div className="absolute top-3 right-0 pointer-events-none text-gray-400">
+          {formData.tripType === 'round-trip' && (
+            <div className="relative py-3 border-b border-gray-200">
+              <button
+                type="button"
+                onClick={() => setCalendarType(calendarType === 'return' ? null : 'return')}
+                className="w-full text-left"
+              >
+                {formData.returnDate ? (
+                  <div className="text-xl font-medium text-gray-800">
+                    {formatDate(formData.returnDate)}
+                  </div>
+                ) : (
+                  <div className="text-xl font-medium text-gray-400">
+                    Дата возвращения
+                  </div>
+                )}
+                <div className="absolute top-3 right-0 text-gray-400">
                   <Calendar className="w-6 h-6" />
                 </div>
-              </>
-            )}
-          </div>
+              </button>
+            </div>
+          )}
 
           {/* Passengers */}
           <div className="py-3">
@@ -151,6 +177,20 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Mobile Calendar Modal */}
+      {calendarType && (
+        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+          <MobileFlightCalendar
+            type={calendarType}
+            onSelect={handleDateSelect}
+            onClose={() => setCalendarType(null)}
+            selectedDate={calendarType === 'departure' ? formData.departureDate : formData.returnDate}
+            minDate={calendarType === 'return' ? formData.departureDate : undefined}
+            tripType={formData.tripType}
+          />
+        </div>
+      )}
 
       <button
         onClick={onSubmit}

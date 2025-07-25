@@ -7,6 +7,7 @@ interface FlightCalendarProps {
   onClose: () => void;
   selectedDate?: string;
   minDate?: string;
+  tripType?: 'one-way' | 'round-trip';
 }
 
 const FlightCalendar: React.FC<FlightCalendarProps> = ({
@@ -14,10 +15,11 @@ const FlightCalendar: React.FC<FlightCalendarProps> = ({
   onSelect,
   onClose,
   selectedDate = '',
-  minDate = ''
+  minDate = '',
+  tripType = 'round-trip'
 }) => {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [isReturnTicketNeeded, setIsReturnTicketNeeded] = useState(true);
+  const [isReturnTicketNeeded, setIsReturnTicketNeeded] = useState(tripType === 'round-trip');
 
   const monthNames = [
     'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
@@ -103,7 +105,9 @@ const FlightCalendar: React.FC<FlightCalendarProps> = ({
               onClick={() => {
                 if (isReturnTicketNeeded) {
                   setIsReturnTicketNeeded(false);
+                  onSelect('', false);
                   onClose();
+                  console.log('isReturnTicketNeeded', isReturnTicketNeeded);
                 } else {
                   setIsReturnTicketNeeded(true);
                 }

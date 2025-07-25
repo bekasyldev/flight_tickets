@@ -63,12 +63,14 @@ const BookingForm: React.FC<BookingFormProps> = ({
       setFormData({ 
         ...formData, 
         departureDate: date,
-        returnDate: isReturnTicketNeeded ? formData.returnDate : ''
+        returnDate: isReturnTicketNeeded ? formData.returnDate : '',
+        tripType: isReturnTicketNeeded ? 'round-trip' : 'one-way'
       });
     } else if (calendarType === 'return') {
       setFormData({ 
         ...formData, 
-        returnDate: date
+        returnDate: date,
+        tripType: date && isReturnTicketNeeded ? 'round-trip' : 'one-way'
       });
     }
     setCalendarType(null);
@@ -169,11 +171,13 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="text-md font-medium text-gray-400 py-3 px-2">Обратно</div>
+                  <div className="text-md font-medium text-gray-400 py-3 px-2">
+                    {formData.tripType === 'round-trip' ? 'Обратно' : ''}
+                  </div>
                 </>
               )}
               <div className="absolute top-1/3 right-0 text-gray-400">
-                <Calendar className="w-5 h-5" />
+                {formData.tripType === 'round-trip' && <Calendar className="w-5 h-5" />}
               </div>
             </button>
           </div>
@@ -187,7 +191,8 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 onClose={() => setCalendarType(null)}
                 selectedDate={calendarType === 'departure' ? formData.departureDate : formData.returnDate}
                 minDate={calendarType === 'return' ? formData.departureDate : undefined}
-              />
+                tripType={formData.tripType}
+              />  
             </div>
           )}
         </div>

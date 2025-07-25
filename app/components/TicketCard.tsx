@@ -153,7 +153,7 @@ const TicketCard: React.FC<TicketCardProps> = ({
           </div>
         </div>            
       </div>
-      <div className="flex items-center space-x-2">
+      <div className="hidden md:flex items-center space-x-2">
         <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200">
                 Выбрать билет
         </button>
@@ -185,6 +185,11 @@ const TicketCard: React.FC<TicketCardProps> = ({
       ))}
     </div>
 
+    <div className="flex justify-center md:hidden">
+      <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200">
+        Выбрать билет
+      </button>
+    </div>
 
   </div>
 );
