@@ -46,7 +46,6 @@ interface Offer {
 
 const isNightTransfer = (segment: Segment) => {
   const arrivalTime = new Date(segment.arriving_at);
-  const departureTime = new Date(segment.departing_at);
   const hours = arrivalTime.getHours();
   return hours >= 0 && hours < 6;
 };

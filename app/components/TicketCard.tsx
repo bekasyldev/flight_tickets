@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+// import { useRouter } from 'next/navigation';
 
 interface Airline {
   logo_symbol_url: string;
@@ -128,7 +129,34 @@ const TicketCard: React.FC<TicketCardProps> = ({
   offer, 
   convertCurrency, 
   formatDuration 
-}) => (
+}) => {
+  // const router = useRouter();
+  
+  const handleSelectTicket = () => {
+    // Store flight details in localStorage for checkout page
+    const flightData = {
+      offer_id: offer.id,
+      total_amount: offer.total_amount,
+      total_currency: offer.total_currency,
+      airline: offer.slices[0]?.segments[0]?.marketing_carrier,
+      departure: {
+        airport: offer.slices[0]?.segments[0]?.origin.name,
+        code: getAirportCode(offer.slices[0]?.segments[0]?.origin.name || ''),
+        time: offer.slices[0]?.segments[0]?.departing_at
+      },
+      arrival: {
+        airport: offer.slices[offer.slices.length - 1]?.segments[offer.slices[offer.slices.length - 1].segments.length - 1]?.destination.name,
+        code: getAirportCode(offer.slices[offer.slices.length - 1]?.segments[offer.slices[offer.slices.length - 1].segments.length - 1]?.destination.name || ''),
+        time: offer.slices[offer.slices.length - 1]?.segments[offer.slices[offer.slices.length - 1].segments.length - 1]?.arriving_at
+      },
+      segments: offer.slices.flatMap(slice => slice.segments)
+    };
+    
+    localStorage.setItem('selectedFlight', JSON.stringify(flightData));
+    // router.push(`/checkout?offer_id=${offer.id}`);
+  };
+
+  return (
   <div className="bg-white rounded-2xl shadow-sm border border-gray-100 max-w-2xl w-full p-6 mb-4">
     {/* Header */}
     <div className="flex items-start justify-between mb-6">
@@ -154,7 +182,10 @@ const TicketCard: React.FC<TicketCardProps> = ({
         </div>            
       </div>
       <div className="hidden md:flex items-center space-x-2">
-        <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200">
+        <button 
+          onClick={handleSelectTicket}
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200"
+        >
                 Выбрать билет
         </button>
       </div>
@@ -186,12 +217,16 @@ const TicketCard: React.FC<TicketCardProps> = ({
     </div>
 
     <div className="flex justify-center md:hidden">
-      <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200">
+      <button 
+        onClick={handleSelectTicket}
+        className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200"
+      >
         Выбрать билет
       </button>
     </div>
 
   </div>
-);
+  );
+};
 
 export default TicketCard;
