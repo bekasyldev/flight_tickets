@@ -64,26 +64,47 @@ const Tickets: React.FC<TicketsProps> = ({
   });
 
   const handleFilterChange = (filterName: keyof typeof filters) => {
-    setFilters(prev => ({
-      ...prev,
-      [filterName]: !prev[filterName]
-    }));
+    setFilters(prev => {
+      const newFilters = { ...prev };
+      
+      // If selecting a stops filter, clear other stops filters first
+      if (['noStops', 'maxOneStop', 'maxTwoStops'].includes(filterName)) {
+        newFilters.noStops = false;
+        newFilters.maxOneStop = false;
+        newFilters.maxTwoStops = false;
+      }
+      
+      // Toggle the selected filter
+      newFilters[filterName] = !prev[filterName];
+      
+      return newFilters;
+    });
   };
 
   const filteredOffers = offers.filter(offer => {
-    // Get maximum number of segments in any slice
-    const maxSegments = Math.max(...offer.slices.map(slice => slice.segments.length));
+    // Get maximum number of connections in any slice (segments - 1)
+    const maxConnections = Math.max(...offer.slices.map(slice => slice.segments.length - 1));
     
     // Check if any segment has a night transfer
     const hasNightTransfer = offer.slices.some(slice => 
       slice.segments.some(segment => isNightTransfer(segment))
     );
 
-    // Apply filters
-    if (filters.noStops && maxSegments > 1) return false;
-    if (filters.maxOneStop && maxSegments > 2) return false;
-    if (filters.maxTwoStops && maxSegments > 3) return false;
-    if (filters.excludeNightTransfers && hasNightTransfer) return false;
+    // Apply stops filters (mutually exclusive)
+    if (filters.noStops && maxConnections > 0) {
+      return false;
+    }
+    if (filters.maxOneStop && maxConnections > 1) {
+      return false;
+    }
+    if (filters.maxTwoStops && maxConnections > 2) {
+      return false;
+    }
+    
+    // Apply night transfer filter
+    if (filters.excludeNightTransfers && hasNightTransfer) {
+      return false;
+    }
 
     return true;
   });
@@ -94,10 +115,11 @@ const Tickets: React.FC<TicketsProps> = ({
         <TicketFilters 
           filters={filters}
           onFilterChange={handleFilterChange}
+          offers={offers}
         />
       </div>
       <div className="space-y-0 flex flex-col items-center w-full max-w-2xl">
-        {filteredOffers.slice(0, 10).map((offer) => (
+        {filteredOffers.map((offer) => (
           <TicketCard
             key={offer.id}
             offer={offer}

@@ -1,5 +1,18 @@
 import React from 'react';
 
+interface Segment {
+  arriving_at: string;
+  departing_at: string;
+}
+
+interface Slice {
+  segments: Segment[];
+}
+
+interface Offer {
+  slices: Slice[];
+}
+
 interface TicketFiltersProps {
   filters: {
     noStops: boolean;
@@ -8,9 +21,44 @@ interface TicketFiltersProps {
     excludeNightTransfers: boolean;
   };
   onFilterChange: (filterName: keyof TicketFiltersProps['filters']) => void;
+  offers?: Offer[]; // Add offers prop to calculate counts
 }
 
-const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange }) => {
+const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange, offers = [] }) => {
+  // Calculate counts for each filter option
+  const getFilterCounts = () => {
+    if (offers.length === 0) return { noStops: 0, oneStop: 0, twoStops: 0, withoutNightTransfers: 0 };
+    
+    const isNightTransfer = (segment: Segment) => {
+      const arrivalTime = new Date(segment.arriving_at);
+      const hours = arrivalTime.getHours();
+      return hours >= 0 && hours < 6;
+    };
+    
+    const counts = {
+      noStops: 0,
+      oneStop: 0, 
+      twoStops: 0,
+      withoutNightTransfers: 0
+    };
+    
+    offers.forEach(offer => {
+      const maxConnections = Math.max(...offer.slices.map((slice: Slice) => slice.segments.length - 1));
+      const hasNightTransfer = offer.slices.some((slice: Slice) => 
+        slice.segments.some((segment: Segment) => isNightTransfer(segment))
+      );
+      
+      if (maxConnections === 0) counts.noStops++;
+      if (maxConnections <= 1) counts.oneStop++;
+      if (maxConnections <= 2) counts.twoStops++;
+      if (!hasNightTransfer) counts.withoutNightTransfers++;
+    });
+    
+    return counts;
+  };
+  
+  const counts = getFilterCounts();
+
   return (
     <div className="w-full lg:w-72">
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -43,7 +91,7 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange }
                   </div>
                   <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">Без пересадок</span>
                 </div>
-                <span className="text-xs lg:text-sm text-gray-400">0</span>
+                <span className="text-xs lg:text-sm text-gray-400">{counts.noStops}</span>
               </label>
 
               <label className="flex items-center justify-between group cursor-pointer hover:bg-gray-50 p-1 lg:p-2 rounded-lg transition-colors">
@@ -62,9 +110,9 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange }
                       </svg>
                     </div>
                   </div>
-                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">1 пересадка</span>
+                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">До 1 пересадки</span>
                 </div>
-                <span className="text-xs lg:text-sm text-gray-400">1</span>
+                <span className="text-xs lg:text-sm text-gray-400">{counts.oneStop}</span>
               </label>
 
               <label className="flex items-center justify-between group cursor-pointer hover:bg-gray-50 p-1 lg:p-2 rounded-lg transition-colors">
@@ -83,9 +131,9 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange }
                       </svg>
                     </div>
                   </div>
-                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">2 пересадки</span>
+                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">До 2 пересадок</span>
                 </div>
-                <span className="text-xs lg:text-sm text-gray-400">2</span>
+                <span className="text-xs lg:text-sm text-gray-400">{counts.twoStops}</span>
               </label>
             </div>
           </div>
@@ -111,6 +159,7 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange }
                 </div>
                 <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">Без ночных пересадок</span>
               </div>
+              <span className="text-xs lg:text-sm text-gray-400">{counts.withoutNightTransfers}</span>
             </label>
           </div>
         </div>

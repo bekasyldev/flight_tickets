@@ -183,8 +183,8 @@ export default function FlightSearch() {
       }
 
       const data = await response.json();
-      console.log(data.data.offers);
-      setOffers(data.data.offers || []);
+      console.log(data.offers);
+      setOffers(data.offers || []);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       console.error('Flight search error:', err);

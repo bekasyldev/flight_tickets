@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
-// import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface Airline {
   logo_symbol_url: string;
@@ -130,7 +130,7 @@ const TicketCard: React.FC<TicketCardProps> = ({
   convertCurrency, 
   formatDuration 
 }) => {
-  // const router = useRouter();
+  const router = useRouter();
   
   const handleSelectTicket = () => {
     // Store flight details in localStorage for checkout page
@@ -153,7 +153,7 @@ const TicketCard: React.FC<TicketCardProps> = ({
     };
     
     localStorage.setItem('selectedFlight', JSON.stringify(flightData));
-    // router.push(`/checkout?offer_id=${offer.id}`);
+    router.push(`/checkout?offer_id=${offer.id}`);
   };
 
   return (
