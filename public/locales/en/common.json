@@ -1,0 +1,94 @@
+{
+  "header": {
+    "support": "Support",
+    "settings": "Settings"
+  },
+  "languageSwitcher": {
+    "language": "Language",
+    "currency": "Currency",
+    "currentSelection": "Current selection"
+  },
+  "currencies": {
+    "USD": "US Dollar",
+    "EUR": "Euro", 
+    "RUB": "Russian Ruble"
+  },
+  "languages": {
+    "English": "English",
+    "Russian": "Русский"
+  },
+  "search": {
+    "from": "From",
+    "to": "To", 
+    "departure": "Departure",
+    "return": "Return",
+    "passengers": "Passengers",
+    "cabinClass": "Cabin Class",
+    "oneWay": "One-way",
+    "roundTrip": "Round-trip",
+    "searchFlights": "Search flights",
+    "adult": "Adult",
+    "adults": "Adults",
+    "returnTicketNotNeeded": "Return ticket not needed"
+  },
+  "calendar": {
+    "months": {
+      "january": "January",
+      "february": "February", 
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    },
+    "days": {
+      "monday": "Mon",
+      "tuesday": "Tue", 
+      "wednesday": "Wed",
+      "thursday": "Thu",
+      "friday": "Fri",
+      "saturday": "Sat",
+      "sunday": "Sun"
+    }
+  },
+  "filters": {
+    "filters": "Filters",
+    "stops": "Stops",
+    "noStops": "Direct",
+    "maxOneStop": "Up to 1 stop",
+    "maxTwoStops": "Up to 2 stops",
+    "additional": "Additional",
+    "excludeNightTransfers": "No night transfers"
+  },
+  "results": {
+    "noFlightsFound": "No flights found",
+    "adjustSearchParameters": "Try adjusting your search parameters",
+    "ticketsNotFound": "No tickets found",
+    "tryChangingFilters": "Try changing filter parameters",
+    "showing": "Showing",
+    "of": "of",
+    "tickets": "tickets",
+    "page": "Page",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "cabinClasses": {
+    "economy": "Economy",
+    "premiumEconomy": "Premium Economy",
+    "business": "Business", 
+    "first": "First"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "close": "Close",
+    "select": "Select",
+    "cancel": "Cancel",
+    "confirm": "Confirm"
+  }
+} 

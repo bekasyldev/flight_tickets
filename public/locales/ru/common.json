@@ -1,0 +1,94 @@
+{
+  "header": {
+    "support": "Поддержка",
+    "settings": "Настройки"
+  },
+  "languageSwitcher": {
+    "language": "Язык",
+    "currency": "Валюта",
+    "currentSelection": "Текущий выбор"
+  },
+  "currencies": {
+    "USD": "доллар США",
+    "EUR": "Евро", 
+    "RUB": "Российский рубль"
+  },
+  "languages": {
+    "English": "English",
+    "Russian": "Русский"
+  },
+  "search": {
+    "from": "Откуда",
+    "to": "Куда", 
+    "departure": "Вылет",
+    "return": "Возврат",
+    "passengers": "Пассажиры",
+    "cabinClass": "Класс",
+    "oneWay": "В одну сторону",
+    "roundTrip": "Туда-обратно",
+    "searchFlights": "Найти билеты",
+    "adult": "Взрослый",
+    "adults": "Взрослых",
+    "returnTicketNotNeeded": "Обратный билет не нужен"
+  },
+  "calendar": {
+    "months": {
+      "january": "Январь",
+      "february": "Февраль", 
+      "march": "Март",
+      "april": "Апрель",
+      "may": "Май",
+      "june": "Июнь",
+      "july": "Июль",
+      "august": "Август",
+      "september": "Сентябрь",
+      "october": "Октябрь",
+      "november": "Ноябрь",
+      "december": "Декабрь"
+    },
+    "days": {
+      "monday": "Пн",
+      "tuesday": "Вт", 
+      "wednesday": "Ср",
+      "thursday": "Чт",
+      "friday": "Пт",
+      "saturday": "Сб",
+      "sunday": "Вс"
+    }
+  },
+  "filters": {
+    "filters": "Фильтры",
+    "stops": "Пересадки",
+    "noStops": "Без пересадок",
+    "maxOneStop": "До 1 пересадки",
+    "maxTwoStops": "До 2 пересадок",
+    "additional": "Дополнительно",
+    "excludeNightTransfers": "Без ночных пересадок"
+  },
+  "results": {
+    "noFlightsFound": "Рейсы не найдены",
+    "adjustSearchParameters": "Попробуйте изменить параметры поиска",
+    "ticketsNotFound": "Билеты не найдены",
+    "tryChangingFilters": "Попробуйте изменить параметры фильтрации",
+    "showing": "Показано",
+    "of": "из",
+    "tickets": "билетов",
+    "page": "Страница",
+    "previous": "Назад",
+    "next": "Далее"
+  },
+  "cabinClasses": {
+    "economy": "Эконом",
+    "premiumEconomy": "Премиум эконом",
+    "business": "Бизнес", 
+    "first": "Первый"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "close": "Закрыть",
+    "select": "Выбрать",
+    "cancel": "Отмена",
+    "confirm": "Подтвердить"
+  }
+} 

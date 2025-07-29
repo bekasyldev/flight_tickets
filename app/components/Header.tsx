@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Plane, User, HelpCircle, Globe } from 'lucide-react';
+import { Plane, User, HelpCircle } from 'lucide-react';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from '../lib/i18n';
 
 const Header: React.FC = () => {
+  const { t } = useTranslation();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -35,15 +38,10 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-2 cursor-pointer hover:opacity-80">
           <HelpCircle className="w-5 h-5" strokeWidth={2.5} />
           <span className='font-semibold'>
-            {isMobile ? '' : 'Поддержка'}
+            {isMobile ? '' : t('header.support')}
           </span>
         </div>
-        <div className="flex items-center gap-2 cursor-pointer hover:opacity-80">
-          <Globe className="w-5 h-5" strokeWidth={2.5} />
-          <span className='font-semibold'>
-            {isMobile ? '' : 'RUB'}
-          </span>
-        </div>
+        <LanguageSwitcher />
       </div>
     </header>
   );

@@ -1,0 +1,94 @@
+{
+  "header": {
+    "support": "Suport",
+    "settings": "Setări"
+  },
+  "languageSwitcher": {
+    "language": "Limba",
+    "currency": "Valută",
+    "currentSelection": "Selecția curentă"
+  },
+  "currencies": {
+    "USD": "dolar american",
+    "EUR": "Euro", 
+    "RUB": "Rubla rusă"
+  },
+  "languages": {
+    "English": "English",
+    "Russian": "Русский"
+  },
+  "search": {
+    "from": "De la",
+    "to": "Către", 
+    "departure": "Plecare",
+    "return": "Întoarcere",
+    "passengers": "Pasageri",
+    "cabinClass": "Clasa",
+    "oneWay": "Dus",
+    "roundTrip": "Dus-întors",
+    "searchFlights": "Căutați bilete",
+    "adult": "Adult",
+    "adults": "Adulți",
+    "returnTicketNotNeeded": "Biletul de întoarcere nu este necesar"
+  },
+  "calendar": {
+    "months": {
+      "january": "Ianuarie",
+      "february": "Februarie", 
+      "march": "Martie",
+      "april": "Aprilie",
+      "may": "Mai",
+      "june": "Iunie",
+      "july": "Iulie",
+      "august": "August",
+      "september": "Septembrie",
+      "october": "Octombrie",
+      "november": "Noiembrie",
+      "december": "Decembrie"
+    },
+    "days": {
+      "monday": "Lu",
+      "tuesday": "Ma", 
+      "wednesday": "Mi",
+      "thursday": "Jo",
+      "friday": "Vi",
+      "saturday": "Sâ",
+      "sunday": "Du"
+    }
+  },
+  "filters": {
+    "filters": "Filtre",
+    "stops": "Escale",
+    "noStops": "Fără escale",
+    "maxOneStop": "Până la 1 escală",
+    "maxTwoStops": "Până la 2 escale",
+    "additional": "Suplimentar",
+    "excludeNightTransfers": "Fără transferuri nocturne"
+  },
+  "results": {
+    "noFlightsFound": "Nu s-au găsit zboruri",
+    "adjustSearchParameters": "Încercați să modificați parametrii de căutare",
+    "ticketsNotFound": "Nu s-au găsit bilete",
+    "tryChangingFilters": "Încercați să modificați parametrii de filtrare",
+    "showing": "Se afișează",
+    "of": "din",
+    "tickets": "bilete",
+    "page": "Pagina",
+    "previous": "Înapoi",
+    "next": "Următoarea"
+  },
+  "cabinClasses": {
+    "economy": "Economic",
+    "premiumEconomy": "Premium Economic",
+    "business": "Business", 
+    "first": "Prima"
+  },
+  "common": {
+    "loading": "Se încarcă...",
+    "error": "Eroare",
+    "close": "Închide",
+    "select": "Selectează",
+    "cancel": "Anulează",
+    "confirm": "Confirmă"
+  }
+} 

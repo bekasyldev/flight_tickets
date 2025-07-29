@@ -1,0 +1,94 @@
+{
+  "header": {
+    "support": "Підтримка",
+    "settings": "Налаштування"
+  },
+  "languageSwitcher": {
+    "language": "Мова",
+    "currency": "Валюта",
+    "currentSelection": "Поточний вибір"
+  },
+  "currencies": {
+    "USD": "долар США",
+    "EUR": "Євро", 
+    "RUB": "Російський рубль"
+  },
+  "languages": {
+    "English": "English",
+    "Russian": "Русский"
+  },
+  "search": {
+    "from": "Звідки",
+    "to": "Куди", 
+    "departure": "Відправлення",
+    "return": "Повернення",
+    "passengers": "Пасажири",
+    "cabinClass": "Клас",
+    "oneWay": "В один бік",
+    "roundTrip": "Туди-назад",
+    "searchFlights": "Знайти квитки",
+    "adult": "Дорослий",
+    "adults": "Дорослих",
+    "returnTicketNotNeeded": "Зворотний квиток не потрібен"
+  },
+  "calendar": {
+    "months": {
+      "january": "Січень",
+      "february": "Лютий", 
+      "march": "Березень",
+      "april": "Квітень",
+      "may": "Травень",
+      "june": "Червень",
+      "july": "Липень",
+      "august": "Серпень",
+      "september": "Вересень",
+      "october": "Жовтень",
+      "november": "Листопад",
+      "december": "Грудень"
+    },
+    "days": {
+      "monday": "Пн",
+      "tuesday": "Вт", 
+      "wednesday": "Ср",
+      "thursday": "Чт",
+      "friday": "Пт",
+      "saturday": "Сб",
+      "sunday": "Нд"
+    }
+  },
+  "filters": {
+    "filters": "Фільтри",
+    "stops": "Пересадки",
+    "noStops": "Без пересадок",
+    "maxOneStop": "До 1 пересадки",
+    "maxTwoStops": "До 2 пересадок",
+    "additional": "Додатково",
+    "excludeNightTransfers": "Без нічних пересадок"
+  },
+  "results": {
+    "noFlightsFound": "Рейси не знайдені",
+    "adjustSearchParameters": "Спробуйте змінити параметри пошуку",
+    "ticketsNotFound": "Квитки не знайдені",
+    "tryChangingFilters": "Спробуйте змінити параметри фільтрації",
+    "showing": "Показано",
+    "of": "з",
+    "tickets": "квитків",
+    "page": "Сторінка",
+    "previous": "Назад",
+    "next": "Далі"
+  },
+  "cabinClasses": {
+    "economy": "Економ",
+    "premiumEconomy": "Преміум економ",
+    "business": "Бізнес", 
+    "first": "Перший"
+  },
+  "common": {
+    "loading": "Завантаження...",
+    "error": "Помилка",
+    "close": "Закрити",
+    "select": "Вибрати",
+    "cancel": "Скасувати",
+    "confirm": "Підтвердити"
+  }
+} 
