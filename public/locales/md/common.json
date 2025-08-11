@@ -80,6 +80,12 @@
     },
     "returnNotNeeded": "Biletul de întoarcere nu este necesar"
   },
+  "mobileBooking": {
+    "selectDepartureCountry": "Selectați țara de plecare",
+    "selectDestinationCountry": "Selectați țara de destinație",
+    "departureDate": "Data de plecare",
+    "returnDate": "Data de întoarcere"
+  },
   "filters": {
     "filters": "Filtre",
     "stops": "Escale",

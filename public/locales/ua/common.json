@@ -80,6 +80,12 @@
     },
     "returnNotNeeded": "Зворотний квиток не потрібен"
   },
+  "mobileBooking": {
+    "selectDepartureCountry": "Виберіть країну відправлення",
+    "selectDestinationCountry": "Виберіть країну призначення",
+    "departureDate": "Дата відправлення",
+    "returnDate": "Дата повернення"
+  },
   "filters": {
     "filters": "Фільтри",
     "stops": "Пересадки",

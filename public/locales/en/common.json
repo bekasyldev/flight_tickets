@@ -80,6 +80,12 @@
     },
     "returnNotNeeded": "Return ticket not needed"
   },
+  "mobileBooking": {
+    "selectDepartureCountry": "Select departure country",
+    "selectDestinationCountry": "Select destination country", 
+    "departureDate": "Departure date",
+    "returnDate": "Return date"
+  },
   "filters": {
     "filters": "Filters",
     "stops": "Stops",

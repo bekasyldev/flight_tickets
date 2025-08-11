@@ -27,10 +27,10 @@ const Header: React.FC = () => {
           onClick={() => router.push('/')}
         >
           <Plane className="w-8 h-8 text-blue-600" />
-          <span className="text-xl font-bold text-gray-900">FlightTickets</span>
+          <span className="text-xl font-bold text-gray-900 hidden md:block">FlightTickets</span>
         </div>
       
-      <div className="flex items-center gap-6">
+      <div className="flex items-center md:gap-6 gap-2">
         <div className="flex items-center gap-2 cursor-pointer hover:opacity-80">
           <User className="w-5 h-5" strokeWidth={2.5} />
           <span className='font-semibold'>

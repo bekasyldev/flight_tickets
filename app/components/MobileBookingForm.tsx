@@ -1,5 +1,6 @@
 import { Calendar } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import MobileFlightCalendar from "./MobileFlightCalendar";
 
 interface SearchFormData {
@@ -39,6 +40,7 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
   onSubmit,
   loading
 }) => {
+  const { t } = useTranslation();
   const [calendarType, setCalendarType] = useState<'departure' | 'return' | null>(null);
 
   const handleDateSelect = (date: string, isReturnTicketNeeded: boolean) => {
@@ -62,10 +64,33 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('ru-RU', { 
-      day: 'numeric', 
-      month: 'short' 
-    });
+    const month = date.getMonth();
+    const day = date.getDate();
+    
+    const monthKeys = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    
+    const monthKey = monthKeys[month];
+    return `${day} ${t(`calendar.shortMonths.${monthKey}`)}`;
+  };
+
+  const getPassengerText = (count: number) => {
+    return t('passengerDropdown.passengers', { count });
+  };
+
+  const getCabinClassText = (cabinClass: string) => {
+    switch (cabinClass) {
+      case 'premium_economy':
+        return t('passengerDropdown.premiumEconomy');
+      case 'business':
+        return t('passengerDropdown.business');
+      case 'first':
+        return t('passengerDropdown.first');
+      default:
+        return t('passengerDropdown.economy');
+    }
   };
 
   return (
@@ -88,8 +113,8 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="text-xl font-medium text-gray-400">Откуда</div>
-                  <div className="text-sm text-gray-400 mt-1">Выберите страну отправления</div>
+                  <div className="text-xl font-medium text-gray-400">{t('tabs.from')}</div>
+                  <div className="text-sm text-gray-400 mt-1">{t('mobileBooking.selectDepartureCountry')}</div>
                 </>
               )}
             </button>
@@ -111,8 +136,8 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="text-xl font-medium text-gray-400">Куда</div>
-                  <div className="text-sm text-gray-400 mt-1">Выберите страну назначения</div>
+                  <div className="text-xl font-medium text-gray-400">{t('tabs.to')}</div>
+                  <div className="text-sm text-gray-400 mt-1">{t('mobileBooking.selectDestinationCountry')}</div>
                 </>
               )}
             </button>
@@ -131,7 +156,7 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
                 </div>
               ) : (
                 <div className="text-xl font-medium text-gray-400">
-                  Дата отправления
+                  {t('mobileBooking.departureDate')}
                 </div>
               )}
               <div className="absolute top-3 right-0 text-gray-400">
@@ -153,7 +178,7 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
                   </div>
                 ) : (
                   <div className="text-xl font-medium text-gray-400">
-                    {formData.tripType === 'round-trip' ? 'Дата возвращения' : ''}
+                    {formData.tripType === 'round-trip' ? t('mobileBooking.returnDate') : ''}
                   </div>
                 )}
                 <div className="absolute top-3 right-0 text-gray-400">
@@ -165,12 +190,10 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
           {/* Passengers */}
           <div className="py-3">
             <div className="text-xl font-medium text-gray-800">
-              {formData.passengers} пассажир{formData.passengers > 1 ? (formData.passengers < 5 ? 'а' : 'ов') : ''}
+              {getPassengerText(formData.passengers)}
             </div>
             <div className="text-sm text-gray-400 mt-1 capitalize">
-              {formData.cabinClass === 'premium_economy' ? 'Премиум эконом' : 
-               formData.cabinClass === 'business' ? 'Бизнес' :
-               formData.cabinClass === 'first' ? 'Первый класс' : 'Эконом'}
+              {getCabinClassText(formData.cabinClass)}
             </div>
           </div>
         </div>
@@ -198,10 +221,10 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
         {loading ? (
           <>
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-2"></div>
-            Поиск...
+            {t('bookingForm.searching')}
           </>
         ) : (
-          'Найти билеты'
+          t('bookingForm.searchFlights')
         )}
       </button>
     </div>

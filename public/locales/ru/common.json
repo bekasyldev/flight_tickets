@@ -80,6 +80,12 @@
     },
     "returnNotNeeded": "Обратный билет не нужен"
   },
+  "mobileBooking": {
+    "selectDepartureCountry": "Выберите страну отправления",
+    "selectDestinationCountry": "Выберите страну назначения",
+    "departureDate": "Дата отправления", 
+    "returnDate": "Дата возвращения"
+  },
   "filters": {
     "filters": "Фильтры",
     "stops": "Пересадки",
