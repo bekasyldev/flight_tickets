@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { useTranslation } from '../lib/i18n';
 
 interface MobileFlightCalendarProps {
   type: 'departure' | 'return';
@@ -18,6 +19,7 @@ const MobileFlightCalendar: React.FC<MobileFlightCalendarProps> = ({
   minDate = '',
   tripType = 'round-trip'
 }) => {
+  const { t } = useTranslation();
   const [currentMonth, setCurrentMonth] = useState(() => {
     // Use a stable date to avoid hydration mismatch
     const now = new Date();
@@ -27,11 +29,16 @@ const MobileFlightCalendar: React.FC<MobileFlightCalendarProps> = ({
   const [isReturnTicketNeeded, setIsReturnTicketNeeded] = useState(tripType === 'round-trip');
 
   const monthNames = [
-    'Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь',
-    'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'
+    t('calendar.months.january'), t('calendar.months.february'), t('calendar.months.march'), 
+    t('calendar.months.april'), t('calendar.months.may'), t('calendar.months.june'),
+    t('calendar.months.july'), t('calendar.months.august'), t('calendar.months.september'), 
+    t('calendar.months.october'), t('calendar.months.november'), t('calendar.months.december')
   ];
 
-  const dayNames = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+  const dayNames = [
+    t('calendar.days.monday'), t('calendar.days.tuesday'), t('calendar.days.wednesday'), 
+    t('calendar.days.thursday'), t('calendar.days.friday'), t('calendar.days.saturday'), t('calendar.days.sunday')
+  ];
 
   const isSameDay = (date1: Date, date2: Date) => {
     return date1.toDateString() === date2.toDateString();
@@ -151,7 +158,7 @@ const MobileFlightCalendar: React.FC<MobileFlightCalendarProps> = ({
             `}
             title="Если не нужен обратный билет, выберите эту опцию"
           >
-            Обратный билет не нужен
+            {t('calendar.returnNotNeeded')}
           </button>
         </div>
       )}

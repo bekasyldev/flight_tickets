@@ -1,5 +1,6 @@
 import { useRef, useEffect } from "react";
 import { ChevronDown, Minus, Plus } from "lucide-react";
+import { useTranslation } from "../lib/i18n";
 
 interface PassengerDropdownProps {
   adults: number;
@@ -22,6 +23,7 @@ const PassengerDropdown: React.FC<PassengerDropdownProps> = ({
   isOpen,
   onToggle
 }) => {
+  const { t } = useTranslation();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -57,18 +59,18 @@ const PassengerDropdown: React.FC<PassengerDropdownProps> = ({
 
   const getTotalPassengers = () => {
     const total = adults + childrens + infants;
-    if (total === 1) return "1 пассажир";
-    if (total >= 2 && total <= 4) return `${total} пассажира`;
-    return `${total} пассажиров`;
+    if (total === 1) return `1 ${t('passengers.passenger')}`;
+    if (total >= 2 && total <= 4) return `${total} ${t('passengers.passengers2')}`;
+    return `${total} ${t('passengers.passengers5')}`;
   };
 
   const getClassLabel = () => {
     switch (serviceClass) {
-      case 'economy': return 'Эконом';
-      case 'comfort': return 'Комфорт';
-      case 'business': return 'Бизнес';
-      case 'first': return 'Первый класс';
-      default: return 'Эконом';
+      case 'economy': return t('cabinClasses.economy');
+      case 'comfort': return t('cabinClasses.premiumEconomy');
+      case 'business': return t('cabinClasses.business');
+      case 'first': return t('cabinClasses.first');
+      default: return t('cabinClasses.economy');
     }
   };
 
@@ -93,13 +95,13 @@ const PassengerDropdown: React.FC<PassengerDropdownProps> = ({
         <div className="absolute top-full right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 p-6">
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">Количество пассажиров</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('passengers.passengerCount')}</h3>
               
               {/* Adults */}
               <div className="flex items-center justify-between py-3">
                 <div>
-                  <div className="font-medium text-gray-800">Взрослые</div>
-                  <div className="text-sm text-gray-500">12 лет и старше</div>
+                  <div className="font-medium text-gray-800">{t('passengers.adults')}</div>
+                  <div className="text-sm text-gray-500">{t('passengers.adultsAge')}</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <button
@@ -122,8 +124,8 @@ const PassengerDropdown: React.FC<PassengerDropdownProps> = ({
               {/* Children */}
               <div className="flex items-center justify-between py-3">
                 <div>
-                  <div className="font-medium text-gray-800">Дети</div>
-                  <div className="text-sm text-gray-500">от 2 до 11 лет</div>
+                  <div className="font-medium text-gray-800">{t('passengers.children')}</div>
+                  <div className="text-sm text-gray-500">{t('passengers.childrenAge')}</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <button
@@ -146,8 +148,8 @@ const PassengerDropdown: React.FC<PassengerDropdownProps> = ({
               {/* Infants */}
               <div className="flex items-center justify-between py-3">
                 <div>
-                  <div className="font-medium text-gray-800">Младенцы</div>
-                  <div className="text-sm text-gray-500">Младше 2 лет, без места</div>
+                  <div className="font-medium text-gray-800">{t('passengers.infants')}</div>
+                  <div className="text-sm text-gray-500">{t('passengers.infantsAge')}</div>
                 </div>
                 <div className="flex items-center gap-3">
                   <button
@@ -169,16 +171,16 @@ const PassengerDropdown: React.FC<PassengerDropdownProps> = ({
             </div>
 
             <div className="border-t border-gray-200 pt-4">
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Класс обслуживания</h3>
+              <h3 className="text-lg font-semibold text-gray-800 mb-3">{t('passengers.serviceClass')}</h3>
               <select
                 value={serviceClass}
                 onChange={(e) => onClassChange(e.target.value)}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
-                <option value="economy">Эконом</option>
-                <option value="comfort">Комфорт</option>
-                <option value="business">Бизнес</option>
-                <option value="first">Первый класс</option>
+                <option value="economy">{t('cabinClasses.economy')}</option>
+                <option value="comfort">{t('cabinClasses.premiumEconomy')}</option>
+                <option value="business">{t('cabinClasses.business')}</option>
+                <option value="first">{t('cabinClasses.first')}</option>
               </select>
             </div>
           </div>

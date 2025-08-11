@@ -46,6 +46,20 @@
       "november": "Листопад",
       "december": "Грудень"
     },
+    "shortMonths": {
+      "january": "січ",
+      "february": "лют", 
+      "march": "бер",
+      "april": "кві",
+      "may": "тра",
+      "june": "чер",
+      "july": "лип",
+      "august": "сер",
+      "september": "вер",
+      "october": "жов",
+      "november": "лис",
+      "december": "гру"
+    },
     "days": {
       "monday": "Пн",
       "tuesday": "Вт", 
@@ -54,7 +68,17 @@
       "friday": "Пт",
       "saturday": "Сб",
       "sunday": "Нд"
-    }
+    },
+    "shortDays": {
+      "monday": "пн",
+      "tuesday": "вт", 
+      "wednesday": "ср",
+      "thursday": "чт",
+      "friday": "пт",
+      "saturday": "сб",
+      "sunday": "нд"
+    },
+    "returnNotNeeded": "Зворотний квиток не потрібен"
   },
   "filters": {
     "filters": "Фільтри",
@@ -82,6 +106,35 @@
     "premiumEconomy": "Преміум економ",
     "business": "Бізнес", 
     "first": "Перший"
+  },
+  "mainPage": {
+    "title": "Тут купують дешеві авіаквитки",
+    "flights": "Авіаквитки",
+    "favorites": "Улюблене",
+    "noFlights": "За вашим запитом квитки не знайдені.",
+    "adjustSearch": "Спробуйте змінити параметри пошуку."
+  },
+  "passengers": {
+    "passenger": "пасажир",
+    "passengers2": "пасажири",
+    "passengers5": "пасажирів",
+    "adults": "Дорослі",
+    "children": "Діти",
+    "infants": "Немовлята",
+    "adultsAge": "12 років і старше",
+    "childrenAge": "від 2 до 11 років",
+    "infantsAge": "Молодше 2 років, без місця",
+    "passengerCount": "Кількість пасажирів",
+    "serviceClass": "Клас обслуговування"
+  },
+  "ticketCard": {
+    "selectTicket": "Вибрати квиток",
+    "baggageIncluded": "Багаж включено",
+    "flightTime": "У дорозі"
+  },
+  "time": {
+    "hours": "г",
+    "minutes": "хв"
   },
   "common": {
     "loading": "Завантаження...",

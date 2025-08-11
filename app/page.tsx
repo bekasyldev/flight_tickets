@@ -8,6 +8,7 @@ import MobileBookingForm from './components/MobileBookingForm';
 import CountryModal from './components/CountryModal';
 import { convertCurrency } from './utils/currencyTransform';
 import Tickets from './components/Tickets';
+import { useTranslation } from './lib/i18n';
 
 interface Airport {
   city_name: string;
@@ -128,6 +129,7 @@ interface LocationSelection {
 }
 
 export default function FlightSearch() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('flights');
   const [isMobile, setIsMobile] = useState(false);
 
@@ -226,18 +228,23 @@ export default function FlightSearch() {
     const minutes = match[2] ? parseInt(match[2]) : 0;
     
     if (hours && minutes) {
-      return `${hours}ч ${minutes}м`;
+      return `${hours}${t('time.hours')} ${minutes}${t('time.minutes')}`;
     } else if (hours) {
-      return `${hours}ч`;
+      return `${hours}${t('time.hours')}`;
     } else {
-      return `${minutes}м`;
+      return `${minutes}${t('time.minutes')}`;
     }
   };
 
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
     const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${pad(date.getHours())}:${pad(date.getMinutes())} ${pad(date.getDate())}.${pad(date.getMonth() + 1)}`;
+    const monthNames = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    const monthKey = monthNames[date.getMonth()];
+    return `${pad(date.getHours())}:${pad(date.getMinutes())} ${date.getDate()} ${t(`calendar.shortMonths.${monthKey}`)}`;
   };
 
   return (
@@ -247,17 +254,13 @@ export default function FlightSearch() {
         <main className="flex flex-col items-center justify-center px-4 pt-12">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 leading-tight">
-              Тут покупают дешёвые авиабилеты
+              {t('mainPage.title')}
             </h1>
-            <div className="max-w-sm mx-auto">
-              {!isMobile && (
-                <Tabs activeTab={activeTab} onTabChange={setActiveTab} />
-              )}
-            </div>
+   
             {isMobile && (
               <div className="mb-8">
                 <div className="bg-white/20 backdrop-blur rounded-full px-6 py-3 inline-block">
-                  <span className="text-white font-medium">Авиабилеты</span>
+                  <span className="text-white font-medium">{t('mainPage.flights')}</span>
                 </div>
               </div>
             )}
@@ -310,10 +313,10 @@ export default function FlightSearch() {
         {!loading && offers.length === 0 && formData.origin && (
           <div className="text-center py-12">
             <div className="text-gray-500 text-lg">
-              No flights found for your search criteria.
+              {t('mainPage.noFlights')}
             </div>
             <div className="text-gray-400 text-sm mt-2">
-              Try adjusting your search parameters.
+              {t('mainPage.adjustSearch')}
             </div>
           </div>
         )}

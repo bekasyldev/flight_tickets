@@ -46,6 +46,20 @@
       "november": "Ноябрь",
       "december": "Декабрь"
     },
+    "shortMonths": {
+      "january": "янв",
+      "february": "фев", 
+      "march": "мар",
+      "april": "апр",
+      "may": "май",
+      "june": "июн",
+      "july": "июл",
+      "august": "авг",
+      "september": "сен",
+      "october": "окт",
+      "november": "ноя",
+      "december": "дек"
+    },
     "days": {
       "monday": "Пн",
       "tuesday": "Вт", 
@@ -54,7 +68,17 @@
       "friday": "Пт",
       "saturday": "Сб",
       "sunday": "Вс"
-    }
+    },
+    "shortDays": {
+      "monday": "пн",
+      "tuesday": "вт", 
+      "wednesday": "ср",
+      "thursday": "чт",
+      "friday": "пт",
+      "saturday": "сб",
+      "sunday": "вс"
+    },
+    "returnNotNeeded": "Обратный билет не нужен"
   },
   "filters": {
     "filters": "Фильтры",
@@ -82,6 +106,35 @@
     "premiumEconomy": "Премиум эконом",
     "business": "Бизнес", 
     "first": "Первый"
+  },
+  "mainPage": {
+    "title": "Тут покупают дешёвые авиабилеты",
+    "flights": "Авиабилеты",
+    "favorites": "Избранное",
+    "noFlights": "По вашему запросу билеты не найдены.",
+    "adjustSearch": "Попробуйте изменить параметры поиска."
+  },
+  "passengers": {
+    "passenger": "пассажир",
+    "passengers2": "пассажира", 
+    "passengers5": "пассажиров",
+    "adults": "Взрослые",
+    "children": "Дети",
+    "infants": "Младенцы",
+    "adultsAge": "12 лет и старше",
+    "childrenAge": "от 2 до 11 лет",
+    "infantsAge": "Младше 2 лет, без места",
+    "passengerCount": "Количество пассажиров",
+    "serviceClass": "Класс обслуживания"
+  },
+  "ticketCard": {
+    "selectTicket": "Выбрать билет",
+    "baggageIncluded": "Багаж включён",
+    "flightTime": "В пути"
+  },
+  "time": {
+    "hours": "ч",
+    "minutes": "м"
   },
   "common": {
     "loading": "Загрузка...",

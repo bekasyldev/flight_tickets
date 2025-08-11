@@ -29,12 +29,10 @@ export default function CountryModal({ isOpen, onClose, onSelect, title }: Count
 
     const handleCountrySelect = (country: Country) => {
         if (country.majorAirports.length === 1) {
-            // If only one airport, select it directly
             const airport = country.majorAirports[0];
             onSelect(country.name, airport.code, `${airport.city} (${airport.code})`);
             onClose();
         } else {
-            // Show airport selection for this country
             setSelectedCountry(country);
         }
     };

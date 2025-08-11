@@ -1,8 +1,8 @@
 import { Globe, Check, X } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { useTranslation, Locale } from "../lib/i18n"
+import { useCurrencyStore, Currency } from "../store"
 
-type Currency = 'USD' | 'EUR' | 'RUB';
 type TabType = 'language' | 'currency';
 
 interface LanguageOption {
@@ -20,8 +20,8 @@ interface CurrencyOption {
 
 export default function LanguageSwitcher() {
   const { locale, setLocale, t } = useTranslation()
+  const { currency, setCurrency } = useCurrencyStore()
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>('USD')
   const [activeTab, setActiveTab] = useState<TabType>('language')
   const [isMobile, setIsMobile] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -75,8 +75,8 @@ export default function LanguageSwitcher() {
     }
   }
 
-  const handleCurrencyChange = (currency: Currency) => {
-    setSelectedCurrency(currency)
+  const handleCurrencyChange = (newCurrency: Currency) => {
+    setCurrency(newCurrency)
     if (isMobile) {
       setIsOpen(false)
     }
@@ -152,21 +152,21 @@ export default function LanguageSwitcher() {
                     </div>
                   ) : (
                     <div className="space-y-3">
-                      {currencies.map((currency) => (
+                      {currencies.map((currencyOption) => (
                         <button
-                          key={currency.code}
-                          onClick={() => handleCurrencyChange(currency.code)}
+                          key={currencyOption.code}
+                          onClick={() => handleCurrencyChange(currencyOption.code)}
                           className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors"
                         >
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                              <span className="text-blue-600 font-semibold text-sm">{currency.symbol}</span>
+                              <span className="text-blue-600 font-semibold text-sm">{currencyOption.symbol}</span>
                             </div>
                             <div className="text-left">
-                              <div className="text-black font-medium">{currency.code} {currency.fullName}</div>
+                              <div className="text-black font-medium">{currencyOption.code} {currencyOption.fullName}</div>
                             </div>
                           </div>
-                          {selectedCurrency === currency.code && (
+                          {currency === currencyOption.code && (
                             <Check className="w-5 h-5 text-green-500" />
                           )}
                         </button>
@@ -191,7 +191,7 @@ export default function LanguageSwitcher() {
       >
         <Globe className="w-5 h-5" strokeWidth={2.5} />
         <span className='font-semibold'>
-                {selectedCurrency} • {selectedLanguageData?.code.toUpperCase()}
+                {currency} • {selectedLanguageData?.code.toUpperCase()}
         </span>
       </div>
 
@@ -245,22 +245,22 @@ export default function LanguageSwitcher() {
               </div>
             ) : (
               <div className="space-y-2">
-                {currencies.map((currency) => (
+                {currencies.map((currencyOption) => (
                   <button
-                    key={currency.code}
-                    onClick={() => handleCurrencyChange(currency.code)}
+                    key={currencyOption.code}
+                    onClick={() => handleCurrencyChange(currencyOption.code)}
                     className="w-full flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <div className="text-left flex items-center gap-1">
                         <div className={`text-black text-sm
-                          ${selectedCurrency === currency.code ? 'font-semibold' : 'font-medium'}`
-                          }>{currency.code} {currency.fullName}</div>
+                          ${currency === currencyOption.code ? 'font-semibold' : 'font-medium'}`
+                          }>{currencyOption.code} {currencyOption.fullName}</div>
                           <span className="text-lg text-black">·</span>
-                        <div className="text-sm text-black ">{currency.symbol}</div>
+                        <div className="text-sm text-black ">{currencyOption.symbol}</div>
                       </div>
                     </div>
-                    {selectedCurrency === currency.code && (
+                    {currency === currencyOption.code && (
                       <Check className="w-6 h-6 text-blue-800" />
                     )}
                   </button>

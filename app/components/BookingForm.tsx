@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Calendar } from "lucide-react";
 import PassengerDropdown from "./PassengerDropdown";
 import FlightCalendar from "./FlightCalendar";
+import { useTranslation } from "../lib/i18n";
 
 interface SearchFormData {
   origin: string;
@@ -40,6 +41,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
   onSubmit,
   loading
 }) => {
+  const { t } = useTranslation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [calendarType, setCalendarType] = useState<'departure' | 'return' | null>(null);
 
@@ -79,10 +81,12 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
-    return date.toLocaleDateString('ru-RU', { 
-      day: 'numeric', 
-      month: 'short' 
-    });
+    const monthNames = [
+      'january', 'february', 'march', 'april', 'may', 'june',
+      'july', 'august', 'september', 'october', 'november', 'december'
+    ];
+    const monthKey = monthNames[date.getMonth()];
+    return `${date.getDate()} ${t(`calendar.shortMonths.${monthKey}`)}`;
   };
 
   return (
@@ -103,7 +107,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               </>
             ) : (
               <>
-                <div className="text-md font-medium text-gray-400 py-3 px-2">Откуда</div>
+                <div className="text-md font-medium text-gray-400 py-3 px-2">{t('search.from')}</div>
               </>
             )}
           </button>
@@ -124,7 +128,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               </>
             ) : (
               <>
-                <div className="text-md font-medium text-gray-400 py-3 px-2">Куда</div>
+                <div className="text-md font-medium text-gray-400 py-3 px-2">{t('search.to')}</div>
               </>
             )}
           </button>
@@ -147,7 +151,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="text-md font-medium text-gray-400 py-3 px-2">Когда</div>
+                  <div className="text-md font-medium text-gray-400 py-3 px-2">{t('search.departure')}</div>
                 </>
               )}
               <div className="absolute top-1/3 right-0 text-gray-400">
@@ -172,7 +176,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
               ) : (
                 <>
                   <div className="text-md font-medium text-gray-400 py-3 px-2">
-                    {formData.tripType === 'round-trip' ? 'Обратно' : ''}
+                    {formData.tripType === 'round-trip' ? t('search.return') : ''}
                   </div>
                 </>
               )}
@@ -222,10 +226,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
             {loading ? (
               <>
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Поиск...
+                {t('common.loading')}
               </>
             ) : (
-              'Найти билеты'
+              t('search.searchFlights')
             )}
           </button>
         </div>

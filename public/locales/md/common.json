@@ -46,6 +46,20 @@
       "november": "Noiembrie",
       "december": "Decembrie"
     },
+    "shortMonths": {
+      "january": "Ian",
+      "february": "Feb", 
+      "march": "Mar",
+      "april": "Apr",
+      "may": "Mai",
+      "june": "Iun",
+      "july": "Iul",
+      "august": "Aug",
+      "september": "Sep",
+      "october": "Oct",
+      "november": "Noi",
+      "december": "Dec"
+    },
     "days": {
       "monday": "Lu",
       "tuesday": "Ma", 
@@ -54,7 +68,17 @@
       "friday": "Vi",
       "saturday": "Sâ",
       "sunday": "Du"
-    }
+    },
+    "shortDays": {
+      "monday": "Lu",
+      "tuesday": "Ma", 
+      "wednesday": "Mi",
+      "thursday": "Jo",
+      "friday": "Vi",
+      "saturday": "Sâ",
+      "sunday": "Du"
+    },
+    "returnNotNeeded": "Biletul de întoarcere nu este necesar"
   },
   "filters": {
     "filters": "Filtre",
@@ -82,6 +106,35 @@
     "premiumEconomy": "Premium Economic",
     "business": "Business", 
     "first": "Prima"
+  },
+  "mainPage": {
+    "title": "Aici cumpărați bilete de avion ieftine",
+    "flights": "Bilete de avion",
+    "favorites": "Favorite",
+    "noFlights": "Nu au fost găsite zboruri pentru criteriile de căutare.",
+    "adjustSearch": "Încercați să ajustați parametrii de căutare."
+  },
+  "passengers": {
+    "passenger": "pasager",
+    "passengers2": "pasageri",
+    "passengers5": "pasageri", 
+    "adults": "Adulți",
+    "children": "Copii",
+    "infants": "Sugar",
+    "adultsAge": "12 ani și mai mult",
+    "childrenAge": "2 până la 11 ani",
+    "infantsAge": "Sub 2 ani, fără loc",
+    "passengerCount": "Numărul de pasageri",
+    "serviceClass": "Clasa de servicii"
+  },
+  "ticketCard": {
+    "selectTicket": "Selectează biletul",
+    "baggageIncluded": "Bagaje incluse",
+    "flightTime": "În drum"
+  },
+  "time": {
+    "hours": "o",
+    "minutes": "m"
   },
   "common": {
     "loading": "Se încarcă...",

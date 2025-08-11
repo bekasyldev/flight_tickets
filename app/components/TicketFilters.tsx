@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from '../lib/i18n';
 
 interface Segment {
   arriving_at: string;
@@ -25,7 +26,8 @@ interface TicketFiltersProps {
 }
 
 const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange, offers = [] }) => {
-  // Calculate counts for each filter option
+  const { t } = useTranslation();
+  
   const getFilterCounts = () => {
     if (offers.length === 0) return { noStops: 0, oneStop: 0, twoStops: 0, withoutNightTransfers: 0 };
     
@@ -64,14 +66,14 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange, 
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
         {/* Header */}
         <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-4 lg:px-6 py-3 lg:py-4">
-          <h3 className="text-base lg:text-lg font-semibold text-white">Фильтры</h3>
+          <h3 className="text-base lg:text-lg font-semibold text-white">{t('filters.filters')}</h3>
         </div>
 
         {/* Filter Options */}
         <div className="p-4 lg:p-6">
           {/* Stops Section */}
           <div className="mb-4 lg:mb-6">
-            <h4 className="text-sm font-medium text-gray-500 mb-2 lg:mb-3">Пересадки</h4>
+            <h4 className="text-sm font-medium text-gray-500 mb-2 lg:mb-3">{t('filters.stops')}</h4>
             <div className="space-y-2 lg:space-y-3">
               <label className="flex items-center justify-between group cursor-pointer hover:bg-gray-50 p-1 lg:p-2 rounded-lg transition-colors">
                 <div className="flex items-center">
@@ -89,7 +91,7 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange, 
                       </svg>
                     </div>
                   </div>
-                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">Без пересадок</span>
+                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">{t('filters.noStops')}</span>
                 </div>
                 <span className="text-xs lg:text-sm text-gray-400">{counts.noStops}</span>
               </label>
@@ -110,7 +112,7 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange, 
                       </svg>
                     </div>
                   </div>
-                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">До 1 пересадки</span>
+                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">{t('filters.maxOneStop')}</span>
                 </div>
                 <span className="text-xs lg:text-sm text-gray-400">{counts.oneStop}</span>
               </label>
@@ -131,7 +133,7 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange, 
                       </svg>
                     </div>
                   </div>
-                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">До 2 пересадок</span>
+                  <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">{t('filters.maxTwoStops')}</span>
                 </div>
                 <span className="text-xs lg:text-sm text-gray-400">{counts.twoStops}</span>
               </label>
@@ -140,7 +142,7 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange, 
 
           {/* Additional Options Section */}
           <div>
-            <h4 className="text-sm font-medium text-gray-500 mb-2 lg:mb-3">Дополнительно</h4>
+            <h4 className="text-sm font-medium text-gray-500 mb-2 lg:mb-3">{t('filters.additional')}</h4>
             <label className="flex items-center justify-between group cursor-pointer hover:bg-gray-50 p-1 lg:p-2 rounded-lg transition-colors">
               <div className="flex items-center">
                 <div className="w-4 h-4 lg:w-5 lg:h-5 relative">
@@ -157,7 +159,7 @@ const TicketFilters: React.FC<TicketFiltersProps> = ({ filters, onFilterChange, 
                     </svg>
                   </div>
                 </div>
-                <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">Без ночных пересадок</span>
+                <span className="text-sm lg:text-base text-gray-700 ml-2 lg:ml-3 group-hover:text-gray-900">{t('filters.excludeNightTransfers')}</span>
               </div>
               <span className="text-xs lg:text-sm text-gray-400">{counts.withoutNightTransfers}</span>
             </label>

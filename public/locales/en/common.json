@@ -46,6 +46,20 @@
       "november": "November",
       "december": "December"
     },
+    "shortMonths": {
+      "january": "Jan",
+      "february": "Feb", 
+      "march": "Mar",
+      "april": "Apr",
+      "may": "May",
+      "june": "Jun",
+      "july": "Jul",
+      "august": "Aug",
+      "september": "Sep",
+      "october": "Oct",
+      "november": "Nov",
+      "december": "Dec"
+    },
     "days": {
       "monday": "Mon",
       "tuesday": "Tue", 
@@ -54,7 +68,17 @@
       "friday": "Fri",
       "saturday": "Sat",
       "sunday": "Sun"
-    }
+    },
+    "shortDays": {
+      "monday": "Mon",
+      "tuesday": "Tue", 
+      "wednesday": "Wed",
+      "thursday": "Thu",
+      "friday": "Fri",
+      "saturday": "Sat",
+      "sunday": "Sun"
+    },
+    "returnNotNeeded": "Return ticket not needed"
   },
   "filters": {
     "filters": "Filters",
@@ -82,6 +106,35 @@
     "premiumEconomy": "Premium Economy",
     "business": "Business", 
     "first": "First"
+  },
+  "mainPage": {
+    "title": "Here you buy cheap airline tickets",
+    "flights": "Flight tickets",
+    "favorites": "Favorites",
+    "noFlights": "No flights found for your search criteria.",
+    "adjustSearch": "Try adjusting your search parameters."
+  },
+  "passengers": {
+    "passenger": "passenger",
+    "passengers2": "passengers",
+    "passengers5": "passengers",
+    "adults": "Adults",
+    "children": "Children",
+    "infants": "Infants",
+    "adultsAge": "12 years and older",
+    "childrenAge": "2 to 11 years",
+    "infantsAge": "Under 2 years, no seat",
+    "passengerCount": "Passenger count",
+    "serviceClass": "Service class"
+  },
+  "ticketCard": {
+    "selectTicket": "Select ticket",
+    "baggageIncluded": "Baggage included",
+    "flightTime": "Flight time"
+  },
+  "time": {
+    "hours": "h",
+    "minutes": "m"
   },
   "common": {
     "loading": "Loading...",

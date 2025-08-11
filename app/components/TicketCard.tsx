@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from '../lib/i18n';
 
 interface Airline {
   logo_symbol_url: string;
@@ -28,11 +29,23 @@ interface Slice {
   segments: Segment[];
 }
 
+interface Passenger {
+  id: string;
+  type: string;
+  baggages?: {
+    type: 'cabin_bag' | 'checked_bag';
+    quantity: number;
+    weight?: number;
+    weight_unit?: 'kg' | 'lb';
+  }[];
+}
+
 interface Offer {
   id: string;
   total_amount: string;
   total_currency: string;
   slices: Slice[];
+  passengers?: Passenger[];
 }
 
 type Currency = "EUR" | "USD"
@@ -53,11 +66,18 @@ const formatTime = (dateString: string): string => {
   });
 };
 
-const formatDateShort = (dateString: string): string => {
+const formatDateShort = (dateString: string, t: (key: string) => string): string => {
   const date = new Date(dateString);
-  const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
-  const days = ['вс', 'пн', 'вт', 'ср', 'чт', 'пт', 'сб'];
-  return `${date.getDate()} ${months[date.getMonth()]}, ${days[date.getDay()]}`;
+  const monthNames = [
+    'january', 'february', 'march', 'april', 'may', 'june',
+    'july', 'august', 'september', 'october', 'november', 'december'
+  ];
+  const dayNames = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  
+  const monthKey = monthNames[date.getMonth()];
+  const dayKey = dayNames[date.getDay()];
+  
+  return `${date.getDate()} ${t(`calendar.shortMonths.${monthKey}`)}, ${t(`calendar.shortDays.${dayKey}`)}`;
 };
 
 const getAirportCode = (name: string): string => {
@@ -65,12 +85,34 @@ const getAirportCode = (name: string): string => {
   return match ? match[1] : name.substring(0, 3).toUpperCase();
 };
 
+// Helper function to check if offer has basic baggage included
+const hasBasicBaggage = (offer: Offer): boolean => {
+  if (!offer.passengers || offer.passengers.length === 0) {
+    return false;
+  }
+
+  // Check if any passenger has cabin baggage allowance
+  return offer.passengers.some(passenger => {
+    if (!passenger.baggages) return false;
+    
+    return passenger.baggages.some(baggage => {
+      return (
+        baggage.type === 'cabin_bag' && 
+        baggage.quantity > 0 && 
+        baggage.weight && 
+        baggage.weight >= 5 && // At least 5kg
+        baggage.weight_unit === 'kg'
+      );
+    });
+  });
+};
+
 const FlightSegment: React.FC<{
   segment: Segment;
   formatDuration: (duration: string) => string;
-}> = ({ segment, formatDuration }) => (
+  t: (key: string) => string;
+}> = ({ segment, formatDuration, t }) => (
   <div className="flex items-center justify-between py-3">
-    {/* Departure Time and Location */}
     <div className="flex items-center space-x-4">
       <div>
         <div className="text-2xl font-normal text-gray-900">
@@ -80,7 +122,7 @@ const FlightSegment: React.FC<{
           {segment.origin.name.split(' ')[0]}
         </div>
         <div className="text-sm text-gray-600">
-          {formatDateShort(segment.departing_at)}
+          {formatDateShort(segment.departing_at, t)}
         </div>
       </div>
     </div>
@@ -89,7 +131,7 @@ const FlightSegment: React.FC<{
     <div className="flex-1 mx-10">
       <div className="text-center mb-2">
         <div className="text-sm text-gray-500">
-          В пути: {formatDuration(segment.duration)}
+          {t('ticketCard.flightTime')}: {formatDuration(segment.duration)}
         </div>
       </div>
       <div className="flex items-center">
@@ -118,7 +160,7 @@ const FlightSegment: React.FC<{
             {segment.destination.name.split(' ')[0]}
         </div>
         <div className="text-sm text-gray-600 text-right">
-          {formatDateShort(segment.arriving_at)}
+          {formatDateShort(segment.arriving_at, t)}
         </div>
       </div>
     </div>
@@ -130,7 +172,9 @@ const TicketCard: React.FC<TicketCardProps> = ({
   convertCurrency, 
   formatDuration 
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
+  const showBaggageToggle = hasBasicBaggage(offer);
   
   const handleSelectTicket = () => {
     // Store flight details in localStorage for checkout page
@@ -186,20 +230,22 @@ const TicketCard: React.FC<TicketCardProps> = ({
           onClick={handleSelectTicket}
           className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200"
         >
-                Выбрать билет
+          {t('ticketCard.selectTicket')}
         </button>
       </div>
     </div>
 
-    {/* Baggage Toggle */}
-    {/* <div className="mb-6">
-      <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3 max-w-48">
-        <span className="text-sm text-gray-700">Багаж включён</span>
-        <div className="w-10 h-6 bg-blue-500 rounded-full relative">
-          <div className="w-4 h-4 bg-white rounded-full absolute top-1 right-1"></div>
+    {/* Baggage Toggle - Only show when basic baggage is included */}
+    {showBaggageToggle && (
+      <div className="mb-6">
+        <div className="flex items-center justify-between bg-gray-50 rounded-lg p-3 max-w-48">
+          <span className="text-sm text-gray-700">{t('ticketCard.baggageIncluded')}</span>
+          <div className="w-10 h-6 bg-blue-500 rounded-full relative">
+            <div className="w-4 h-4 bg-white rounded-full absolute top-1 right-1"></div>
+          </div>
         </div>
       </div>
-    </div> */}
+    )}
 
     {/* Flight Segments */}
     <div className="space-y-4 mb-6">
@@ -210,6 +256,7 @@ const TicketCard: React.FC<TicketCardProps> = ({
               key={segment.id}
               segment={segment}
               formatDuration={formatDuration}
+              t={t}
             />
           ))}
         </div>
@@ -221,7 +268,7 @@ const TicketCard: React.FC<TicketCardProps> = ({
         onClick={handleSelectTicket}
         className="w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-6 rounded-xl font-medium text-lg transition-colors duration-200"
       >
-        Выбрать билет
+        {t('ticketCard.selectTicket')}
       </button>
     </div>
 

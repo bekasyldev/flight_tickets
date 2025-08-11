@@ -1,13 +1,16 @@
-import { Heart, Plane } from "lucide-react";
+import { Plane } from "lucide-react";
+import { useTranslation } from "../lib/i18n";
 
 interface TabsProps {
     activeTab: string;
     onTabChange: (tab: string) => void;
   }
-  
+
 const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange }) => {
+    const { t } = useTranslation();
+    
     return (
-      <div className="flex justify-center gap-2 mb-8 bg-blue-700 max-w-sm py-2 rounded-full">
+      <div className="flex justify-center mb-8 bg-blue-700 max-w-3xs py-4 rounded-full">
         <button
           onClick={() => onTabChange('flights')}
           className={`px-8 py-3 rounded-full font-medium transition-all ${
@@ -17,18 +20,7 @@ const Tabs: React.FC<TabsProps> = ({ activeTab, onTabChange }) => {
           }`}
         >
           <Plane className="w-5 h-5 inline mr-2" />
-          Авиабилеты
-        </button>
-        <button 
-          onClick={() => onTabChange('favorites')}
-          className={`px-8 py-3 rounded-full font-medium transition-all ${
-            activeTab === 'favorites'
-              ? 'bg-white text-black shadow-md'
-              : 'text-white/80 hover:text-white'
-          }`}
-        >
-          <Heart className="w-5 h-5 inline mr-2" />
-          Избранное
+          {t('mainPage.flights')}
         </button>
       </div>
     );
