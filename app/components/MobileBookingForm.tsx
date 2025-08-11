@@ -1,6 +1,6 @@
 import { Calendar } from "lucide-react";
 import { useState } from "react";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from '../lib/i18n';
 import MobileFlightCalendar from "./MobileFlightCalendar";
 
 interface SearchFormData {
@@ -77,19 +77,21 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
   };
 
   const getPassengerText = (count: number) => {
-    return t('passengerDropdown.passengers', { count });
+    if (count === 1) return `1 ${t('passengers.passenger')}`;
+    if (count >= 2 && count <= 4) return `${count} ${t('passengers.passengers2')}`;
+    return `${count} ${t('passengers.passengers5')}`;
   };
 
   const getCabinClassText = (cabinClass: string) => {
     switch (cabinClass) {
       case 'premium_economy':
-        return t('passengerDropdown.premiumEconomy');
+        return t('cabinClasses.premiumEconomy');
       case 'business':
-        return t('passengerDropdown.business');
+        return t('cabinClasses.business');
       case 'first':
-        return t('passengerDropdown.first');
+        return t('cabinClasses.first');
       default:
-        return t('passengerDropdown.economy');
+        return t('cabinClasses.economy');
     }
   };
 
@@ -113,7 +115,7 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="text-xl font-medium text-gray-400">{t('tabs.from')}</div>
+                  <div className="text-xl font-medium text-gray-400">{t('search.from')}</div>
                   <div className="text-sm text-gray-400 mt-1">{t('mobileBooking.selectDepartureCountry')}</div>
                 </>
               )}
@@ -136,7 +138,7 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
                 </>
               ) : (
                 <>
-                  <div className="text-xl font-medium text-gray-400">{t('tabs.to')}</div>
+                  <div className="text-xl font-medium text-gray-400">{t('search.to')}</div>
                   <div className="text-sm text-gray-400 mt-1">{t('mobileBooking.selectDestinationCountry')}</div>
                 </>
               )}
@@ -224,7 +226,7 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
             {t('bookingForm.searching')}
           </>
         ) : (
-          t('bookingForm.searchFlights')
+          t('search.searchFlights')
         )}
       </button>
     </div>
