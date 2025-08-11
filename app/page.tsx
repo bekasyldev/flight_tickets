@@ -199,7 +199,7 @@ export default function FlightSearch() {
       return;
     }
     if (formData.tripType === 'round-trip' && !formData.returnDate) {
-      setError('Please select a return date for round-trip flights');
+      formData.tripType = 'one-way';
       return;
     }
     searchFlights();
