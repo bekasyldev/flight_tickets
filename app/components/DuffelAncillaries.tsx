@@ -27,7 +27,7 @@ interface DuffelAncillariesProps {
 
 // Dynamic import to prevent SSR issues
 const DuffelAncillariesComponent = dynamic(
-  () => import('@duffel/components').then(mod => mod.DuffelAncillaries),
+  () => import('@duffel/components').then(mod => ({ default: mod.DuffelAncillaries })),
   { 
     ssr: false,
     loading: () => (

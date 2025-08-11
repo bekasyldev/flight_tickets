@@ -1,30 +1,63 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import dynamic from 'next/dynamic';
 
 interface CardData {
   id: string;
-  last_four_digits: string;
-  brand: string;
-  cardholder_name: string;
+  last_four_digits?: string;
+  brand?: string;
+  cardholder_name?: string;
   unavailable_at?: string;
+  live_mode?: boolean;
 }
 
 interface DuffelCardFormProps {
   clientKey: string;
-  intent: 'to-create-card-for-temporary-use' | 'to-save-card' | 'to-use-saved-card';
   onValidateSuccess?: () => void;
   onValidateFailure?: (error: object) => void;
-  onSaveCardSuccess?: (card: CardData) => void;
-  onSaveCardFailure?: (error: object) => void;
   onCreateCardForTemporaryUseSuccess?: (card: CardData) => void;
   onCreateCardForTemporaryUseFailure?: (error: object) => void;
 }
 
+export interface DuffelCardFormRef {
+  createCardForTemporaryUse: () => void;
+}
+
 // Dynamic imports to prevent SSR issues
-const DuffelCardFormComponent = dynamic(
-  () => import('@duffel/components').then(mod => mod.DuffelCardForm),
+const DuffelCardFormWithActions = dynamic(
+  () => import('@duffel/components').then(mod => {
+    const { DuffelCardForm, useDuffelCardFormActions } = mod;
+    
+    const Component = forwardRef<DuffelCardFormRef, DuffelCardFormProps>(({
+      clientKey,
+      onValidateSuccess,
+      onValidateFailure,
+      onCreateCardForTemporaryUseSuccess,
+      onCreateCardForTemporaryUseFailure
+    }, ref) => {
+      const { ref: duffelRef, createCardForTemporaryUse } = useDuffelCardFormActions();
+      
+      useImperativeHandle(ref, () => ({
+        createCardForTemporaryUse
+      }));
+
+      return (
+        <DuffelCardForm
+          ref={duffelRef}
+          clientKey={clientKey}
+          intent="to-create-card-for-temporary-use"
+          onValidateSuccess={onValidateSuccess}
+          onValidateFailure={() => onValidateFailure && onValidateFailure({})}
+          onCreateCardForTemporaryUseSuccess={onCreateCardForTemporaryUseSuccess}
+          onCreateCardForTemporaryUseFailure={() => onCreateCardForTemporaryUseFailure && onCreateCardForTemporaryUseFailure({})}
+        />
+      );
+    });
+    
+    Component.displayName = 'DuffelCardFormWithActions';
+    return { default: Component };
+  }),
   { 
     ssr: false,
     loading: () => (
@@ -36,16 +69,13 @@ const DuffelCardFormComponent = dynamic(
   }
 );
 
-export default function DuffelCardFormWrapper({
+const DuffelCardFormWrapper = forwardRef<DuffelCardFormRef, DuffelCardFormProps>(({
   clientKey,
-  intent,
   onValidateSuccess,
   onValidateFailure,
-  onSaveCardSuccess,
-  onSaveCardFailure,
   onCreateCardForTemporaryUseSuccess,
   onCreateCardForTemporaryUseFailure
-}: DuffelCardFormProps) {
+}, ref) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -75,17 +105,31 @@ export default function DuffelCardFormWrapper({
   return (
     <div className="w-full">
       <div className="mb-6">
-        <DuffelCardFormComponent
+        <DuffelCardFormWithActions
+          ref={ref}
           clientKey={clientKey}
-          intent={intent}
-          onValidateSuccess={onValidateSuccess as unknown as never}
-          onValidateFailure={onValidateFailure as unknown as never}
-          onSaveCardSuccess={onSaveCardSuccess as unknown as never}
-          onSaveCardFailure={onSaveCardFailure as unknown as never}
-          onCreateCardForTemporaryUseSuccess={onCreateCardForTemporaryUseSuccess as unknown as never}
-          onCreateCardForTemporaryUseFailure={onCreateCardForTemporaryUseFailure as unknown as never}
+          onValidateSuccess={onValidateSuccess}
+          onValidateFailure={onValidateFailure}
+          onCreateCardForTemporaryUseSuccess={onCreateCardForTemporaryUseSuccess}
+          onCreateCardForTemporaryUseFailure={onCreateCardForTemporaryUseFailure}
         />
+      </div>
+      
+      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+        <h4 className="font-medium text-blue-800 mb-2">💡 Тестирование платежей</h4>
+        <div className="text-sm text-blue-700">
+          <p className="mb-1"><strong>Для тестирования 3DS:</strong> 4242424242424242</p>
+          <p className="mb-1"><strong>Без 3DS:</strong> 4111110116638870</p>
+          <p className="mb-1"><strong>CVC:</strong> любые 3 цифры, <strong>Дата:</strong> любая будущая</p>
+          <p className="text-xs text-blue-600 mt-2">
+            💡 Нажмите кнопку &quot;Оплатить&quot; после валидации формы
+          </p>
+        </div>
       </div>
     </div>
   );
-} 
+});
+
+DuffelCardFormWrapper.displayName = 'DuffelCardFormWrapper';
+
+export default DuffelCardFormWrapper;

@@ -1,10 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import DuffelAncillaries from '../components/DuffelAncillaries';
-import DuffelCardForm from '../components/DuffelCardForm';
+import DuffelCardForm, { DuffelCardFormRef } from '../components/DuffelCardForm';
 
 interface PassengerInfo {
   given_name: string;
@@ -56,13 +56,16 @@ function CheckoutContent() {
   
   // Duffel state
   const [clientKey, setClientKey] = useState<string>('');
-  const [, setCardData] = useState<{
+  const [cardData, setCardData] = useState<{
     id: string;
-    last_four_digits: string;
-    brand: string;
-    cardholder_name: string;
+    last_four_digits?: string;
+    brand?: string;
+    cardholder_name?: string;
   } | null>(null);
-  const [, setIsPaymentProcessing] = useState(false);
+  const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+  const [isCardFormReady, setIsCardFormReady] = useState(false);
+  
+  const cardFormRef = useRef<DuffelCardFormRef>(null);
   
   // Flight data state
   const [flightData, setFlightData] = useState<{
@@ -143,83 +146,142 @@ function CheckoutContent() {
 
   // Handle card form events
   const handleCardValidateSuccess = () => {
-    console.log('Card validation successful');
+    console.log('✅ Card form validation successful - form is ready');
+    setIsCardFormReady(true);
+    console.log('Card form validated successfully - button should be enabled now');
   };
 
-  const handleCardForTemporaryUseSuccess = (card: { id: string; last_four_digits: string; brand: string; cardholder_name: string }) => {
+  const handleCardForTemporaryUseSuccess = async (card: { id: string; last_four_digits?: string; brand?: string; cardholder_name?: string }) => {
+    console.log('✅ Card created successfully for temporary use:', card);
     setCardData(card);
-    console.log('Card created for temporary use:', card);
-    // Here you would proceed with 3D Secure and payment
-    processPayment(card.id);
+    console.log('Card data state updated:', card);
+    
+    // If we're in payment processing mode, automatically proceed with payment
+    if (isPaymentProcessing) {
+      console.log('Payment in progress, automatically proceeding with order creation...');
+      try {
+        await createOrderWithPayment();
+      } catch (error) {
+        console.error('Error creating order after card creation:', error);
+        alert('❌ Ошибка при создании заказа после создания карты');
+        setIsPaymentProcessing(false);
+      }
+    }
   };
 
   const handleCardError = (error: object) => {
-    console.error('Card form error:', error);
+    console.error('❌ Card form error:', error);
     setIsPaymentProcessing(false);
+    setIsCardFormReady(false); // Reset form readiness on error
+    alert('❌ Ошибка при обработке карты. Пожалуйста, проверьте данные карты.');
   };
 
-  const processPayment = async (cardId: string) => {
+  const processPayment = async () => {
+    if (!offerId || !flightData) {
+      alert('❌ Отсутствуют данные рейса для оформления заказа');
+      return;
+    }
+
+    if (!isCardFormReady) {
+      alert('❌ Заполните все поля карты правильно');
+      return;
+    }
+
     setIsPaymentProcessing(true);
     
     try {
-      // Simulate different payment decline scenarios based on cardholder name
-      const cardholderName = passengers[0]?.given_name || 'Unknown';
-
-      // Test scenarios for payment declines
-      const simulatePaymentDecline = (name: string) => {
-        const declineScenarios: { [key: string]: { success: boolean; reason: string } } = {
-          'Declined': { 
-            success: false, 
-            reason: 'Card payment declined by issuer' 
-          },
-          'Insufficient': { 
-            success: false, 
-            reason: 'Insufficient funds' 
-          },
-          'Fraud': { 
-            success: false, 
-            reason: 'Suspected fraudulent activity' 
-          }
-        };
-
-        return declineScenarios[name] || { success: true, reason: 'Payment successful' };
-      };
-
-      const paymentResult = simulatePaymentDecline(cardholderName);
-
-      if (paymentResult.success) {
-        // Simulate successful payment processing
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        
-        alert('Оплата прошла успешно! 💳');
-        
-        // Here you would typically:
-        // 1. Create the order
-        // 2. Send confirmation email
-        // 3. Redirect to confirmation page
-      } else {
-        // Payment declined scenarios
-        throw new Error(paymentResult.reason);
+      console.log('Starting payment process...');
+      
+      // If we already have cardData, proceed with payment
+      if (cardData) {
+        console.log('Using existing card:', cardData.id);
+        await createOrderWithPayment();
+        return;
       }
+
+      // Use the ref to trigger card creation
+      if (cardFormRef.current) {
+        console.log('Triggering card creation...');
+        cardFormRef.current.createCardForTemporaryUse();
+        
+        // The card creation will trigger onCreateCardForTemporaryUseSuccess callback
+        // which will set cardData and then we can proceed with payment
+        // For now, show a message that card is being created
+        alert('💳 Карта создается... Процесс будет продолжен автоматически.');
+        setIsPaymentProcessing(false);
+      } else {
+        alert('❌ Форма карты не инициализирована');
+        setIsPaymentProcessing(false);
+      }
+
     } catch (error) {
       console.error('Payment processing error:', error);
       
-      // Different error handling based on decline reason
+      // Enhanced error handling
       const errorMessage = error instanceof Error ? error.message : 'Платеж отклонен';
       
-      switch (errorMessage) {
-        case 'Insufficient funds':
-          alert('❌ Недостаточно средств. Пожалуйста, используйте другую карту.');
-          break;
-        case 'Suspected fraudulent activity':
-          alert('❌ Подозрение на мошенничество. Свяжитесь с вашим банком.');
-          break;
-        default:
-          alert('❌ Платеж отклонен. Пожалуйста, попробуйте другую карту.');
+      if (errorMessage.includes('insufficient')) {
+        alert('❌ Недостаточно средств. Пожалуйста, используйте другую карту.');
+      } else if (errorMessage.includes('fraud')) {
+        alert('❌ Подозрение на мошенничество. Свяжитесь с вашим банком.');
+      } else if (errorMessage.includes('declined')) {
+        alert('❌ Платеж отклонен банком. Попробуйте другую карту или свяжитесь с банком.');
+      } else {
+        alert(`❌ Ошибка при обработке платежа: ${errorMessage}`);
       }
       
       setIsPaymentProcessing(false);
     }
+  };
+
+  const createOrderWithPayment = async () => {
+    if (!flightData || !cardData) return;
+
+    const markupAmount = '15.00'; // Your profit (€15)
+    
+    const orderResponse = await fetch('/api/duffel/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        selected_offers: [offerId],
+        services: selectedServices,
+        passengers: passengers,
+        payments: [{
+          type: 'card',
+          currency: flightData.total_currency,
+          amount: flightData.total_amount, // This will be recalculated with markup in the API
+          // Note: In a real implementation, you would include three_d_secure_session_id here
+          // three_d_secure_session_id: threeDSecureSessionId
+        }],
+        markup_amount: markupAmount
+      })
+    });
+
+    const orderData = await orderResponse.json();
+
+    if (!orderResponse.ok) {
+      throw new Error(orderData.error || 'Failed to create order');
+    }
+
+    console.log('Order created successfully:', orderData);
+    
+    // Show success message with profit details
+    const successMessage = `✅ Заказ успешно создан! 
+
+Детали платежа:
+• Оригинальная цена: ${flightData.total_amount} ${flightData.total_currency}
+• Ваша наценка: €${markupAmount}
+• Итоговая сумма: ${orderData.payment_details?.final_amount || 'Рассчитывается...'}
+• Ваша прибыль: €${orderData.payment_details?.markup_amount || markupAmount}
+
+Карта: **** **** **** ${cardData.last_four_digits || '****'}`;
+    
+    alert(successMessage);
+    
+    setIsPaymentProcessing(false);
+    
+    // Redirect to success page or show confirmation
+    // window.location.href = '/success?order_id=' + orderData.order.id;
   };
 
   // Helper functions for formatting
@@ -468,14 +530,48 @@ function CheckoutContent() {
                 {/* Duffel Card Form Component */}
                 <div className="mb-6">
                   {clientKey ? (
-                    <DuffelCardForm
-                      clientKey={clientKey}
-                      intent="to-create-card-for-temporary-use"
-                      onValidateSuccess={handleCardValidateSuccess}
-                      onValidateFailure={handleCardError}
-                      onCreateCardForTemporaryUseSuccess={handleCardForTemporaryUseSuccess}
-                      onCreateCardForTemporaryUseFailure={handleCardError}
-                    />
+                    <>
+                      <DuffelCardForm
+                        ref={cardFormRef}
+                        clientKey={clientKey}
+                        onValidateSuccess={handleCardValidateSuccess}
+                        onValidateFailure={handleCardError}
+                        onCreateCardForTemporaryUseSuccess={handleCardForTemporaryUseSuccess}
+                        onCreateCardForTemporaryUseFailure={handleCardError}
+                      />
+                      
+                      {/* Payment Status Indicators */}
+                      <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center">
+                            <div className={`w-3 h-3 rounded-full mr-2 ${isCardFormReady ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                            <span className={isCardFormReady ? 'text-green-700' : 'text-gray-500'}>
+                              Карта валидирована
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center">
+                            <div className={`w-3 h-3 rounded-full mr-2 ${cardData ? 'bg-green-500' : 'bg-gray-300'}`}></div>
+                            <span className={cardData ? 'text-green-700' : 'text-gray-500'}>
+                              Карта создана
+                            </span>
+                          </div>
+                          
+                          <div className="flex items-center">
+                            <div className={`w-3 h-3 rounded-full mr-2 ${isPaymentProcessing ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`}></div>
+                            <span className={isPaymentProcessing ? 'text-yellow-700' : 'text-gray-500'}>
+                              {isPaymentProcessing ? 'Обработка...' : 'Готов к оплате'}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        {cardData && (
+                          <div className="mt-2 text-xs text-gray-600">
+                            Карта готова: **** **** **** {cardData.last_four_digits || '****'} ({cardData.brand || 'Unknown'})
+                          </div>
+                        )}
+                      </div>
+                    </>
                   ) : (
                     <div className="text-center py-12 text-gray-500">
                       Загрузка формы оплаты...
@@ -491,6 +587,15 @@ function CheckoutContent() {
                     className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-xl font-medium text-lg transition-colors"
                   >
                     Назад
+                  </button>
+                  <button
+                    disabled={!isCardFormReady || isPaymentProcessing}
+                    onClick={processPayment}
+                    className={`bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-medium text-lg transition-colors ${(!isCardFormReady || isPaymentProcessing) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  >
+                    {isPaymentProcessing ? 'Обрабатывается...' : 
+                     cardData ? 'Оплатить' : 
+                     'Заполните форму карты'}
                   </button>
                 </div>
               </div>
@@ -533,9 +638,9 @@ function CheckoutContent() {
               {/* Price Breakdown */}
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Билет</span>
+                  <span className="text-gray-600">Билет (базовая цена)</span>
                   <span>
-                    {flightData ? convertCurrency(flightData.total_amount, flightData.total_currency) : '—'}
+                    {flightData ? `${flightData.total_amount} ${flightData.total_currency}` : '—'}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -550,13 +655,17 @@ function CheckoutContent() {
                     }
                   </span>
                 </div>
+                <div className="flex justify-between text-sm text-blue-600">
+                  <span>Наша комиссия</span>
+                  <span>€15.00</span>
+                </div>
               </div>
               
               <div className="border-t border-gray-100 pt-4">
                 <div className="flex justify-between text-lg font-bold">
                   <span>Итого</span>
                   <span>
-                    {flightData ? convertCurrency(flightData.total_amount, flightData.total_currency) : '—'}
+                    {flightData ? `${flightData.total_amount} ${flightData.total_currency}` : '—'}
                   </span>
                 </div>
               </div>
