@@ -13,7 +13,6 @@ export default function I18nProvider({ children, initialLocale = 'ru' }: I18nPro
   const [translations, setTranslations] = useState<Record<string, unknown>>({});
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load translations when locale changes
   useEffect(() => {
     const loadLocaleTranslations = async () => {
       setIsLoading(true);
@@ -30,7 +29,6 @@ export default function I18nProvider({ children, initialLocale = 'ru' }: I18nPro
     loadLocaleTranslations();
   }, [locale]);
 
-  // Initialize locale from localStorage on client side
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const savedLocale = localStorage.getItem('locale') as Locale;
@@ -58,7 +56,6 @@ export default function I18nProvider({ children, initialLocale = 'ru' }: I18nPro
       return translation;
     }
     
-    // Return fallback or key if translation not found
     return fallback || key;
   };
 
