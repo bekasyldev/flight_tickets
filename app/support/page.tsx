@@ -46,10 +46,10 @@ export default function SupportPage() {
                 <div className="flex items-center">
                   <Mail className="w-5 h-5 text-gray-400 mr-3" />
                   <a 
-                    href="mailto:avelrusimport@gmail.com"
+                    href="mailto:Aviagrand2025@gmail.com"
                     className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
                   >
-                    avelrusimport@gmail.com
+                    Aviagrand2025@gmail.com
                   </a>
                 </div>
                 <div className="flex items-center">
@@ -61,7 +61,7 @@ export default function SupportPage() {
               </div>
 
               <button 
-                onClick={() => window.location.href = 'mailto:avelrusimport@gmail.com'}
+                onClick={() => window.location.href = 'mailto:Aviagrand2025@gmail.com'}
                 className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-xl font-medium transition-colors duration-200"
               >
                 {t('support.sendEmail', 'Send Email')}
@@ -128,7 +128,7 @@ export default function SupportPage() {
               {t('support.urgentDescription', 'For urgent travel-related issues or last-minute problems, contact us immediately.')}
             </p>
             <a 
-              href="mailto:avelrusimport@gmail.com?subject=URGENT: Flight Support Request"
+              href="mailto:Aviagrand2025@gmail.com?subject=URGENT: Flight Support Request"
               className="inline-flex items-center bg-orange-500 hover:bg-orange-600 text-white py-3 px-6 rounded-xl font-medium transition-colors duration-200"
             >
               <Mail className="w-5 h-5 mr-2" />

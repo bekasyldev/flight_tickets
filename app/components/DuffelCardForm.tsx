@@ -24,7 +24,6 @@ export interface DuffelCardFormRef {
   createCardForTemporaryUse: () => void;
 }
 
-// Dynamic imports to prevent SSR issues
 const DuffelCardFormWithActions = dynamic(
   () => import('@duffel/components').then(mod => {
     const { DuffelCardForm, useDuffelCardFormActions } = mod;

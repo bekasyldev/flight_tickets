@@ -302,14 +302,6 @@ function CheckoutContent() {
     });
   };
 
-  const convertCurrency = (amount: string, currency: string): string => {
-    const numAmount = parseFloat(amount);
-    if (currency === 'USD') {
-      return `$${numAmount.toLocaleString()}`;
-    }
-    return `${(numAmount * 500).toLocaleString()} ₸`; // Example conversion rate
-  };
-
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
@@ -464,12 +456,12 @@ function CheckoutContent() {
                   </div>
                 ))}
                 
-                <button
+                {/* <button
                   onClick={addPassenger}
                   className="text-blue-600 hover:text-blue-700 font-medium mb-6"
                 >
                   + Добавить пассажира
-                </button>
+                </button> */}
                 
                 <div className="flex justify-end">
                   <button
