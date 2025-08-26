@@ -17,7 +17,7 @@ export default function TicketPurchaseHandler() {
   
   const [purchaseStatus, setPurchaseStatus] = useState<TicketPurchaseStatus>({
     status: 'processing',
-    message: 'Оформляем ваш билет...'
+    message: 'Оформляем ваш билет и отправляем на email...'
   });
 
   useEffect(() => {
@@ -69,9 +69,70 @@ export default function TicketPurchaseHandler() {
         const result = await response.json();
 
         if (response.ok && result.success) {
+          // Send ticket email after successful payment completion
+          try {
+            const orderData = result.order;
+            const slice = orderData.slices[0];
+            const segment = slice.segments[0];
+            const passenger = orderData.passengers[0];
+
+            // Format data for email template
+            const emailData = {
+              to: passenger.email,
+              bookingReference: orderData.booking_reference,
+              flightNumber: `${segment.marketing_carrier.iata_code} ${segment.marketing_carrier_flight_number}`,
+              flightDate: new Date(segment.departing_at).toLocaleDateString('en-GB'),
+              duration: segment.duration,
+              departure: {
+                time: new Date(segment.departing_at).toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}) + 'h',
+                airportCode: segment.origin.iata_code,
+                cityName: segment.origin.city_name || segment.origin.name,
+                terminal: segment.origin_terminal ? `Terminal ${segment.origin_terminal}` : 'N/A'
+              },
+              arrival: {
+                time: new Date(segment.arriving_at).toLocaleTimeString('en-GB', {hour: '2-digit', minute: '2-digit'}) + 'h',
+                airportCode: segment.destination.iata_code,
+                cityName: segment.destination.city_name || segment.destination.name,
+                terminal: segment.destination_terminal ? `Terminal ${segment.destination_terminal}` : 'N/A'
+              },
+              operatedBy: segment.operating_carrier?.name || segment.marketing_carrier.name,
+              passenger: {
+                name: `${passenger.given_name} ${passenger.family_name}`,
+                baggage: '5 kg', // Default or get from order if available
+                class: slice.fare_brand_name || 'Economy',
+                seat: segment.passengers?.[0]?.seat?.designator || 'To be assigned'
+              },
+              pricing: {
+                fare: orderData.base_amount,
+                fees: orderData.tax_amount,
+                total: orderData.total_amount,
+                currency: orderData.total_currency
+              }
+            };
+
+            console.log('Sending ticket email to:', passenger.email);
+            
+            const emailResponse = await fetch('/api/send', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(emailData)
+            });
+
+            if (emailResponse.ok) {
+              console.log('Ticket email sent successfully');
+            } else {
+              console.error('Failed to send ticket email');
+            }
+          } catch (emailError) {
+            console.error('Error sending ticket email:', emailError);
+            // Don't fail the whole process if email fails
+          }
+
           setPurchaseStatus({
             status: 'success',
-            message: 'Билет успешно оформлен!',
+            message: 'Билет успешно оформлен! Email с билетом отправлен.',
             orderId: result.order.id
           });
         } else {

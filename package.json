@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@duffel/components": "^3.10.1",
+    "@react-email/components": "^0.5.1",
+    "@react-email/render": "^1.2.1",
     "@types/mongodb": "^4.0.7",
     "dotenv": "^17.2.1",
     "i18next": "^25.3.2",
@@ -20,6 +22,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-i18next": "^15.6.1",
+    "resend": "^6.0.1",
     "stripe": "^18.4.0",
     "zustand": "^5.0.7"
   },
