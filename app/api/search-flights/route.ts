@@ -133,8 +133,10 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Return first 20 offers and offer request ID for pagination
         const offers = data.data?.offers || [];
+        const offerRequestData = data.data as { offers: import('@/app/types').Offer[]; passengers?: { id: string }[] }; 
+        const passengerIds = offerRequestData?.passengers?.map((p: { id: string }) => p.id) || [];
+        
         const firstPageOffers = offers.slice(0, 20);
 
         let sessionToken = null;
@@ -159,6 +161,7 @@ export async function POST(request: NextRequest) {
                         tripType: searchData.tripType
                     },
                     firstPageOffers as unknown as import('@/lib/secure-session').DuffelOffer[],
+                    passengerIds,
                     { ip: clientIp, userAgent }
                 );
 
@@ -167,13 +170,13 @@ export async function POST(request: NextRequest) {
                 expiresAt = session.expires_at.toISOString();
 
             } catch (error) {
-                console.error('❌ Failed to create session:', error);
+                console.error('Failed to create session:', error);
             }
         }
 
         return NextResponse.json({
             offers: firstPageOffers,
-            session_token: sessionToken,  // 🔐 Токен для безопасной покупки
+            session_token: sessionToken,
             session_id: sessionId,
             expires_at: expiresAt,
             pagination: {
@@ -184,7 +187,7 @@ export async function POST(request: NextRequest) {
                 hasPrevious: false,
                 totalOffers: offers.length
             },
-            offerRequestId: data.data?.offers[0].id || null // Store this for pagination
+            offerRequestId: data.data?.offers[0].id || null
         }, {
             status: 200,
             headers: {

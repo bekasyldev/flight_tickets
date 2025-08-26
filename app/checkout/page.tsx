@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, Suspense, useRef } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
-import DuffelAncillaries from '../components/DuffelAncillaries';
-import DuffelCardForm, { DuffelCardFormRef } from '../components/DuffelCardForm';
+import { Offer, Airline, Segment } from '../types';
 
 interface PassengerInfo {
   given_name: string;
@@ -16,28 +15,22 @@ interface PassengerInfo {
   phone_number: string;
 }
 
-interface Airline {
-  name: string;
-  iata_code: string;
-  logo_symbol_url: string;
-}
-
-interface Segment {
-  id: string;
-  departing_at: string;
-  arriving_at: string;
-  duration: string;
-  origin: { name: string };
-  destination: { name: string };
-  marketing_carrier: Airline;
+interface FlightData {
+  offer_id: string;
+  total_amount: string;
+  total_currency: string;
+  airline: Airline;
+  departure: { airport: string; code: string; time: string };
+  arrival: { airport: string; code: string; time: string };
+  segments: Segment[];
 }
 
 function CheckoutContent() {
   const searchParams = useSearchParams();
   const offerId = searchParams.get('offer_id');
+  const sessionToken = searchParams.get('token');
   const [currentStep, setCurrentStep] = useState(1);
   
-  // Passenger information state
   const [passengers, setPassengers] = useState<PassengerInfo[]>([
     {
       given_name: '',
@@ -50,33 +43,10 @@ function CheckoutContent() {
     }
   ]);
 
-  // Payment state
-  // const [paymentStep, setPaymentStep] = useState<'ancillaries' | 'payment' | 'confirmation'>('ancillaries');
-  const [selectedServices, setSelectedServices] = useState<{ id: string; quantity: number }[]>([]);
-  
-  // Duffel state
-  const [clientKey, setClientKey] = useState<string>('');
-  const [cardData, setCardData] = useState<{
-    id: string;
-    last_four_digits?: string;
-    brand?: string;
-    cardholder_name?: string;
-  } | null>(null);
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
-  const [isCardFormReady, setIsCardFormReady] = useState(false);
-  
-  const cardFormRef = useRef<DuffelCardFormRef>(null);
-  
-  // Flight data state
-  const [flightData, setFlightData] = useState<{
-    offer_id: string;
-    total_amount: string;
-    total_currency: string;
-    airline: Airline;
-    departure: { airport: string; code: string; time: string };
-    arrival: { airport: string; code: string; time: string };
-    segments: Segment[];
-  } | null>(null);
+  const [sessionValidated, setSessionValidated] = useState(false);
+
+  const [flightData, setFlightData] = useState<FlightData | null>(null);
 
   const handlePassengerUpdate = (index: number, field: keyof PassengerInfo, value: string) => {
     const updated = [...passengers];
@@ -84,204 +54,152 @@ function CheckoutContent() {
     setPassengers(updated);
   };
 
-  const addPassenger = () => {
-    setPassengers([...passengers, {
-      given_name: '',
-      family_name: '',
-      gender: 'M',
-      title: 'mr',
-      born_on: '',
-      email: '',
-      phone_number: ''
-    }]);
+  const getAirportCode = (name: string): string => {
+    const match = name.match(/\(([A-Z]{3})\)/);
+    return match ? match[1] : name.substring(0, 3).toUpperCase();
   };
 
-  const removePassenger = (index: number) => {
-    if (passengers.length > 1) {
-      setPassengers(passengers.filter((_, i) => i !== index));
+  const transformOfferToFlightData = useCallback((offer: Offer) => {
+    if (!offer || !offer.slices || offer.slices.length === 0) {
+      return null;
     }
-  };
 
-  // Load flight data and fetch client key when component mounts
+    const firstSlice = offer.slices[0];
+    const lastSlice = offer.slices[offer.slices.length - 1];
+    const firstSegment = firstSlice?.segments[0];
+    const lastSegment = lastSlice?.segments[lastSlice.segments.length - 1];
+
+    return {
+      offer_id: offer.id,
+      total_amount: offer.total_amount,
+      total_currency: offer.total_currency,
+      airline: firstSegment?.marketing_carrier || { name: 'Unknown', iata_code: 'XX', logo_symbol_url: '' },
+      departure: {
+        airport: firstSegment?.origin?.name || 'Unknown',
+        code: getAirportCode(firstSegment?.origin?.name || ''),
+        time: firstSegment?.departing_at || ''
+      },
+      arrival: {
+        airport: lastSegment?.destination?.name || 'Unknown', 
+        code: getAirportCode(lastSegment?.destination?.name || ''),
+        time: lastSegment?.arriving_at || ''
+      },
+      segments: offer.slices.flatMap((slice) => slice.segments || [])
+    };
+  }, []);
+
   useEffect(() => {
-    // Load flight data from localStorage
-    const storedFlightData = localStorage.getItem('selectedFlight');
-    if (storedFlightData) {
-      try {
-        const parsedData = JSON.parse(storedFlightData);
-        setFlightData(parsedData);
-      } catch (error) {
-        console.error('Failed to parse flight data:', error);
+    const validateSessionAndFetchData = async () => {
+      if (!sessionToken || !offerId) {
+        console.error('Missing session token or offer ID');
+        window.location.href = '/';
+        return;
       }
-    }
 
-    const fetchClientKey = async () => {
       try {
-        const response = await fetch('/api/duffel/client-key', {
+        const response = await fetch('/api/validate-session', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ order_id: offerId })
+          body: JSON.stringify({ 
+            token: sessionToken,
+            offer_id: offerId,
+            action: 'checkout_start' 
+          })
         });
-        
+
         if (response.ok) {
-          const data = await response.json();
-          setClientKey(data.client_key);
+          const sessionData = await response.json();
+          const transformedFlightData = transformOfferToFlightData(sessionData.offer);
+          setFlightData(transformedFlightData);
+          setSessionValidated(true);
+        } else {
+          console.error('❌ Session validation failed');
+          alert('❌ Сессия истекла. Пожалуйста, начните поиск заново.');
+          window.location.href = '/';
         }
       } catch (error) {
-        console.error('Failed to fetch client key:', error);
+        console.error('❌ Session validation error:', error);
+        alert('❌ Ошибка проверки сессии. Пожалуйста, попробуйте снова.');
+        window.location.href = '/';
       }
     };
 
-    // Only fetch client key if we have an offerId
-    if (offerId) {
-      fetchClientKey();
-    }
-  }, [offerId]);
+    validateSessionAndFetchData();
+  }, [sessionToken, offerId, transformOfferToFlightData]);
 
-  // Handle ancillaries payload
-  const handleAncillariesPayload = (payload: { data: { passengers: PassengerInfo[]; services: { id: string; quantity: number }[] } }) => {
-    setSelectedServices(payload.data.services);
-    console.log('Ancillaries payload:', payload);
-  };
-
-  // Handle card form events
-  const handleCardValidateSuccess = () => {
-    console.log('✅ Card form validation successful - form is ready');
-    setIsCardFormReady(true);
-    console.log('Card form validated successfully - button should be enabled now');
-  };
-
-  const handleCardForTemporaryUseSuccess = async (card: { id: string; last_four_digits?: string; brand?: string; cardholder_name?: string }) => {
-    console.log('✅ Card created successfully for temporary use:', card);
-    setCardData(card);
-    console.log('Card data state updated:', card);
-    
-    // If we're in payment processing mode, automatically proceed with payment
-    if (isPaymentProcessing) {
-      console.log('Payment in progress, automatically proceeding with order creation...');
-      try {
-        await createOrderWithPayment();
-      } catch (error) {
-        console.error('Error creating order after card creation:', error);
-        alert('❌ Ошибка при создании заказа после создания карты');
-        setIsPaymentProcessing(false);
-      }
-    }
-  };
-
-  const handleCardError = (error: object) => {
-    console.error('❌ Card form error:', error);
-    setIsPaymentProcessing(false);
-    setIsCardFormReady(false); // Reset form readiness on error
-    alert('❌ Ошибка при обработке карты. Пожалуйста, проверьте данные карты.');
-  };
-
-  const processPayment = async () => {
-    if (!offerId || !flightData) {
-      alert('❌ Отсутствуют данные рейса для оформления заказа');
+  const createStripePayment = async () => {
+    if (!sessionToken || !offerId || !flightData || !sessionValidated) {
+      alert('Отсутствуют данные рейса или сессия не валидна');
       return;
     }
 
-    if (!isCardFormReady) {
-      alert('❌ Заполните все поля карты правильно');
+    const isValidPassengerData = passengers.every(passenger => 
+      passenger.given_name && 
+      passenger.family_name && 
+      passenger.email && 
+      passenger.born_on
+    );
+
+    if (!isValidPassengerData) {
+      alert('Пожалуйста, заполните все обязательные поля для пассажиров');
       return;
     }
 
     setIsPaymentProcessing(true);
     
     try {
-      console.log('Starting payment process...');
       
-      // If we already have cardData, proceed with payment
-      if (cardData) {
-        console.log('Using existing card:', cardData.id);
-        await createOrderWithPayment();
+      const orderResponse = await fetch('/api/create-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionToken: sessionToken,
+          offerId: offerId,
+          passengers: passengers
+        })
+      });
+
+      if (!orderResponse.ok) {
+        const orderError = await orderResponse.json();
+        console.error('Duffel order creation failed:', orderError);
+        alert(`Ошибка при создании заказа: ${orderError.error || 'Неизвестная ошибка'}`);
+        setIsPaymentProcessing(false);
         return;
       }
 
-      // Use the ref to trigger card creation
-      if (cardFormRef.current) {
-        console.log('Triggering card creation...');
-        cardFormRef.current.createCardForTemporaryUse();
-        
-        // The card creation will trigger onCreateCardForTemporaryUseSuccess callback
-        // which will set cardData and then we can proceed with payment
-        // For now, show a message that card is being created
-        alert('💳 Карта создается... Процесс будет продолжен автоматически.');
-        setIsPaymentProcessing(false);
+      const orderData = await orderResponse.json();
+
+      
+      const stripeResponse = await fetch('/api/create-checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionToken: sessionToken,
+          offerId: offerId,
+          customerEmail: passengers[0].email,
+          passengers: passengers,
+          duffelOrderId: orderData.orderId // Pass the order ID to Stripe metadata
+        })
+      });
+
+      if (stripeResponse.ok) {
+        const stripeData = await stripeResponse.json();
+        window.location.href = stripeData.checkout_url;
       } else {
-        alert('❌ Форма карты не инициализирована');
-        setIsPaymentProcessing(false);
+        const errorData = await stripeResponse.json();
+        console.error('Stripe checkout creation failed:', errorData);
+        alert(`Ошибка при создании платежной сессии: ${errorData.error || 'Неизвестная ошибка'}`);
       }
 
     } catch (error) {
       console.error('Payment processing error:', error);
       
-      // Enhanced error handling
       const errorMessage = error instanceof Error ? error.message : 'Платеж отклонен';
+      alert(`Ошибка при обработке платежа: ${errorMessage}`);
       
-      if (errorMessage.includes('insufficient')) {
-        alert('❌ Недостаточно средств. Пожалуйста, используйте другую карту.');
-      } else if (errorMessage.includes('fraud')) {
-        alert('❌ Подозрение на мошенничество. Свяжитесь с вашим банком.');
-      } else if (errorMessage.includes('declined')) {
-        alert('❌ Платеж отклонен банком. Попробуйте другую карту или свяжитесь с банком.');
-      } else {
-        alert(`❌ Ошибка при обработке платежа: ${errorMessage}`);
-      }
-      
+    } finally {
       setIsPaymentProcessing(false);
     }
-  };
-
-  const createOrderWithPayment = async () => {
-    if (!flightData || !cardData) return;
-
-    const markupAmount = '15.00'; // Your profit (€15)
-    
-    const orderResponse = await fetch('/api/duffel/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        selected_offers: [offerId],
-        services: selectedServices,
-        passengers: passengers,
-        payments: [{
-          type: 'card',
-          currency: flightData.total_currency,
-          amount: flightData.total_amount, // This will be recalculated with markup in the API
-          // Note: In a real implementation, you would include three_d_secure_session_id here
-          // three_d_secure_session_id: threeDSecureSessionId
-        }],
-        markup_amount: markupAmount
-      })
-    });
-
-    const orderData = await orderResponse.json();
-
-    if (!orderResponse.ok) {
-      throw new Error(orderData.error || 'Failed to create order');
-    }
-
-    console.log('Order created successfully:', orderData);
-    
-    // Show success message with profit details
-    const successMessage = `✅ Заказ успешно создан! 
-
-Детали платежа:
-• Оригинальная цена: ${flightData.total_amount} ${flightData.total_currency}
-• Ваша наценка: €${markupAmount}
-• Итоговая сумма: ${orderData.payment_details?.final_amount || 'Рассчитывается...'}
-• Ваша прибыль: €${orderData.payment_details?.markup_amount || markupAmount}
-
-Карта: **** **** **** ${cardData.last_four_digits || '****'}`;
-    
-    alert(successMessage);
-    
-    setIsPaymentProcessing(false);
-    
-    // Redirect to success page or show confirmation
-    // window.location.href = '/success?order_id=' + orderData.order.id;
   };
 
   // Helper functions for formatting
@@ -315,34 +233,6 @@ function CheckoutContent() {
               'Оформление билета'
             }
           </h1>
-          
-          {/* Progress Steps */}
-          <div className="flex items-center space-x-4 mt-6">
-            <div className={`flex items-center ${currentStep >= 1 ? 'text-white' : 'text-blue-300'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 1 ? 'bg-white text-blue-600' : 'bg-blue-500 text-white'} mr-2`}>
-                1
-              </div>
-              <span className="text-sm font-medium">Пассажиры</span>
-            </div>
-            
-            <div className="w-8 h-px bg-blue-300"></div>
-            
-            <div className={`flex items-center ${currentStep >= 2 ? 'text-white' : 'text-blue-300'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 2 ? 'bg-white text-blue-600' : 'bg-blue-500 text-white'} mr-2`}>
-                2
-              </div>
-              <span className="text-sm font-medium">Услуги</span>
-            </div>
-            
-            <div className="w-8 h-px bg-blue-300"></div>
-            
-            <div className={`flex items-center ${currentStep >= 3 ? 'text-white' : 'text-blue-300'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${currentStep >= 3 ? 'bg-white text-blue-600' : 'bg-blue-500 text-white'} mr-2`}>
-                3
-              </div>
-              <span className="text-sm font-medium">Оплата</span>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -364,14 +254,6 @@ function CheckoutContent() {
                       <h3 className="text-lg font-semibold text-gray-800">
                         Пассажир {index + 1}
                       </h3>
-                      {passengers.length > 1 && (
-                        <button
-                          onClick={() => removePassenger(index)}
-                          className="text-red-500 hover:text-red-700 text-sm"
-                        >
-                          Удалить
-                        </button>
-                      )}
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -456,12 +338,6 @@ function CheckoutContent() {
                   </div>
                 ))}
                 
-                {/* <button
-                  onClick={addPassenger}
-                  className="text-blue-600 hover:text-blue-700 font-medium mb-6"
-                >
-                  + Добавить пассажира
-                </button> */}
                 
                 <div className="flex justify-end">
                   <button
@@ -474,125 +350,99 @@ function CheckoutContent() {
               </div>
             )}
 
-            {/* Step 2: Ancillaries (Services) */}
+            {/* Step 2: Payment */}
             {currentStep === 2 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Дополнительные услуги</h2>
+              <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Оплата билета</h2>
                 
-                {/* Duffel Ancillaries Component */}
-                <div className="mb-6">
-                  {clientKey && offerId ? (
-                    <DuffelAncillaries
-                      clientKey={clientKey}
-                      offerId={offerId}
-                      passengers={passengers}
-                      onPayloadReady={handleAncillariesPayload}
-                    />
-                  ) : (
-                    <div className="text-center py-12 text-gray-500">
-                      Загрузка дополнительных услуг...
-                      <br />
-                      <small>Получение ключа клиента Duffel</small>
-                    </div>
-                  )}
+                {/* Payment method info */}
+                <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
+                  <div className="flex items-center mb-3">
+                    <div className="w-4 h-4 rounded-full bg-blue-500 mr-3"></div>
+                    <h3 className="text-lg font-semibold text-blue-900">Безопасная оплата через Stripe</h3>
+                  </div>
+                  <p className="text-blue-700">
+                    После оплаты через Stripe ваш билет будет автоматически приобретен и отправлен на email.
+                  </p>
                 </div>
-                
-                <div className="flex justify-between">
+
+                {/* Order Summary */}
+                <div className="border border-gray-200 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Итоговая стоимость</h3>
+                  
+                  <div className="space-y-3">
+                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                      <span className="text-gray-600">Базовая стоимость билета:</span>
+                      <span className="font-medium">
+                        {flightData ? (parseFloat(flightData.total_amount) - 15).toFixed(2) : '0.00'} {flightData?.total_currency || 'EUR'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center py-2 border-b border-gray-100">
+                      <span className="text-gray-600">Наша комиссия:</span>
+                      <span className="font-medium text-orange-600">€15.00</span>
+                    </div>
+                    <div className="flex justify-between items-center py-3 text-lg font-bold">
+                      <span>Итого к оплате:</span>
+                      <span className="text-xl">
+                        {flightData?.total_amount || '0.00'} {flightData?.total_currency || 'EUR'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Passenger Summary */}
+                <div className="border border-gray-200 rounded-xl p-6 mb-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Пассажиры ({passengers.length})</h3>
+                  <div className="space-y-2">
+                    {passengers.map((passenger, index) => (
+                      <div key={index} className="flex items-center text-sm text-gray-600">
+                        <span className="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs font-medium mr-3">
+                          {index + 1}
+                        </span>
+                        <span>
+                          {passenger.given_name} {passenger.family_name} ({passenger.email})
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex justify-between items-center">
                   <button
                     onClick={() => setCurrentStep(1)}
-                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-xl font-medium text-lg transition-colors"
+                    className="px-6 py-3 text-gray-600 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors font-medium"
                   >
-                    Назад
+                    ← Назад
                   </button>
+                  
                   <button
-                    onClick={() => setCurrentStep(3)}
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-medium text-lg transition-colors"
+                    onClick={createStripePayment}
+                    disabled={isPaymentProcessing || !flightData}
+                    className="px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-xl hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center"
                   >
-                    Продолжить
+                    {isPaymentProcessing ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
+                        Создание платежа...
+                      </>
+                    ) : (
+                      <>
+                        💳 Оплатить {flightData?.total_amount || '0.00'} {flightData?.total_currency || 'EUR'}
+                      </>
+                    )}
                   </button>
                 </div>
-              </div>
-            )}
 
-            {/* Step 3: Payment */}
-            {currentStep === 3 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Оплата</h2>
-                
-                {/* Duffel Card Form Component */}
-                <div className="mb-6">
-                  {clientKey ? (
-                    <>
-                      <DuffelCardForm
-                        ref={cardFormRef}
-                        clientKey={clientKey}
-                        onValidateSuccess={handleCardValidateSuccess}
-                        onValidateFailure={handleCardError}
-                        onCreateCardForTemporaryUseSuccess={handleCardForTemporaryUseSuccess}
-                        onCreateCardForTemporaryUseFailure={handleCardError}
-                      />
-                      
-                      {/* Payment Status Indicators */}
-                      <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-                        <div className="flex items-center justify-between text-sm">
-                          <div className="flex items-center">
-                            <div className={`w-3 h-3 rounded-full mr-2 ${isCardFormReady ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-                            <span className={isCardFormReady ? 'text-green-700' : 'text-gray-500'}>
-                              Карта валидирована
-                            </span>
-                          </div>
-                          
-                          <div className="flex items-center">
-                            <div className={`w-3 h-3 rounded-full mr-2 ${cardData ? 'bg-green-500' : 'bg-gray-300'}`}></div>
-                            <span className={cardData ? 'text-green-700' : 'text-gray-500'}>
-                              Карта создана
-                            </span>
-                          </div>
-                          
-                          <div className="flex items-center">
-                            <div className={`w-3 h-3 rounded-full mr-2 ${isPaymentProcessing ? 'bg-yellow-500 animate-pulse' : 'bg-gray-300'}`}></div>
-                            <span className={isPaymentProcessing ? 'text-yellow-700' : 'text-gray-500'}>
-                              {isPaymentProcessing ? 'Обработка...' : 'Готов к оплате'}
-                            </span>
-                          </div>
-                        </div>
-                        
-                        {cardData && (
-                          <div className="mt-2 text-xs text-gray-600">
-                            Карта готова: **** **** **** {cardData.last_four_digits || '****'} ({cardData.brand || 'Unknown'})
-                          </div>
-                        )}
-                      </div>
-                    </>
-                  ) : (
-                    <div className="text-center py-12 text-gray-500">
-                      Загрузка формы оплаты...
-                      <br />
-                      <small>Получение ключа клиента Duffel</small>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="flex justify-between">
-                  <button
-                    onClick={() => setCurrentStep(2)}
-                    className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-xl font-medium text-lg transition-colors"
-                  >
-                    Назад
-                  </button>
-                  <button
-                    disabled={!isCardFormReady || isPaymentProcessing}
-                    onClick={processPayment}
-                    className={`bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-medium text-lg transition-colors ${(!isCardFormReady || isPaymentProcessing) ? 'opacity-50 cursor-not-allowed' : ''}`}
-                  >
-                    {isPaymentProcessing ? 'Обрабатывается...' : 
-                     cardData ? 'Оплатить' : 
-                     'Заполните форму карты'}
-                  </button>
+                {/* Additional Info */}
+                <div className="mt-6 p-4 bg-gray-50 rounded-xl">
+                  <p className="text-sm text-gray-600 text-center">
+                    После успешной оплаты билет будет отправлен на указанный email адрес.
+                    Процесс может занять несколько минут.
+                  </p>
                 </div>
               </div>
             )}
-          </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
@@ -635,18 +485,6 @@ function CheckoutContent() {
                     {flightData ? `${flightData.total_amount} ${flightData.total_currency}` : '—'}
                   </span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Сборы</span>
-                  <span>0 ₸</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Дополнительные услуги</span>
-                  <span>
-                    {selectedServices.length > 0 ? 
-                      `${selectedServices.length} услуг` : '0 ₸'
-                    }
-                  </span>
-                </div>
                 <div className="flex justify-between text-sm text-blue-600">
                   <span>Наша комиссия</span>
                   <span>€15.00</span>
@@ -657,7 +495,7 @@ function CheckoutContent() {
                 <div className="flex justify-between text-lg font-bold">
                   <span>Итого</span>
                   <span>
-                    {flightData ? `${flightData.total_amount} ${flightData.total_currency}` : '—'}
+                    {flightData ? `${flightData.total_amount + 15} ${flightData.total_currency}` : '—'}
                   </span>
                 </div>
               </div>
@@ -665,6 +503,7 @@ function CheckoutContent() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }
