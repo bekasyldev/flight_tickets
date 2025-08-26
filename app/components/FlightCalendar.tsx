@@ -118,7 +118,6 @@ const FlightCalendar: React.FC<FlightCalendarProps> = ({
                   setIsReturnTicketNeeded(false);
                   onSelect('', false);
                   onClose();
-                  console.log('isReturnTicketNeeded', isReturnTicketNeeded);
                 } else {
                   setIsReturnTicketNeeded(true);
                 }

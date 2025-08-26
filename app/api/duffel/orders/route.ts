@@ -101,16 +101,6 @@ export async function POST(request: NextRequest) {
             }))
         };
 
-        console.log('Creating order with payload:', {
-            ...orderPayload,
-            calculated_amounts: {
-                offer_amount: offerAmount,
-                services_amount: servicesAmount,
-                markup_amount: markupAmount,
-                final_amount: finalAmount
-            }
-        });
-
         const response = await fetch(`${DUFFEL_API_URL}/air/orders`, {
             method: 'POST',
             headers: {
@@ -140,8 +130,6 @@ export async function POST(request: NextRequest) {
                 { status: response.status }
             );
         }
-
-        console.log('Order created successfully:', responseData);
 
         return NextResponse.json({
             success: true,

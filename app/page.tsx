@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Header from './components/Header';
-import Tabs from './components/Tabs';
 import BookingForm from './components/BookingForm';
 import MobileBookingForm from './components/MobileBookingForm';
 import CountryModal from './components/CountryModal';
@@ -147,6 +146,7 @@ export default function FlightSearch() {
   const [destinationSelection, setDestinationSelection] = useState<LocationSelection | null>(null);
 
   const [offers, setOffers] = useState<FlightOffer[]>([]);
+  const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -185,8 +185,8 @@ export default function FlightSearch() {
       }
 
       const data = await response.json();
-      console.log(data.offers);
       setOffers(data.offers || []);
+      setSessionToken(data.session_token || null); 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
       console.error('Flight search error:', err);
@@ -303,6 +303,7 @@ export default function FlightSearch() {
         {offers.length > 0 && (
           <Tickets
             offers={offers}
+            sessionToken={sessionToken}
             convertCurrency={convertCurrency}
             formatDateTime={formatDateTime}
             formatDuration={formatDuration}

@@ -42,7 +42,6 @@ export class MongoSessionManager {
         expires_at: 1 
       });
       
-      console.log('MongoDB indexes created successfully');
     } catch (error) {
       console.error('Error creating indexes:', error);
     }
@@ -51,6 +50,7 @@ export class MongoSessionManager {
   async createSession(
     searchParams: SearchParams,
     offers: DuffelOffer[],
+    passengerIds?: string[],
     clientInfo?: { ip?: string; userAgent?: string }
   ): Promise<SecureSession> {
     try {
@@ -59,6 +59,7 @@ export class MongoSessionManager {
       const sessionData = sessionManager.createSessionData(
         searchParams, 
         offers, 
+        passengerIds,
         clientInfo
       );
       
@@ -186,10 +187,6 @@ export class MongoSessionManager {
         expires_at: { $lt: new Date() }
       });
       
-      if (result.deletedCount > 0) {
-        console.log(`Cleaned ${result.deletedCount} expired sessions`);
-      }
-      
       return result.deletedCount;
     } catch (error) {
       console.error('Error cleaning expired sessions:', error);
@@ -197,7 +194,97 @@ export class MongoSessionManager {
     }
   }
   
-  // Статистика сессий (для мониторинга)
+  // ✅ ENTERPRISE SECURITY: Validate session with IP and User-Agent binding
+  async validateSessionWithSecurity(
+    token: string, 
+    clientIp: string, 
+    userAgent: string
+  ): Promise<SecureSession | null> {
+    try {
+      const collection = await this.getCollection();
+      
+      const session = await collection.findOne({
+        token,
+        expires_at: { $gt: new Date() },
+        used: false
+      });
+      
+      if (!session) {
+        await this.logSecurityEvent('INVALID_SESSION_ATTEMPT', {
+          token: token.substring(0, 8) + '...',
+          clientIp,
+          userAgent: userAgent.substring(0, 100),
+          reason: 'Session not found or expired'
+        });
+        return null;
+      }
+
+      if (session.client_ip && session.client_ip !== clientIp) {
+        await this.logSecurityEvent('IP_MISMATCH', {
+          sessionId: session.id,
+          originalIp: session.client_ip,
+          currentIp: clientIp,
+          userAgent: userAgent.substring(0, 100)
+        });
+      }
+
+      if (session.user_agent && session.user_agent !== userAgent) {
+        await this.logSecurityEvent('USER_AGENT_CHANGE', {
+          sessionId: session.id,
+          originalUA: session.user_agent.substring(0, 100),
+          currentUA: userAgent.substring(0, 100),
+          clientIp
+        });
+      }
+
+      return session;
+      
+    } catch (error) {
+      console.error('Error validating session with security:', error);
+      await this.logSecurityEvent('SESSION_VALIDATION_ERROR', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+        clientIp,
+        userAgent: userAgent.substring(0, 100)
+      });
+      return null;
+    }
+  }
+
+  async logSecurityEvent(eventType: string, eventData: Record<string, unknown>): Promise<void> {
+    try {
+      const db: Db = await getDatabase();
+      const securityCollection = db.collection('security_events');
+      
+      try {
+        await securityCollection.createIndex({ timestamp: 1 }, { expireAfterSeconds: 2592000 }); // 30 days retention
+        await securityCollection.createIndex({ eventType: 1 });
+        await securityCollection.createIndex({ clientIp: 1 });
+      } catch {
+      }
+
+      await securityCollection.insertOne({
+        eventType,
+        eventData,
+        timestamp: new Date(),
+        severity: this.getEventSeverity(eventType)
+      });
+
+    } catch (error) {
+      console.error('❌ Failed to log security event:', error);
+    }
+  }
+
+  private getEventSeverity(eventType: string): 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' {
+    const highSeverityEvents = ['IP_MISMATCH', 'INVALID_SESSION_ATTEMPT', 'SESSION_VALIDATION_ERROR'];
+    const mediumSeverityEvents = ['USER_AGENT_CHANGE', 'SESSION_VALIDATION_FAILED'];
+    const lowSeverityEvents = ['SESSION_CREATED', 'SESSION_VALIDATED', 'SESSION_USED'];
+
+    if (highSeverityEvents.includes(eventType)) return 'HIGH';
+    if (mediumSeverityEvents.includes(eventType)) return 'MEDIUM';
+    if (lowSeverityEvents.includes(eventType)) return 'LOW';
+    return 'MEDIUM';
+  }
+
   async getSessionStats(): Promise<{
     total: number;
     active: number;

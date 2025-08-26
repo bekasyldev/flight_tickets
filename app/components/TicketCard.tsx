@@ -52,6 +52,7 @@ type Currency = "EUR" | "USD"
 
 interface TicketCardProps {
   offer: Offer;
+  sessionToken: string | null;
   convertCurrency: (amount: number, currency: Currency) => string;
   formatDateTime: (date: string) => string;
   formatDuration: (duration: string) => string;
@@ -169,6 +170,7 @@ const FlightSegment: React.FC<{
 
 const TicketCard: React.FC<TicketCardProps> = ({ 
   offer, 
+  sessionToken,
   convertCurrency, 
   formatDuration 
 }) => {
@@ -177,27 +179,11 @@ const TicketCard: React.FC<TicketCardProps> = ({
   const showBaggageToggle = hasBasicBaggage(offer);
   
   const handleSelectTicket = () => {
-    // Store flight details in localStorage for checkout page
-    const flightData = {
-      offer_id: offer.id,
-      total_amount: offer.total_amount,
-      total_currency: offer.total_currency,
-      airline: offer.slices[0]?.segments[0]?.marketing_carrier,
-      departure: {
-        airport: offer.slices[0]?.segments[0]?.origin.name,
-        code: getAirportCode(offer.slices[0]?.segments[0]?.origin.name || ''),
-        time: offer.slices[0]?.segments[0]?.departing_at
-      },
-      arrival: {
-        airport: offer.slices[offer.slices.length - 1]?.segments[offer.slices[offer.slices.length - 1].segments.length - 1]?.destination.name,
-        code: getAirportCode(offer.slices[offer.slices.length - 1]?.segments[offer.slices[offer.slices.length - 1].segments.length - 1]?.destination.name || ''),
-        time: offer.slices[offer.slices.length - 1]?.segments[offer.slices[offer.slices.length - 1].segments.length - 1]?.arriving_at
-      },
-      segments: offer.slices.flatMap(slice => slice.segments)
-    };
-    
-    localStorage.setItem('selectedFlight', JSON.stringify(flightData));
-    router.push(`/checkout?offer_id=${offer.id}`);
+    if (!sessionToken) {
+      alert('❌ Сессия истекла. Пожалуйста, начните поиск заново.');
+      return;
+    }
+    router.push(`/checkout?token=${sessionToken}&offer_id=${offer.id}`);
   };
 
   return (

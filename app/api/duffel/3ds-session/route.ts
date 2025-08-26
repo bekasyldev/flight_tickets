@@ -37,8 +37,6 @@ export async function POST(request: NextRequest) {
             cardholder_present: true
         };
 
-        console.log('Creating 3DS session with payload:', threeDSPayload);
-
         const response = await fetch(`${DUFFEL_API_URL}/payments/three_d_secure_sessions`, {
             method: 'POST',
             headers: {
@@ -60,8 +58,6 @@ export async function POST(request: NextRequest) {
                 { status: response.status }
             );
         }
-
-        console.log('3DS session created successfully:', responseData);
 
         return NextResponse.json({
             success: true,

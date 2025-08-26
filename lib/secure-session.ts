@@ -26,6 +26,7 @@ export interface SecureSession {
   token: string;
   search_params: SearchParams;
   offers: DuffelOffer[];
+  passenger_ids?: string[]; 
   expires_at: Date;
   created_at: Date;
   used: boolean;
@@ -50,6 +51,7 @@ export class SecureSessionManager {
   createSessionData(
     searchParams: SearchParams, 
     offers: DuffelOffer[], 
+    passengerIds?: string[],
     clientInfo?: { ip?: string; userAgent?: string }
   ): SecureSession {
     const id = randomUUID();
@@ -62,6 +64,7 @@ export class SecureSessionManager {
       token,
       search_params: searchParams,
       offers: this.addCommissionToOffers(offers),
+      passenger_ids: passengerIds, 
       expires_at: expiresAt,
       created_at: now,
       used: false,
@@ -90,8 +93,8 @@ export class SecureSessionManager {
   
   // Добавление комиссии к предложениям
   private addCommissionToOffers(offers: DuffelOffer[]): DuffelOffer[] {
-    const COMMISSION_AMOUNT = 15.00; // €15 комиссия
-    
+    const COMMISSION_AMOUNT = 15.00;
+
     return offers.map(offer => ({
       ...offer,
       original_amount: offer.total_amount,
@@ -180,8 +183,6 @@ export class SecureSessionManager {
       event,
       ...details
     };
-    
-    console.log(`[SECURITY] ${event}:`, logEntry);
     
     // В production можно интегрировать с внешними сервисами логирования
     // например: Sentry, LogRocket, DataDog и т.д.

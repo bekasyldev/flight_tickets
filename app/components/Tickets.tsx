@@ -6,6 +6,7 @@ type Currency = "EUR" | "USD"
 
 interface TicketsProps {
     offers: Offer[];
+    sessionToken: string | null;
     convertCurrency: (amount: number, currency: Currency) => string;
     formatDateTime: (date: string) => string;
     formatDuration: (duration: string) => string;
@@ -52,6 +53,7 @@ const isNightTransfer = (segment: Segment) => {
 
 const Tickets: React.FC<TicketsProps> = ({ 
   offers, 
+  sessionToken,
   convertCurrency, 
   formatDateTime, 
   formatDuration 
@@ -123,6 +125,7 @@ const Tickets: React.FC<TicketsProps> = ({
           <TicketCard
             key={offer.id}
             offer={offer}
+            sessionToken={sessionToken}
             convertCurrency={convertCurrency}
             formatDateTime={formatDateTime}
             formatDuration={formatDuration}
