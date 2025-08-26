@@ -2,17 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   experimental: {
     esmExternals: true,
   },
   i18n: {
-    locales: ['en', 'ru', 'ua', 'md'],
-    defaultLocale: 'ru',
+    locales: ['en-US', 'ru-RU', 'ua-UA', 'md-MD'],
+    defaultLocale: 'ru-RU',
     domains: [
       {
         domain: 'aviatickets.md',
-        defaultLocale: 'md',
+        defaultLocale: 'md-MD',
       },
     ],
     localeDetection: false,
