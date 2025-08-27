@@ -54,6 +54,26 @@ function CheckoutContent() {
     setPassengers(updated);
   };
 
+  const validateName = (name: string): boolean => {
+    return /^[A-Za-z\s]{2,}$/.test(name.trim()) && name.trim().split(' ').length >= 2;
+  };
+
+  const validateEmail = (email: string): boolean => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const isPassengerValid = (passenger: PassengerInfo): boolean => {
+    return validateName(passenger.given_name) &&
+           validateName(passenger.family_name) &&
+           validateEmail(passenger.email) &&
+           passenger.born_on.trim() !== '' &&
+           passenger.phone_number.trim() !== '';
+  };
+
+  const areAllPassengersValid = (): boolean => {
+    return passengers.every(isPassengerValid);
+  };
+
   const getAirportCode = (name: string): string => {
     const match = name.match(/\(([A-Z]{3})\)/);
     return match ? match[1] : name.substring(0, 3).toUpperCase();
@@ -133,15 +153,8 @@ function CheckoutContent() {
       return;
     }
 
-    const isValidPassengerData = passengers.every(passenger => 
-      passenger.given_name && 
-      passenger.family_name && 
-      passenger.email && 
-      passenger.born_on
-    );
-
-    if (!isValidPassengerData) {
-      alert('Пожалуйста, заполните все обязательные поля для пассажиров');
+    if (!areAllPassengersValid()) {
+      alert('Пожалуйста, заполните все обязательные поля корректно');
       return;
     }
 
@@ -259,28 +272,42 @@ function CheckoutContent() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Имя
+                          Имя <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
                           value={passenger.given_name}
                           onChange={(e) => handlePassengerUpdate(index, 'given_name', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                            passenger.given_name && !validateName(passenger.given_name) 
+                              ? 'border-red-500 bg-red-50' 
+                              : 'border-gray-300'
+                          }`}
                           placeholder="Введите имя"
                         />
+                        {passenger.given_name && !validateName(passenger.given_name) && (
+                          <p className="text-red-500 text-xs mt-1">Имя должно содержать минимум 2 слова на английском языке</p>
+                        )}
                       </div>
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Фамилия
+                          Фамилия <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
                           value={passenger.family_name}
                           onChange={(e) => handlePassengerUpdate(index, 'family_name', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                            passenger.family_name && !validateName(passenger.family_name) 
+                              ? 'border-red-500 bg-red-50' 
+                              : 'border-gray-300'
+                          }`}
                           placeholder="Введите фамилию"
                         />
+                        {passenger.family_name && !validateName(passenger.family_name) && (
+                          <p className="text-red-500 text-xs mt-1">Фамилия должна содержать минимум 2 слова на английском языке</p>
+                        )}
                       </div>
                       
                       <div>
@@ -299,7 +326,7 @@ function CheckoutContent() {
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Дата рождения
+                          Дата рождения <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="date"
@@ -311,20 +338,27 @@ function CheckoutContent() {
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Email
+                          Email <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="email"
                           value={passenger.email}
                           onChange={(e) => handlePassengerUpdate(index, 'email', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                            passenger.email && !validateEmail(passenger.email) 
+                              ? 'border-red-500 bg-red-50' 
+                              : 'border-gray-300'
+                          }`}
                           placeholder="example@email.com"
                         />
+                        {passenger.email && !validateEmail(passenger.email) && (
+                          <p className="text-red-500 text-xs mt-1">Введите корректный email адрес</p>
+                        )}
                       </div>
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Телефон
+                          Телефон <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="tel"
@@ -342,7 +376,12 @@ function CheckoutContent() {
                 <div className="flex justify-end">
                   <button
                     onClick={() => setCurrentStep(2)}
-                    className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-xl font-medium text-lg transition-colors"
+                    disabled={!areAllPassengersValid()}
+                    className={`px-6 py-3 rounded-xl font-medium text-lg transition-colors ${
+                      areAllPassengersValid()
+                        ? 'bg-orange-500 hover:bg-orange-600 text-white'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
                   >
                     Продолжить
                   </button>
