@@ -54,11 +54,10 @@ function CheckoutContent() {
     setPassengers(updated);
   };
 
+  // Validation functions
   const validateName = (name: string): boolean => {
-    return /^[A-Za-z\s]{2,}$/.test(name.trim()) && name.trim().split(' ').length >= 2;
-  };
-
-  const validateEmail = (email: string): boolean => {
+    return /^[A-Za-z\s]{2,}$/.test(name.trim()) && name.trim().length >= 2;
+  };  const validateEmail = (email: string): boolean => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
@@ -286,7 +285,7 @@ function CheckoutContent() {
                           placeholder="Введите имя"
                         />
                         {passenger.given_name && !validateName(passenger.given_name) && (
-                          <p className="text-red-500 text-xs mt-1">Имя должно содержать минимум 2 слова на английском языке</p>
+                          <p className="text-red-500 text-xs mt-1">Имя должно содержать минимум 2 буквы на английском языке</p>
                         )}
                       </div>
                       
@@ -306,7 +305,7 @@ function CheckoutContent() {
                           placeholder="Введите фамилию"
                         />
                         {passenger.family_name && !validateName(passenger.family_name) && (
-                          <p className="text-red-500 text-xs mt-1">Фамилия должна содержать минимум 2 слова на английском языке</p>
+                          <p className="text-red-500 text-xs mt-1">Фамилия должна содержать минимум 2 буквы на английском языке</p>
                         )}
                       </div>
                       
