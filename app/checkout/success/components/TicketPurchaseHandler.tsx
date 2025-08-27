@@ -80,6 +80,7 @@ export default function TicketPurchaseHandler() {
             const emailData = {
               to: passenger.email,
               bookingReference: orderData.booking_reference,
+              orderId: orderData.id,
               flightNumber: `${segment.marketing_carrier.iata_code} ${segment.marketing_carrier_flight_number}`,
               flightDate: new Date(segment.departing_at).toLocaleDateString('en-GB'),
               duration: segment.duration,
@@ -98,6 +99,9 @@ export default function TicketPurchaseHandler() {
               operatedBy: segment.operating_carrier?.name || segment.marketing_carrier.name,
               passenger: {
                 name: `${passenger.given_name} ${passenger.family_name}`,
+                given_name: passenger.given_name,
+                family_name: passenger.family_name,
+                phone_number: passenger.phone_number || undefined,
                 baggage: '5 kg', // Default or get from order if available
                 class: slice.fare_brand_name || 'Economy',
                 seat: segment.passengers?.[0]?.seat?.designator || 'To be assigned'
