@@ -183,7 +183,7 @@ export class SecureSessionManager {
       event,
       ...details
     };
-    
+    console.log(`[SECURITY] ${event}:`, logEntry);
     // В production можно интегрировать с внешними сервисами логирования
     // например: Sentry, LogRocket, DataDog и т.д.
   }

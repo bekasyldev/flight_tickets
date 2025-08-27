@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mongoSessionManager } from '@/lib/mongo-session';
-import { getDatabase } from '@/lib/mongodb';
 
 const DUFFEL_API_BASE = 'https://api.duffel.com';
 const DUFFEL_ACCESS_TOKEN = process.env.DUFFEL_ACCESS_TOKEN;

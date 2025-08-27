@@ -129,7 +129,6 @@ interface LocationSelection {
 
 export default function FlightSearch() {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('flights');
   const [isMobile, setIsMobile] = useState(false);
 
   const [formData, setFormData] = useState<SearchFormData>({
