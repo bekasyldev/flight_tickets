@@ -432,7 +432,7 @@ function CheckoutContent() {
 
                 {/* Passenger Summary */}
                 <div className="border border-gray-200 rounded-xl p-6 mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Пассажиры ({passengers.length})</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('checkout.passengers')} ({passengers.length})</h3>
                   <div className="space-y-2">
                     {passengers.map((passenger, index) => (
                       <div key={index} className="flex items-center text-sm text-gray-600">
@@ -464,11 +464,11 @@ function CheckoutContent() {
                     {isPaymentProcessing ? (
                       <>
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                        Создание платежа...
+                        {t('checkout.creatingPayment')}...
                       </>
                     ) : (
                       <>
-                        💳 Оплатить {flightData?.total_amount || '0.00'} {flightData?.total_currency || 'EUR'}
+                        💳 {t('checkout.pay')} {flightData?.total_amount || '0.00'} {flightData?.total_currency || 'EUR'}
                       </>
                     )}
                   </button>
@@ -487,18 +487,18 @@ function CheckoutContent() {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl text-black shadow-sm border border-gray-100 p-6 sticky top-24">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Детали заказа</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">{t('checkout.orderDetails')}</h3>
               
               {/* Flight Summary */}
               <div className="border-b border-gray-100 pb-4 mb-4">
-                <div className="text-sm text-gray-600 mb-2">Рейс</div>
+                <div className="text-sm text-gray-600 mb-2">{t('checkout.flight')}</div>
                 {flightData ? (
                   <>
                     <div className="font-medium mb-2">
                       {flightData.departure.code} → {flightData.arrival.code}
                     </div>
                     <div className="text-sm text-gray-600 mb-2">
-                      {formatDate(flightData.departure.time)}, {passengers.length} пассажир{passengers.length > 1 ? 'а' : ''}
+                      {formatDate(flightData.departure.time)}, {passengers.length} {passengers.length > 1 ? t('passengers.passengers2') : t('passengers.passenger')}
                     </div>
                     <div className="text-sm text-gray-500">
                       {formatTime(flightData.departure.time)} - {formatTime(flightData.arrival.time)}
@@ -511,8 +511,8 @@ function CheckoutContent() {
                   </>
                 ) : (
                   <>
-                    <div className="font-medium">Загрузка данных рейса...</div>
-                    <div className="text-sm text-gray-600">{passengers.length} пассажир{passengers.length > 1 ? 'а' : ''}</div>
+                    <div className="font-medium">{t('checkout.loadingFlightData')}</div>
+                    <div className="text-sm text-gray-600">{passengers.length} {passengers.length > 1 ? t('passengers.passengers2') : t('passengers.passenger')}</div>
                   </>
                 )}
               </div>
@@ -520,22 +520,22 @@ function CheckoutContent() {
               {/* Price Breakdown */}
               <div className="space-y-2 mb-4">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Билет (базовая цена)</span>
+                  <span className="text-gray-600">{t('checkout.ticketBasePrice')}</span>
                   <span>
                     {flightData ? `${flightData.total_amount} ${flightData.total_currency}` : '—'}
                   </span>
                 </div>
                 <div className="flex justify-between text-sm text-blue-600">
-                  <span>Наша комиссия</span>
+                  <span>{t('checkout.ourCommission')}</span>
                   <span>€15.00</span>
                 </div>
               </div>
               
               <div className="border-t border-gray-100 pt-4">
                 <div className="flex justify-between text-lg font-bold">
-                  <span>Итого</span>
+                  <span>{t('checkout.total')}</span>
                   <span>
-                    {flightData ? `${flightData.total_amount + 15} ${flightData.total_currency}` : '—'}
+                    {flightData ? `${(parseFloat(flightData.total_amount) + 15).toFixed(2)} ${flightData.total_currency}` : '—'}
                   </span>
                 </div>
               </div>
