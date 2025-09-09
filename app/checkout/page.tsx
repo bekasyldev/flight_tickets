@@ -4,6 +4,8 @@ import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import { Offer, Airline, Segment } from '../types';
+import { PhoneInput } from 'react-international-phone';
+import 'react-international-phone/style.css';
 
 interface PassengerInfo {
   given_name: string;
@@ -359,12 +361,10 @@ function CheckoutContent() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Телефон <span className="text-red-500">*</span>
                         </label>
-                        <input
-                          type="tel"
+                        <PhoneInput
+                          defaultCountry="md"
                           value={passenger.phone_number}
-                          onChange={(e) => handlePassengerUpdate(index, 'phone_number', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                          placeholder="+7 (___) ___-__-__"
+                          onChange={(phone) => handlePassengerUpdate(index, 'phone_number', phone)}
                         />
                       </div>
                     </div>
