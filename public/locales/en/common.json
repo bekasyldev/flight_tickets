@@ -178,5 +178,59 @@
     "select": "Select",
     "cancel": "Cancel",
     "confirm": "Confirm"
+  },
+  "checkout": {
+    "title": "Ticket Booking",
+    "titleWithRoute": "Ticket Booking {from} → {to}",
+    "passengerInfo": "Passenger Information",
+    "passenger": "Passenger",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "gender": "Gender",
+    "male": "Male", 
+    "female": "Female",
+    "dateOfBirth": "Date of Birth",
+    "email": "Email",
+    "phone": "Phone",
+    "continue": "Continue",
+    "back": "← Back",
+    "payment": "Ticket Payment",
+    "securePayment": "Secure payment through Stripe",
+    "paymentDescription": "After payment through Stripe, your ticket will be automatically purchased and sent to your email.",
+    "totalCost": "Total Cost",
+    "baseCost": "Base ticket cost:",
+    "ourCommission": "Our commission:",
+    "totalToPay": "Total to pay:",
+    "passengers": "Passengers",
+    "payButton": "💳 Pay {amount} {currency}",
+    "creatingPayment": "Creating payment...",
+    "additionalInfo": "After successful payment, the ticket will be sent to the specified email address. The process may take a few minutes.",
+    "orderDetails": "Order Details",
+    "flight": "Flight",
+    "loadingFlightData": "Loading flight data...",
+    "ticketBasePrice": "Ticket (base price)",
+    "total": "Total",
+    "loadingPage": "Loading page...",
+    "placeholders": {
+      "firstName": "Enter first name (minimum 2 letters in English)",
+      "lastName": "Enter last name (minimum 2 letters in English)",
+      "email": "example@email.com"
+    },
+    "validation": {
+      "firstNameError": "First name must contain at least 2 letters in English",
+      "lastNameError": "Last name must contain at least 2 letters in English", 
+      "emailError": "Enter a valid email address",
+      "phoneError": "Enter a valid phone number"
+    },
+    "errors": {
+      "sessionExpired": "❌ Session expired. Please start your search again.",
+      "sessionValidationError": "❌ Session validation error. Please try again.",
+      "missingFlightData": "Missing flight data or session is not valid",
+      "fillAllFields": "Please fill in all required fields correctly",
+      "orderCreationError": "Error creating order: {error}",
+      "paymentSessionError": "Error creating payment session: {error}",
+      "paymentProcessingError": "Error processing payment: {error}",
+      "paymentRejected": "Payment rejected"
+    }
   }
 } 

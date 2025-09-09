@@ -6,6 +6,7 @@ import Header from '../components/Header';
 import { Offer, Airline, Segment } from '../types';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
+import { useTranslation } from '../lib/i18n';
 
 interface PassengerInfo {
   given_name: string;
@@ -28,6 +29,7 @@ interface FlightData {
 }
 
 function CheckoutContent() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const offerId = searchParams.get('offer_id');
   const sessionToken = searchParams.get('token');
@@ -243,8 +245,8 @@ function CheckoutContent() {
         <div className="max-w-6xl mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
             {flightData ? 
-              `Оформление билета ${flightData.departure.code} → ${flightData.arrival.code}` :
-              'Оформление билета'
+              `${t('checkout.title')} ${flightData.departure.code} → ${flightData.arrival.code}` :
+              t('checkout.title')
             }
           </h1>
         </div>
@@ -260,20 +262,20 @@ function CheckoutContent() {
             {/* Step 1: Passenger Information */}
             {currentStep === 1 && (
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6 text-black">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Информация о пассажирах</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('checkout.passengerInfo')}</h2>
                 
                 {passengers.map((passenger, index) => (
                   <div key={index} className="border-b border-gray-100 pb-6 mb-6 last:border-b-0 last:mb-0">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-gray-800">
-                        Пассажир {index + 1}
+                        {t('checkout.passenger')} {index + 1}
                       </h3>
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Имя <span className="text-red-500">*</span>
+                          {t('checkout.firstName')} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -284,16 +286,16 @@ function CheckoutContent() {
                               ? 'border-red-500 bg-red-50' 
                               : 'border-gray-300'
                           }`}
-                          placeholder="Введите имя"
+                          placeholder={t('checkout.placeholders.firstName')}
                         />
                         {passenger.given_name && !validateName(passenger.given_name) && (
-                          <p className="text-red-500 text-xs mt-1">Имя должно содержать минимум 2 буквы на английском языке</p>
+                          <p className="text-red-500 text-xs mt-1">{t('checkout.validation.firstNameError')}</p>
                         )}
                       </div>
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Фамилия <span className="text-red-500">*</span>
+                          {t('checkout.lastName')} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
@@ -304,30 +306,30 @@ function CheckoutContent() {
                               ? 'border-red-500 bg-red-50' 
                               : 'border-gray-300'
                           }`}
-                          placeholder="Введите фамилию"
+                          placeholder={t('checkout.placeholders.lastName')}
                         />
                         {passenger.family_name && !validateName(passenger.family_name) && (
-                          <p className="text-red-500 text-xs mt-1">Фамилия должна содержать минимум 2 буквы на английском языке</p>
+                          <p className="text-red-500 text-xs mt-1">{t('checkout.validation.lastNameError')}</p>
                         )}
                       </div>
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Пол
+                          {t('checkout.gender')}
                         </label>
                         <select
                           value={passenger.gender}
                           onChange={(e) => handlePassengerUpdate(index, 'gender', e.target.value)}
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
-                          <option value="M">Мужской</option>
-                          <option value="F">Женский</option>
+                          <option value="M">{t('checkout.male')}</option>
+                          <option value="F">{t('checkout.female')}</option>
                         </select>
                       </div>
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Дата рождения <span className="text-red-500">*</span>
+                          {t('checkout.dateOfBirth')} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="date"
@@ -339,7 +341,7 @@ function CheckoutContent() {
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Email <span className="text-red-500">*</span>
+                          {t('checkout.email')} <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="email"
@@ -350,16 +352,16 @@ function CheckoutContent() {
                               ? 'border-red-500 bg-red-50' 
                               : 'border-gray-300'
                           }`}
-                          placeholder="example@email.com"
+                          placeholder={t('checkout.placeholders.email')}
                         />
                         {passenger.email && !validateEmail(passenger.email) && (
-                          <p className="text-red-500 text-xs mt-1">Введите корректный email адрес</p>
+                          <p className="text-red-500 text-xs mt-1">{t('checkout.validation.emailError')}</p>
                         )}
                       </div>
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Телефон <span className="text-red-500">*</span>
+                          {t('checkout.phone')} <span className="text-red-500">*</span>
                         </label>
                         <PhoneInput
                           defaultCountry="md"
@@ -382,7 +384,7 @@ function CheckoutContent() {
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
                   >
-                    Продолжить
+                    {t('checkout.continue')}
                   </button>
                 </div>
               </div>
@@ -391,36 +393,36 @@ function CheckoutContent() {
             {/* Step 2: Payment */}
             {currentStep === 2 && (
               <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Оплата билета</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('checkout.payment')}</h2>
                 
                 {/* Payment method info */}
                 <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
                   <div className="flex items-center mb-3">
                     <div className="w-4 h-4 rounded-full bg-blue-500 mr-3"></div>
-                    <h3 className="text-lg font-semibold text-blue-900">Безопасная оплата через Stripe</h3>
+                    <h3 className="text-lg font-semibold text-blue-900">{t('checkout.securePayment')}</h3>
                   </div>
                   <p className="text-blue-700">
-                    После оплаты через Stripe ваш билет будет автоматически приобретен и отправлен на email.
+                    {t('checkout.paymentDescription')}
                   </p>
                 </div>
 
                 {/* Order Summary */}
                 <div className="border border-gray-200 rounded-xl p-6 mb-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Итоговая стоимость</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('checkout.totalCost')}</h3>
                   
                   <div className="space-y-3">
                     <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-600">Базовая стоимость билета:</span>
+                      <span className="text-gray-600">{t('checkout.baseCost')}</span>
                       <span className="font-medium">
                         {flightData ? (parseFloat(flightData.total_amount) - 15).toFixed(2) : '0.00'} {flightData?.total_currency || 'EUR'}
                       </span>
                     </div>
                     <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                      <span className="text-gray-600">Наша комиссия:</span>
+                      <span className="text-gray-600">{t('checkout.ourCommission')}</span>
                       <span className="font-medium text-orange-600">€15.00</span>
                     </div>
                     <div className="flex justify-between items-center py-3 text-lg font-bold">
-                      <span>Итого к оплате:</span>
+                      <span>{t('checkout.totalToPay')}</span>
                       <span className="text-xl">
                         {flightData?.total_amount || '0.00'} {flightData?.total_currency || 'EUR'}
                       </span>

@@ -178,5 +178,59 @@
     "select": "Selectează",
     "cancel": "Anulează",
     "confirm": "Confirmă"
+  },
+  "checkout": {
+    "title": "Rezervarea biletului",
+    "titleWithRoute": "Rezervarea biletului {from} → {to}",
+    "passengerInfo": "Informații despre pasageri",
+    "passenger": "Pasager",
+    "firstName": "Prenume",
+    "lastName": "Nume de familie",
+    "gender": "Gen",
+    "male": "Masculin",
+    "female": "Feminin",
+    "dateOfBirth": "Data nașterii",
+    "email": "Email",
+    "phone": "Telefon",
+    "continue": "Continuă",
+    "back": "← Înapoi",
+    "payment": "Plata biletului",
+    "securePayment": "Plată securizată prin Stripe",
+    "paymentDescription": "După plata prin Stripe, biletul dumneavoastră va fi cumpărat automat și trimis pe email.",
+    "totalCost": "Cost total",
+    "baseCost": "Costul de bază al biletului:",
+    "ourCommission": "Comisionul nostru:",
+    "totalToPay": "Total de plătit:",
+    "passengers": "Pasageri",
+    "payButton": "💳 Plătește {amount} {currency}",
+    "creatingPayment": "Se creează plata...",
+    "additionalInfo": "După plata cu succes, biletul va fi trimis la adresa de email specificată. Procesul poate dura câteva minute.",
+    "orderDetails": "Detaliile comenzii",
+    "flight": "Zbor",
+    "loadingFlightData": "Se încarcă datele zborului...",
+    "ticketBasePrice": "Bilet (preț de bază)",
+    "total": "Total",
+    "loadingPage": "Se încarcă pagina...",
+    "placeholders": {
+      "firstName": "Introduceți prenumele (minimum 2 litere în engleză)",
+      "lastName": "Introduceți numele de familie (minimum 2 litere în engleză)",
+      "email": "exemplu@email.com"
+    },
+    "validation": {
+      "firstNameError": "Prenumele trebuie să conțină cel puțin 2 litere în engleză",
+      "lastNameError": "Numele de familie trebuie să conțină cel puțin 2 litere în engleză",
+      "emailError": "Introduceți o adresă de email validă",
+      "phoneError": "Introduceți un număr de telefon valid"
+    },
+    "errors": {
+      "sessionExpired": "❌ Sesiunea a expirat. Vă rugăm să începeți căutarea din nou.",
+      "sessionValidationError": "❌ Eroare de validare a sesiunii. Vă rugăm să încercați din nou.",
+      "missingFlightData": "Lipsesc datele zborului sau sesiunea nu este validă",
+      "fillAllFields": "Vă rugăm să completați toate câmpurile obligatorii corect",
+      "orderCreationError": "Eroare la crearea comenzii: {error}",
+      "paymentSessionError": "Eroare la crearea sesiunii de plată: {error}",
+      "paymentProcessingError": "Eroare la procesarea plății: {error}",
+      "paymentRejected": "Plata respinsă"
+    }
   }
 } 

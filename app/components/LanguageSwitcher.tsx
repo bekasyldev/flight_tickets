@@ -34,8 +34,8 @@ export default function LanguageSwitcher() {
   ]
 
   const currencies: CurrencyOption[] = [
-    { code: 'USD', name: 'USD', fullName: t('currencies.USD'), symbol: '$' },
     { code: 'EUR', name: 'EUR', fullName: t('currencies.EUR'), symbol: '€' },
+    { code: 'USD', name: 'USD', fullName: t('currencies.USD'), symbol: '$' },
   ]
 
   useEffect(() => {
