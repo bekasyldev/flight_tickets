@@ -231,6 +231,268 @@
       "paymentSessionError": "Eroare la crearea sesiunii de plată: {error}",
       "paymentProcessingError": "Eroare la procesarea plății: {error}",
       "paymentRejected": "Plata respinsă"
+    },
+    "terms": {
+      "agreeToTerms": "Accept",
+      "tariffRules": "regulile tarifului",
+      "termsAndConditions": "Termenii și condițiile",
+      "rulesForSpecialNeeds": "Regulile pentru persoanele cu nevoi speciale",
+      "dataProcessingConsent": "Sunt de acord că datele personale introduse vor fi procesate.",
+      "travelRequirements": "Înainte de rezervare, precum și înainte de plecare, familiarizați-vă cu condițiile de călătorie MAE (certificate, documente de călătorie și necesitatea obținerii unei vize). Asigurați-vă că toate documentele de călătorie sunt valide.",
+      "ticketConditions": {
+        "title": "Informații importante:",
+        "nonTransferable": "Biletele nu sunt transferabile, modificarea numelui și prenumelui după emiterea biletului nu este permisă;",
+        "priceIncludes": "Prețul include costul, taxele aeroportuare și taxele de serviciu;",
+        "additionalServices": "Costul nu include taxele suplimentare percepute direct de compania aeriană (bagaj suplimentar, modificări etc.);",
+        "refunds": "Reducerile și taxele de serviciu nu sunt rambursabile;",
+        "documentation": "Toate formalitățile legate de regimul de viză sau valabilitatea documentelor de călătorie trebuie verificate înainte de data plecării, responsabilitatea pentru corectitudinea lor revine pasagerilor, agenția nu poartă nicio responsabilitate în cazul lipsei vizelor sau documentelor expirate."
+      },
+      "privacyNotice": "* Accesând site-ul aviatickets.ro, în conformitate cu prevederile Legii nr. 133 din 07.08.2011 privind protecția datelor personale, utilizatorul își confirmă acordul pentru utilizarea datelor sale personale de către aviatickets.ro pentru realizarea obiectivelor de prioritizare/rezervare a biletelor de avion la utilizarea site-ului aviatickets.ro.",
+      "bookNow": "Rezervă acum",
+      "paymentInfo": "După plata cu succes, biletul va fi trimis la adresa de email specificată. Procesul poate dura câteva minute."
+    }
+  },
+  "terms": {
+    "title": "Termeni și condiții",
+    "introduction": "Termenii, noțiunile și condițiile generale reglementează relația dintre aviagrand.euși Utilizatorul/Clientul privind folosirea și achiziționarea serviciilor de rezervare a biletelor de avion și alte servicii turistice disponibile.",
+    "platformDescription": "aviagrand.eueste o platformă de vânzare online a biletelor de avion, precum și alte servicii turistice. Pentru serviciile achitate în MDL, plățile sunt procesate de Societatea comercială \"EXPLOR TUR\" S.R.L., INDO 1012600013482, cu sediul MD-2004, mun. Chişinău, sec. Centru, str. 31 August 1989, 64, Republica Moldova prin intermediul B.C. Victoriabank S.A. și B.C. MAIB S.A. (bănci înregistrate în Republica Moldova).",
+    "paymentProcessing": {
+      "mdl": "Pentru serviciile achitate în MDL, plățile sunt procesate de Societatea comercială EXPLOR TUR S.R.L., INDO 1012600013482, cu sediul MD-2004, mun. Chişinău, sec. Centru, str. 31 August 1989, 64, Republica Moldova prin intermediul B.C. Victoriabank S.A. și B.C. MAIB S.A.",
+      "foreign": "Iar pentru serviciile achitate în valută alta de cât MDL (EUR, USD etc.) plățile sunt procesate de către de EMA Plus Solutions S.R.L. Registrul Comerțului J40/19757/2017 prin intermediul NETOPIA Payments."
+    },
+    "agreement": "Aceşti termeni şi condiţii, care pot fi amendaţi din când în când, se aplică direct sau indirect (prin distribuitori) tuturor serviciilor noastre disponibile online, prin e-mail, telefon. Prin accesarea, căutarea şi utilizarea website-ului/softului nostru şi/sau prin efectuarea unei rezervări, confirmaţi şi sunteţi de acord că aţi citit, înţeles şi aţi fost de acord cu toţi termenii şi condiţiile precizate mai jos.",
+    "ownership": "Aceste pagini, conţinutul şi infrastructura acestor pagini şi serviciul de rezervări online oferit pe aceste pagini şi prin acest website sunt în proprietatea, operate şi furnizate de www.ZBOR.MD.md şi sunt furnizate doar pentru uzul dumneavoastră personal, non-comercial.",
+    "flightConditions": {
+      "title": "Condiții bilete de avion",
+      "reservationTerms": "În momentul efectuării rezervării, vi se vor afișa termenele de plată puse la dispoziție de companiile aeriene. Pentru rezervările ale companiilor de linie, cele mai multe companii de linie solicită ca plata biletelor să fie facută în maxim 24 pînă la 48 ore, timp în care aviagrand.euvă garantează disponibilitatea locurilor și a tarifelor.",
+      "lowCostTerms": "Pentru biletele low cost, FLY ONE și biletele de avion cu Conexiuni Inteligente nu se pot efectua rezervări fără ca plata să fie înregistrată în conturile Zbor.md, prin urmare aviagrand.eunu vă garantează rezervarea locurilor și a tarifelor comunicate în momentul cererii de rezervare.",
+      "priceChanges": "Atenție: între momentul efectuării cererilor de rezervare pe site sau telefonic și momentul achitării biletelor de avion și vizualizării plății în contul aviagrand.eude către angajații săi, pot aparea modificări de tarife sau locurile pot să nu mai fie disponibile."
+    },
+    "cancellations": {
+      "title": "Anulari/Modificari",
+      "responsibility": "În cazul în care doriti anularea sau modificarea serviciului rezervat sau achiziționat (și Furnizorul de servicii transport permite acest lucru), este responsabilitatea dvs. de a informa în scris sau telefonic aviagrand.eudespre intențiile dvs.",
+      "fees": "În eventualitatea modificării unei rezervari (incluzînd, dar făra a se limita, anulări voluntare sau involuntare, restituiri de sume, schimbari de nume), aviagrand.euîși rezervă dreptul de a aplica anumite taxe pentru a acoperi costurile administrative care pot rezulta din aceasta acțiune.",
+      "serviceFee": "În cazul anulării biletelor de avion din motive voluntare, taxa de serviciu furnizat percepută în momentul emiterii biletului, nu se rambursează.",
+      "forceMajeure": "În caz de forță majoră și nu numai, compania aeriană poate anula sau întarzia zborul, precum și să anuleze rezervarea fără a notifica în prealabil Pasagerul, urmînd ca banii să ii fie restituiți pasagerului sau să i se propuna noi variante de zbor.",
+      "tariffRules": "Regulile tarifare impuse de companiile aeriene cu privire la schimbarea sau anularea biletelor de avion achitate sunt afișate la momentul rezervării. După achitare schimbarea sau anularea biletelor de avion se efectuează strict conform acelor reguli tarifare."
+    },
+    "baggage": {
+      "title": "Bagaje",
+      "rules": "Fiecare companie aeriană are propriile reguli de transport a bagajelor. Aceste informații vă sunt prezentate pe site, în timpul procesului de rezervare sau de către consultanții Zbor.md, telefonic.",
+      "inclusion": "Pentru unele companii aeriene, bagajul de mînă și/sau cală este inclus în tariful comunicat pe site. Pentru companiile low cost și pentru unele companii de linie, bagajele sunt taxate separat față de prețul biletelor și aceste informații vă vor fi furnizate în timpul procesului de rezervare.",
+      "limits": "Fiecare companie aeriană are limite diferite (nr. de kilograme sau lungime/lățime/înălțime) pentru bagajele de mînă sau de cală. În cazul în care nu vă încadrați în aceste dimensiuni, compania aeriana are dreptul de a vă taxa suplimentar."
+    },
+    "checkin": {
+      "title": "Check-in",
+      "fees": "Check-in-ul la aeroport poate fi efectuat atît pentru companiile de linie cît și pentru cele low cost, însa pentru cele low cost, FLY ONE și UIA se plăteșe o taxă suplimentară la momentul înregistrării.",
+      "service": "Pentru a evita achitarea unei taxe suplimentare, aviagrand.euvă recomandă să efectuați check-in-ul online înainte de zbor. Informațiile despre efectuarea check-in-ului online vă vor fi comunicate de agenții aviagrand.euîn momentul efectuării rezervării."
+    },
+    "smartConnections": {
+      "title": "Conexiuni Inteligente",
+      "description": "Site-ul de bilete de avion online aviagrand.euoferă Utilizatorilor săi o aplicație Conexiuni Inteligente (numită în continuare \"Conexiuni Inteligente\"), cee ace reprezintă un algoritm de căutare avansat pentru combinații de zboruri.",
+      "risks": "Luînd în considerare că Utilizatorul cumpără bilete separate pentru fiecare zbor ca parte a Opțiunii de zbor și întrucat configurațiile conexiunilor de zbor pot oferi o perioadă scurtă de timp pentru conexiune, în cumpărarea de bilete pentru o Opțiune de zbor cu Conexiuni Inteligente,poate sa apară riscul anulării unui zbor, întarzierea sau schimbarea orei.",
+      "separateFlights": "Zboruri Separate - Opțiunile de zbor cu Conexiuni Inteligente, evedențiate prin sintagma \"Zboruri separate\", nu sunt acoperite de către Garanția Zbor.md. Tot riscul pentru pierderea zborurilor este al pasagerului"
+    },
+    "forceMajeure": {
+      "title": "Forță majoră",
+      "definition": "Prin \"forţă majoră\" se înteleg evenimentele imprevizibile care sînt provocate de fenomene ale naturii: cutremur de pamînt, alunecare de teren, incendiu, secetă, vînt puternic, ploaie torenţială, inundaţie, ger, înzapezire etc. Sau de circumstanţe economice sau sociale: revoluţie, stare beligerantă, blocadă, grevă, faliment, interdicţie la nivel statal a importului sau exportului, epidemie etc.",
+      "recognition": "Evenimentul poate fi recunoscut ca forţă majoră numai în cazul cînd existenţa lui a dus în mod obiectiv la imposibilitatea indeplinirii obligaţiilor contractuale sau la îndeplinirea lor neconformă.",
+      "civilCode": "Conform art. 904 art.1 Cod Civil al Republicii Moldova: Justificarea datorită unui impediment (1) Neexecutarea obligației debitorului este justificată dacă ea se datorează unui impediment în afara controlului debitorului și dacă debitorului nu i se putea cere în mod rezonabil să evite sau să depășească impedimentul ori consecințele acestuia."
+    },
+    "services": {
+      "title": "1. SERVICII",
+      "onlineDatabase": "Prin intermediul paginii web www.ZBOR.MD.md și/sau softului specializat, compania EXPLOR-TUR S.R.L. și partenerii afiliaţi, oferă o bază de date online dinamică de rezervare şi achitare a biletelor de avion.",
+      "information": "Informaţia oferită pe pagina noastră web la interpelarea clientului privind variantele de zbor şi preţurile acestora reprezintă informaţia companiilor aeriene, care efectuează rutele solicitate.",
+      "accommodationPlatform": "Prin acest website, noi oferim o platformă online prin intermediul căreia toate tipurile de cazare temporară îşi pot promova camerele pentru a fi rezervate.",
+      "supplierResponsibility": "Fiecare furnizor rămâne responsabil tot timpul pentru exactitatea, integritatea şi corectitudinea informaţiilor prezentate pe website-ul nostru.",
+      "personalUse": "Serviciile companiei aviagrand.eusunt disponibile exclusiv pentru utilizarea personală şi non comercială."
+    },
+    "tariffs": {
+      "title": "4. TARIFE ȘI PREȚURI",
+      "searchResults": "Ca răspuns la interpelarea completată de client/utilizator în formularul de căutare pe pagina web www.aviagrand.eusau prin intermediul softului aferent, se afişează toate variantele de serviciile turistice interpelate și accesibile la momentul interpelării şi preţurile valabile la momentul efectuării solicitării respective.",
+      "specialOffers": "La unele tarife sau oferte speciale nu se pot face anulări sau modificări. Clientul/Utilizatorul urmează să verifice regulile concrete ale tarifului serviciilor turistice rezervate.",
+      "cardPayment": "Pentru plata cu cardul bancar direct pe site, aviagrand.euva încasa suma pentru bilet după cum urmeaza: în Lei (MDL) dacă cardul bancar al plătitorului are ca bază valuta LEI MDL; în valuta Euro, indiferent de valuta de bază a cardului plătitorului, excepție fac cardurile cu baza valutei Lei MDL.",
+      "pricingSystem": "Preturile serviciilor comercializate prin aviagrand.eusunt rezultanta unui sistem complex de reguli tarifare, tarife contractuale, tarife publicate în sistemele centralizate de rezervări, tarife speciale, taxă de serviciu al aviagrand.euetc."
+    },
+    "otherConditions": {
+      "title": "5. ALTE CONDIȚII",
+      "legislation": "Acest Regulament, cât şi prestarea serviciilor noastre sunt reglementate de legislaţia în vigoare a Republicii Moldova, Regulile Asociaţiei Internaţionale de Transport Aerian (IATA – International Air Transport Association). și Convenția de la Varșovia",
+      "acknowledgment": "Afișarea de către aviagrand.eua prezentelor condiții generale presupune obligativitatea Clientului/Utilizatorului de a le citi. Se consideră ca Client/Utilizator/Pasager care a achiziționat serviciul turistic la aviagrand.eua luat la cunoștința despre conținutul acestor condiții si el nu va mai putea invoca ulterior necunoașterea lor sau lipsa de informare.",
+      "intellectualProperty": "Dacă nu este convenit altfel, informaţia şi orice programe computerizate, software-ul, necesare pentru prestarea serviciilor aviagrand.euşi folosite pe pagina web www.ZBOR.MD.md şi respective drepturile de autor şi economice asupra acestora în calitate de proprietate intelectuală aparţin aviagrand.eusau furnizorilor acesteia.",
+      "disputes": "Toate litigiile, apărute în legătură cu acest Regulament, cu contractul de vînzare bilete avia, contractul de transport şi prestarea serviciilor noastre, se soluţionează prin negocieri sau în instanţele de judecată ale Republicii Moldova, dacă Agenţia nu va indica altceva.",
+      "liability": "Conform limitărilor, stabilite în acest Regulament de prestare a serviciilor, aviagrand.eupoartă răspundere numai pentru daune directe, cauzate real sau ca urmare a ne-executării reale a obligaţiilor noastre în cadrul prestării de către noi a serviciilor şi numai în limita comisionului încasat de la Furnizorul serviciului respectiv."
+    },
+    "dataProtection": {
+      "title": "PROTECTIA DATELOR CU CARACTER PERSONAL",
+      "commitment": "Angajamentul EXPLOR TUR SRL cu privire la protectia datelor cu caracter personal. Increderea dumneavoastră în serviciile și personalul nostru este una dintre principalele noastre preocupări.",
+      "importance": "EXPLOR TUR SRL cunoaște importanța datelor dumneavoastra personale și se angajează să protejeze confidențialitatea și securitatea acestora.",
+      "confidentiality": "EXPLOR TUR SRL respectă confidenţialitatea tuturor clienţilor noştri şi confidenţialitatea tuturor vizitatorilor website-urilor noastre.",
+      "whatData": "Ce date cu caracter personal prelucreaza EXPLOR TUR SRL?",
+      "dataTypes": "Prelucrarea datelor cu caracter personal reprezintă orice operațiune sau set de operațiuni, care se efectuează asupra datelor dumneavoastra cu caracter personal.",
+      "purposes": "Care sunt scopurile colectarii datelor cu caracter personal?",
+      "purposesList": {
+        "commercial": "Derularea activitatii comerciale/contractuale a EXPLOR TUR SRL",
+        "billing": "Facturarea si incasarea valorii serviciilor EXPLOR TUR SRL",
+        "marketing": "Marketing, promovare, reclama, publicitate, concursuri, loterii publicitare, programe de loialitate",
+        "customerRelations": "Gestionarea relatiilor cu clientii; comunicarea comerciala cu clientii prin orice mijloc de comunicare",
+        "legalObligations": "Indeplinirea obligatiilor legale incidente",
+        "communication": "Comunicarea cu organismele/autoritatile/institutiile publice sau de interes public"
+      },
+      "yourRights": "Care sunt drepturile dumneavoastra?",
+      "rightsDescription": "Prin citirea acestui document, dumneavoastra ati fost informat/a cu privire la drepturile de care beneficiati conform prevederilor legale aplicabile.",
+      "exercisingRights": "Cum va puteti exercita drepturile dumneavoastra?",
+      "contactInfo": "Pentru exercitarea acestor drepturi, dumneavoastra va puteti adresa Specialistului de date personale din cadrul EXPLOR TUR SRL cu o cerere scrisa la adresa de e-mail: Aviagrand2025@gmail.com"
+    },
+    "contact": {
+      "title": "Informații de contact",
+      "company": "Companie",
+      "address": "Adresă",
+      "email": "Email",
+      "dataProtectionEmail": "Email protecția datelor"
+    },
+    "lastUpdated": "Ultima actualizare: Septembrie 2025"
+  },
+  "specialNeeds": {
+    "title": "Reguli pentru Persoanele cu Nevoi Speciale",
+    "subtitle": "Informații despre serviciile de accesibilitate și asistența pentru pasagerii cu dizabilități",
+    "limitedMobility": {
+      "title": "Pasageri cu Mobilitate Limitată",
+      "servicesInfo": "Toate serviciile publicate pe site, afișate în birou și/sau prin software-ul ZBOR.MD, depind de disponibilitatea Furnizorilor de servicii, condițiile de transport (inclusiv regulile de transport pentru pasageri stabilite de companiile aeriene) și vor aplica Termeni suplimentari prevăzuți de ZBOR.MD.",
+      "supplierConditions": "Condițiile Furnizorilor de servicii pot include prevederi privind diverse proceduri de îmbarcare, obligații (dacă se aplică) sau alte restricții. aviagrand.eunu este responsabil pentru introducerea acestor reguli, dar din grija pentru clienții săi, în scopul prevenirii și eliminării discriminării și asigurării egalității persoanelor cu nevoi speciale vă informează următoarele.",
+      "contractInfo": "Contractul dumneavoastră de transport cu compania aeriană care vă oferă călătoria internațională, națională sau partea națională a călătoriei internaționale este reglementat de această notificare, orice notificare sau condiții ale transportatorului individual, prevederile aplicabile, regulile și politicile.",
+      "carrierRights": "Transportatorul are dreptul să refuze transportul pasagerilor care nu respectă legislația aplicabilă sau nu furnizează în timp util toate documentele de călătorie necesare și informațiile despre nevoile speciale.",
+      "acceptanceFactors": {
+        "title": "Acceptarea persoanelor cu dizabilități se bazează pe următorii factori:",
+        "handlingCapability": "Capacitatea agentului de handling de a oferi astfel de servicii (echipamente necesare, personal instruit).",
+        "limitations": "Limitări (adică limitări maxime PMR la bord pentru fiecare tip de aeronavă, acceptarea la bord a anumitor categorii PMR).",
+        "comfortFactors": "Pentru a asigura confortul călătoriei persoanelor cu dizabilități, trebuie luați în considerare o serie de factori, cum ar fi starea de sănătate a persoanei, echipamentele necesare, transportatorii aerieni implicați, restricțiile maxime pe tipuri de aeronave."
+      },
+      "timeRequirement": {
+        "title": "Preaviz de 72 de ore necesar",
+        "description": "În această privință, orice serviciu special pentru persoanele cu dizabilități trebuie solicitat cel târziu cu 72 de ore înainte de plecare, astfel încât transportatorul să poată organiza și finaliza pregătirile necesare. De obicei, aceste solicitări sunt declarate agentului la rezervarea biletului, care introduce informațiile necesare în rezervarea pasagerului. Nerespectarea acestei reguli poate duce la anularea rezervării zborului de către compania aeriană."
+      },
+      "medicalRequirements": "Pentru persoanele care suferă de anumite boli și sunt considerate bolnave, companiile aeriene vor solicita date medicale despre starea de sănătate a pasagerului. Medicul curant al pasagerului trebuie să completeze un formular special MEDIF și să îl trimită companiei.",
+      "medifFormInfo": "Formularele pot fi găsite pe site-urile oficiale ale companiilor aeriene care operează zborul specific, sau solicitate de la agent în timpul rezervării biletului. După completarea de către medicul curant, formularul trebuie trimis la adresa de email pe care o puteți găsi pe paginile web oficiale ale companiilor aeriene care operează zborul specific, sau trimis prin agentul care a făcut rezervarea."
+    },
+    "wheelchairCategories": {
+      "title": "Categorii de Scaune cu Rotile",
+      "wchr": {
+        "title": "WCHR - Rampă pentru Scaun cu Rotile",
+        "description": "Scaunul este necesar pasagerului doar pentru călătorii pe distanțe lungi; capabil să urce scările fără asistență."
+      },
+      "wchs": {
+        "title": "WCHS - Trepte pentru Scaun cu Rotile",
+        "description": "Pasagerul nu poate urca scările, dar poate merge distanțe scurte independent."
+      },
+      "wchc": {
+        "title": "WCHC - Cabină pentru Scaun cu Rotile",
+        "description": "Pasagerul necesită asistență constantă, nu se poate deplasa la bord fără ajutorul altei persoane - necesită întotdeauna propriul scaun cu rotile."
+      }
+    },
+    "wheelchairTransport": {
+      "title": "Transportul Scaunelor cu Rotile",
+      "wheelchairInfo": "Dacă călătoriți cu un scaun cu rotile, vă rugăm să ne informați despre greutatea, dimensiunile și alte caracteristici ale acestuia (de exemplu, pliabil/nepliabil, sport/electric, etc.).",
+      "electricWheelchairs": {
+        "title": "Scaune cu Rotile Electrice:",
+        "spillProof": "Scaunele cu rotile alimentate cu baterie electrică sunt acceptate pentru transport de către companiile aeriene în condiții speciale. Bateriile care nu se varsă (uscate sau gel) pot rămâne atașate la scaun, dar trebuie fixate și deconectate, iar terminalele izolate înainte de îmbarcarea în aeronavă.",
+        "wetLithium": "Scaunele cu rotile cu baterii umede sau cu litiu nu sunt acceptate pentru transport."
+      },
+      "freeTransport": "Transportul mijloacelor de mobilitate (scaun cu rotile, cârje, alte echipamente de asistență) pentru persoanele cu mobilitate limitată este gratuit. Este transportat doar în compartimentul de bagaje."
+    },
+    "sensoryImpairments": {
+      "title": "Pasageri cu Deficiențe Parțiale de Auz sau Vedere",
+      "bookingNotification": "Pasagerul trebuie să informeze în timpul rezervării despre deficiența sa, pentru a transmite informația companiei aeriene, care va organiza asistența necesară. Pasagerii cu deficiențe de auz și vedere nu sunt obligați să prezinte un certificat medical.",
+      "medicalCertificate": "Pasagerii cu deficiențe de auz și vedere nu sunt obligați să prezinte un certificat medical.",
+      "multipleSensory": "Pasagerii cu deficiențe senzoriale multiple (vedere și auz) vor trebui să fie însoțiți pe toată durata zborului.",
+      "seatingPreferences": "Pasagerii cu mobilitate limitată sau deficiențe senzoriale își pot exprima preferința pentru locuri la bord, dar din motive legate de siguranța zborului, pot fi restricționați la anumite rânduri sau locuri (de exemplu, rândurile cu ieșiri de urgență)."
+    },
+    "serviceAnimals": {
+      "title": "Animale de Serviciu",
+      "introduction": "Pasagerii cu deficiențe de vedere și auz pot fi însoțiți de animale ghid (câini). Câinii de serviciu sunt acceptați gratuit. Pasagerii care călătoresc cu câini de serviciu vor fi informați despre acest lucru în timpul rezervării.",
+      "conditions": {
+        "title": "Condiții pentru acceptarea câinilor de serviciu pe zboruri:",
+        "weightSize": "Greutatea și dimensiunea pot fi limitate",
+        "certificate": "Pasagerul trebuie să aibă un certificat care confirmă statutul de Animal Ghid",
+        "noPlaneTravel": "Animalului nu îi este permis să călătorească prin avion",
+        "noSeat": "Animalului nu îi este permis să ocupe un loc",
+        "muzzleLeash": "Animalul trebuie să fie cu botniță și în lesă"
+      }
+    },
+    "importantNotices": {
+      "title": "Notificări Importante",
+      "zborResponsibility": "aviagrand.eunu este responsabil și nu poate solicita compensații deoarece pasagerul nu a zburat, i s-a refuzat îmbarcarea în condițiile în care pasagerul nu a furnizat la timp informații despre nevoile speciale.",
+      "multipleCarriers": "Dacă călătoria dvs. implică transport de către diferiți transportatori, ar trebui să verificați cu fiecare transportator informațiile despre regulile aplicabile persoanelor cu nevoi speciale.",
+      "contactCarrier": "CONTACTAȚI TRANSPORTATORUL PENTRU INFORMAȚII SUPLIMENTARE"
+    },
+    "contact": {
+      "title": "Informații de Contact",
+      "company": "Companie",
+      "email": "Email"
+    },
+    "lastUpdated": "Ultima actualizare: Septembrie 2025"
+  },
+  "tariffRules": {
+    "title": "Reguli Tarifare",
+    "close": "Închide",
+    "bookingRules": {
+      "title": "Reguli și Caracteristici de Rezervare a Biletului",
+      "features": {
+        "title": "Acest tarif include:",
+        "noPower": "Fără alimentare la bord",
+        "handBaggageOnly": "Prețul biletului include doar bagaj de mână",
+        "noExchange": "Biletul nu poate fi schimbat sau returnat",
+        "noSeatSelection": "Înregistrare fără posibilitatea de a alege un loc"
+      }
+    },
+    "cancellation": {
+      "title": "Anulare și Modificări",
+      "before24h": {
+        "title": "Anulare înainte de 24 de ore",
+        "description": "Anularea gratuită este permisă cu până la 24 de ore înainte de plecare. Se pot aplica taxe de procesare pentru rambursări."
+      },
+      "after24h": {
+        "title": "Anulare după 24 de ore",
+        "description": "Biletele nu sunt rambursabile după 24 de ore înainte de plecare. Modificările nu sunt permise."
+      },
+      "noShow": {
+        "title": "Nu te-ai prezentat",
+        "description": "Dacă nu te prezinți la zborul tău, valoarea biletului se pierde și nu se va emite nicio rambursare."
+      }
+    },
+    "baggage": {
+      "title": "Reguli pentru Bagaje",
+      "handBaggage": {
+        "title": "Bagaj de Mână",
+        "weight": "Greutate maximă 8kg",
+        "dimensions": "Dimensiuni maxime 55cm x 40cm x 20cm",
+        "included": "Inclus în prețul biletului"
+      },
+      "checkedBaggage": {
+        "title": "Bagaj Înregistrat",
+        "notIncluded": "Nu este inclus în prețul biletului",
+        "additionalFee": "Disponibil contra taxă suplimentară",
+        "airlineRules": "Supus regulilor și taxelor specifice companiei aeriene"
+      }
+    },
+    "additionalServices": {
+      "title": "Servicii Suplimentare",
+      "seatSelection": "Selectarea locului disponibilă contra taxă suplimentară",
+      "meals": "Mese și băuturi disponibile pentru cumpărare",
+      "priorityBoarding": "Îmbarcarea prioritară disponibilă contra taxă suplimentară",
+      "insurance": "Asigurarea de călătorie recomandată dar nu este inclusă"
+    },
+    "importantNotes": {
+      "title": "Note Importante",
+      "nameChange": "Modificările de nume nu sunt permise după rezervare",
+      "documentation": "Documente de călătorie valide necesare (pașaport, viză dacă este cazul)",
+      "checkinTime": "Check-in-ul se deschide cu 2 ore înainte de plecare, se închide cu 40 de minute înainte",
+      "airlineRules": "Toate serviciile sunt supuse termenilor și condițiilor companiei aeriene"
+    },
+    "contact": {
+      "title": "Ai nevoie de ajutor?",
+      "helpText": "Pentru întrebări despre rezervarea ta sau aceste reguli tarifare, contactează echipa noastră de suport:",
+      "email": "Email",
+      "phone": "Telefon"
     }
   }
 } 

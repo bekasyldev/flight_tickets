@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
+import TariffRulesModal from '../components/TariffRulesModal';
 import { Offer, Airline, Segment } from '../types';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
@@ -48,7 +49,11 @@ function CheckoutContent() {
   ]);
 
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [dataProcessingAccepted, setDataProcessingAccepted] = useState(false);
+  const [travelRequirementsAccepted, setTravelRequirementsAccepted] = useState(false);
   const [sessionValidated, setSessionValidated] = useState(false);
+  const [isTariffModalOpen, setIsTariffModalOpen] = useState(false);
 
   const [flightData, setFlightData] = useState<FlightData | null>(null);
 
@@ -372,14 +377,105 @@ function CheckoutContent() {
                     </div>
                   </div>
                 ))}
+                                {/* Terms and Conditions */}
+                <div className="border border-gray-200 rounded-xl p-6 mb-6 bg-gray-50">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('checkout.terms.ticketConditions.title')}</h3>
+                  
+                  {/* Terms Checkboxes */}
+                  <div className="space-y-4 mb-6">
+                    <div className="flex items-start">
+                      <input
+                        type="checkbox"
+                        id="terms-agreement"
+                        checked={termsAccepted}
+                        onChange={(e) => setTermsAccepted(e.target.checked)}
+                        className="mt-1 mr-3 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        required
+                      />
+                      <label htmlFor="terms-agreement" className="text-sm text-gray-700">
+                        {t('checkout.terms.agreeToTerms')}{' '}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setIsTariffModalOpen(true);
+                          }}
+                          className="text-blue-600 hover:underline"
+                        >
+                          {t('checkout.terms.tariffRules')}
+                        </button>,{' '}
+                        <a
+                          href="/terms"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          {t('checkout.terms.termsAndConditions')}
+                        </a>,{' '}
+                        <a
+                          href="/rules-for-special-needs"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline"
+                        >
+                          {t('checkout.terms.rulesForSpecialNeeds')}
+                        </a>.
+                      </label>
+                    </div>
+
+                    <div className="flex items-start">
+                      <input
+                        type="checkbox"
+                        id="data-processing"
+                        checked={dataProcessingAccepted}
+                        onChange={(e) => setDataProcessingAccepted(e.target.checked)}
+                        className="mt-1 mr-3 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        required
+                      />
+                      <label htmlFor="data-processing" className="text-sm text-gray-700">
+                        {t('checkout.terms.dataProcessingConsent')}
+                      </label>
+                    </div>
+
+                    <div className="flex items-start">
+                      <input
+                        type="checkbox"
+                        id="travel-requirements"
+                        checked={travelRequirementsAccepted}
+                        onChange={(e) => setTravelRequirementsAccepted(e.target.checked)}
+                        className="mt-1 mr-3 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                        required
+                      />
+                      <label htmlFor="travel-requirements" className="text-sm text-gray-700">
+                        {t('checkout.terms.travelRequirements')}
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* Important Information */}
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                    <ul className="text-sm text-blue-800 space-y-2">
+                      <li>• {t('checkout.terms.ticketConditions.nonTransferable')}</li>
+                      <li>• {t('checkout.terms.ticketConditions.priceIncludes')}</li>
+                      <li>• {t('checkout.terms.ticketConditions.additionalServices')}</li>
+                      <li>• {t('checkout.terms.ticketConditions.refunds')}</li>
+                      <li>• {t('checkout.terms.ticketConditions.documentation')}</li>
+                    </ul>
+                  </div>
+
+                  {/* Privacy Notice */}
+                  <p className="text-xs text-gray-500 italic">
+                    {t('checkout.terms.privacyNotice')}
+                  </p>
+                </div>
                 
                 
                 <div className="flex justify-end">
                   <button
                     onClick={() => setCurrentStep(2)}
-                    disabled={!areAllPassengersValid()}
+                    disabled={!areAllPassengersValid() || !termsAccepted || !dataProcessingAccepted || !travelRequirementsAccepted}
                     className={`px-6 py-3 rounded-xl font-medium text-lg transition-colors ${
-                      areAllPassengersValid()
+                      areAllPassengersValid() && termsAccepted && dataProcessingAccepted && travelRequirementsAccepted
                         ? 'bg-orange-500 hover:bg-orange-600 text-white'
                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     }`}
@@ -447,18 +543,20 @@ function CheckoutContent() {
                   </div>
                 </div>
 
+
+
                 {/* Action Buttons */}
                 <div className="flex justify-between items-center">
                   <button
                     onClick={() => setCurrentStep(1)}
                     className="px-6 py-3 text-gray-600 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors font-medium"
                   >
-                    ← Назад
+                    ← {t('checkout.back')}
                   </button>
                   
                   <button
                     onClick={createStripePayment}
-                    disabled={isPaymentProcessing || !flightData}
+                    disabled={isPaymentProcessing || !flightData || !termsAccepted || !dataProcessingAccepted || !travelRequirementsAccepted}
                     className="px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-xl hover:bg-green-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center"
                   >
                     {isPaymentProcessing ? (
@@ -477,8 +575,7 @@ function CheckoutContent() {
                 {/* Additional Info */}
                 <div className="mt-6 p-4 bg-gray-50 rounded-xl">
                   <p className="text-sm text-gray-600 text-center">
-                    После успешной оплаты билет будет отправлен на указанный email адрес.
-                    Процесс может занять несколько минут.
+                    {t('checkout.terms.paymentInfo')}
                   </p>
                 </div>
               </div>
@@ -543,6 +640,13 @@ function CheckoutContent() {
           </div>
         </div>
       </div>
+      
+      {/* Tariff Rules Modal */}
+      <TariffRulesModal
+        isOpen={isTariffModalOpen}
+        onClose={() => setIsTariffModalOpen(false)}
+        flightRoute={flightData ? `${flightData.departure.code} → ${flightData.arrival.code}` : undefined}
+      />
     </div>
     </div>
   );

@@ -231,6 +231,268 @@
       "paymentSessionError": "Error creating payment session: {error}",
       "paymentProcessingError": "Error processing payment: {error}",
       "paymentRejected": "Payment rejected"
+    },
+    "terms": {
+      "agreeToTerms": "I accept",
+      "tariffRules": "tariff rules",
+      "termsAndConditions": "Terms and Conditions",
+      "rulesForSpecialNeeds": "Rules for persons with special needs",
+      "dataProcessingConsent": "I agree that the entered personal data will be processed.",
+      "travelRequirements": "Before booking, as well as before departure, familiarize yourself with MAE with travel conditions (certificates, travel documents and the need to obtain a visa). Make sure that all travel documents are valid.",
+      "ticketConditions": {
+        "title": "Important Information:",
+        "nonTransferable": "Tickets are non-transferable, name and surname changes after ticket registration are not allowed;",
+        "priceIncludes": "The price includes airport fees and service fees;",
+        "additionalServices": "Additional services charged directly by the airline are not included in the cost (additional baggage, changes, etc.);",
+        "refunds": "Discounts and service fees are non-refundable;",
+        "documentation": "All formalities related to the visa regime or validity of travel documents must be checked before the date of departure, passengers are responsible for their correctness, the agency bears no responsibility in case of absence of visas or expired documents."
+      },
+      "privacyNotice": "* By visiting the aviatickets.ro website, in accordance with the provisions of Law No. 133 of 07.08.2011 on personal data protection, the user confirms his consent to the use of his personal data by aviatickets.ro to achieve the goals of prioritizing/reserving airline tickets when using the aviatickets.ro website.",
+      "bookNow": "Book Now",
+      "paymentInfo": "After successful payment, the ticket will be sent to the specified email address. The process may take several minutes."
+    }
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "introduction": "The general terms, notions and conditions regulate the relationship between aviagrand.euand the User/Client regarding the use and purchase of airline ticket booking services and other tourist services available.",
+    "platformDescription": "aviagrand.euis an online sales platform for airline tickets, as well as other tourist services. For services paid in MDL, payments are processed by the Commercial Company \"EXPLOR TUR\" S.R.L., INDO 1012600013482, headquartered at MD-2004, mun. Chisinau, sec. Center, str. 31 August 1989, 64, Republic of Moldova through B.C. Victoriabank S.A. and B.C. MAIB S.A. (banks registered in the Republic of Moldova).",
+    "paymentProcessing": {
+      "mdl": "For services paid in MDL, payments are processed by the Commercial Company \"EXPLOR TUR\" S.R.L., INDO 1012600013482, headquartered at MD-2004, mun. Chisinau, sec. Center, str. 31 August 1989, 64, Republic of Moldova through B.C. Victoriabank S.A. and B.C. MAIB S.A.",
+      "foreign": "For services paid in currencies other than MDL (EUR, USD, etc.), payments are processed by EMA Plus Solutions S.R.L. Commercial Register J40/19757/2017 | CUI RO38540407 Bucharest Sector 1, GHEORGHE SIMIONESCU Entrance, No. 19, of. B26 through NETOPIA Payments, payment system administered by NETOPIA FINANCIAL SERVICES S.R.L."
+    },
+    "agreement": "These terms and conditions, which may be amended from time to time, apply directly or indirectly (through distributors) to all our services available online, by email, telephone. By accessing, searching and using our website/software and/or by making a reservation, you confirm and agree that you have read, understood and agreed to all the terms and conditions specified below, without restrictions. In case of disagreement with the described points, you may not use the services offered.",
+    "ownership": "These pages, their content and infrastructure and the online booking service offered on these pages and through this website (\"the service\") are owned, operated and provided by www.ZBOR.MD.md (\"ZBOR.MD\", \"we\", \"our\" or \"ours\") and are provided only for your personal, non-commercial use, according to the terms and conditions below.",
+    "flightConditions": {
+      "title": "Flight Ticket Conditions",
+      "reservationTerms": "When making a reservation, you will be shown the payment terms made available by the airlines. For regular airline reservations, most airlines require that ticket payments be made within a maximum of 24 to 48 hours, during which time aviagrand.euguarantees the availability of seats and fares.",
+      "lowCostTerms": "For low-cost tickets, FLY ONE and airline tickets with Smart Connections, reservations cannot be made without payment being registered in aviagrand.euaccounts, therefore aviagrand.eudoes not guarantee the reservation of seats and fares communicated at the time of the reservation request.",
+      "priceChanges": "Attention: between the time of making reservation requests on the site or by phone and the time of paying for airline tickets and viewing the payment in the aviagrand.euaccount by its employees, fare changes may occur or seats may no longer be available."
+    },
+    "cancellations": {
+      "title": "Cancellations/Modifications",
+      "responsibility": "If you want to cancel or modify the reserved or purchased service (and the Transport Service Provider allows this), it is your responsibility to inform aviagrand.euin writing or by phone about your intentions.",
+      "fees": "In the event of modifying a reservation (including, but not limited to, voluntary or involuntary cancellations, refunds, name changes), aviagrand.eureserves the right to apply certain fees to cover administrative costs that may result from this action.",
+      "serviceFee": "In case of voluntary cancellation of airline tickets, the service fee charged at the time of ticket issuance is not refunded.",
+      "forceMajeure": "In case of force majeure and not only, the airline may cancel or delay the flight, as well as cancel the reservation without prior notification to the Passenger, following which the money will be returned to the passenger or new flight options will be proposed.",
+      "tariffRules": "The tariff rules imposed by airlines regarding the change or cancellation of paid airline tickets are displayed at the time of booking. After payment, the change or cancellation of airline tickets is carried out strictly according to those tariff rules."
+    },
+    "baggage": {
+      "title": "Baggage",
+      "rules": "Each airline has its own baggage transport rules. This information is presented to you on the site, during the booking process or by aviagrand.euconsultants, by phone.",
+      "inclusion": "For some airlines, carry-on and/or checked baggage is included in the fare communicated on the site. For low-cost airlines and some regular airlines, baggage is charged separately from the ticket price and this information will be provided to you during the booking process.",
+      "limits": "Each airline has different limits (number of kilograms or length/width/height) for carry-on or checked baggage. If you do not fit within these dimensions, the airline has the right to charge you additionally."
+    },
+    "checkin": {
+      "title": "Check-in",
+      "fees": "Check-in at the airport can be done for both regular and low-cost airlines, but for low-cost airlines, FLY ONE and UIA, an additional fee is paid at the time of registration.",
+      "service": "To avoid paying an additional fee, aviagrand.eurecommends that you check in online before the flight. Information about online check-in will be communicated to you by aviagrand.euagents at the time of booking."
+    },
+    "smartConnections": {
+      "title": "Smart Connections",
+      "description": "The online airline ticket site aviagrand.euoffers its Users a Smart Connections application (hereinafter referred to as \"Smart Connections\"), which is an advanced search algorithm for flight combinations.",
+      "risks": "Taking into account that the User purchases separate tickets for each flight as part of the Flight Option and since flight connection configurations can offer a short period of time for connection, in purchasing tickets for a Smart Connections Flight Option, there may be a risk of flight cancellation, delay or time change.",
+      "separateFlights": "Separate Flights - Smart Connections flight options, highlighted by the phrase \"Separate flights\", are not covered by the aviagrand.euGuarantee. All risk for missing flights is the passenger's."
+    },
+    "forceMajeure": {
+      "title": "Force Majeure",
+      "definition": "By \"force majeure\" we understand unforeseeable events that are caused by natural phenomena: earthquake, landslide, fire, drought, strong wind, torrential rain, flood, frost, snow, etc. Or by economic or social circumstances: revolution, belligerent state, blockade, strike, bankruptcy, state-level prohibition of import or export, epidemic, etc.",
+      "recognition": "An event can be recognized as force majeure only when its existence objectively led to the impossibility of fulfilling contractual obligations or to their non-conforming fulfillment.",
+      "civilCode": "According to art. 904 art.1 Civil Code of the Republic of Moldova: Justification due to an impediment (1) Non-performance of the debtor's obligation is justified if it is due to an impediment beyond the debtor's control and if the debtor could not reasonably be required to avoid or overcome the impediment or its consequences."
+    },
+    "services": {
+      "title": "1. SERVICES",
+      "onlineDatabase": "Through the website www.ZBOR.MD.md and/or specialized software, the company \"EXPLOR-TUR\" S.R.L. and affiliated partners offer a dynamic online database for booking and purchasing airline tickets, with which upon request formulated by the client through a special search form, all available flight options and their prices at the time of the request can be displayed on the web page.",
+      "information": "The information offered on our web page upon client request regarding flight options and their prices represents information from airlines that operate the requested routes.",
+      "accommodationPlatform": "Through this website, we (www.ZBOR.MD.md and affiliated (distribution) partners) offer an online platform through which all types of temporary accommodation can promote their rooms to be booked, and through which website visitors can make these reservations.",
+      "supplierResponsibility": "Each supplier remains responsible at all times for the accuracy, completeness and correctness of the (descriptive) information (including prices and availability) presented on our website.",
+      "personalUse": "aviagrand.eucompany services are available exclusively for personal and non-commercial use. Therefore, the user does not have permission to resell, use, copy, monitor, display, save or reproduce any content or information, software, products or services available on the aviagrand.euwebsite for any commercial or competitive activity or purpose."
+    },
+    "tariffs": {
+      "title": "4. TARIFFS AND PRICES",
+      "searchResults": "In response to the request completed by the client/user in the search form on the web page www.aviagrand.euor through the related software, all the requested and accessible tourist service options at the time of the request and the prices valid at the time of making the respective request are displayed.",
+      "specialOffers": "For some tariffs or special offers, cancellations or modifications cannot be made. The Client/User should check the specific rules of the tariff for the reserved tourist services.",
+      "cardPayment": "For payment by bank card directly on the site, aviagrand.euwill collect the amount for the ticket as follows: in Lei (MDL) if the payer's bank card is based on LEI MDL currency; in Euro currency, regardless of the base currency of the payer's card, except for cards with Lei MDL base currency.",
+      "pricingSystem": "The prices of services sold through aviagrand.euare the result of a complex system of tariff rules, contractual tariffs, tariffs published in centralized reservation systems, special tariffs, aviagrand.euservice fee, etc."
+    },
+    "otherConditions": {
+      "title": "5. OTHER CONDITIONS",
+      "legislation": "This Regulation, as well as the provision of our services, are regulated by the legislation in force of the Republic of Moldova, the Rules of the International Air Transport Association (IATA) and the Warsaw Convention.",
+      "acknowledgment": "The display by aviagrand.euof these general conditions implies the obligation of the Client/User to read them. It is considered that the Client/User/Passenger who purchased the tourist service at aviagrand.euhas become aware of the content of these conditions and will no longer be able to invoke their ignorance or lack of information.",
+      "intellectualProperty": "Unless otherwise agreed, the information and any computer programs, software necessary for providing aviagrand.euservices and used on the web page www.ZBOR.MD.md and the respective copyright and economic rights over them as intellectual property belong to aviagrand.euor its suppliers.",
+      "disputes": "All disputes arising in connection with this Regulation, with the airline ticket sales contract, transport contract and the provision of our services are resolved through negotiations or in the courts of the Republic of Moldova, unless the Agency indicates otherwise.",
+      "liability": "According to the limitations established in this Service Provision Regulation, aviagrand.euis liable only for direct damages, actually caused or as a result of actual non-performance of our obligations in the provision of services by us and only within the limit of the commission collected from the respective Service Provider."
+    },
+    "dataProtection": {
+      "title": "PERSONAL DATA PROTECTION",
+      "commitment": "\"EXPLOR TUR\" SRL's commitment to personal data protection. Your trust in our services and staff is one of our main concerns. In this regard, to provide you with the best possible experience, we focus on continuous improvement in all our activities.",
+      "importance": "\"EXPLOR TUR\" SRL knows the importance of your personal data and is committed to protecting their confidentiality and security. Therefore, it is important for us to provide you in an integrated manner with information related to the processing of your personal data, within these Terms and Conditions.",
+      "confidentiality": "\"EXPLOR TUR\" SRL respects the confidentiality of all our clients and the confidentiality of all visitors to our websites and will treat/process personal data with great care, under adequate technical and organizational security conditions.",
+      "whatData": "What personal data does \"EXPLOR TUR\" SRL process?",
+      "dataTypes": "Processing of personal data represents any operation or set of operations, which is performed on your personal data, by automatic or non-automatic means, such as: collection, recording, organization, structuring, storage, adaptation or modification, extraction, consultation, use, disclosure by transmission, dissemination, or making available in any other way, alignment or combination, restriction, blocking, deletion, destruction, archiving.",
+      "purposes": "What are the purposes of personal data collection?",
+      "purposesList": {
+        "commercial": "Conducting the commercial/contractual activity of \"EXPLOR TUR\" SRL",
+        "billing": "Billing and collection of the value of \"EXPLOR TUR\" SRL services",
+        "marketing": "Marketing, promotion, advertising, publicity, contests, public lotteries, loyalty programs, including transmission of general or personalized commercial offers; development and improvement of services",
+        "customerRelations": "Customer relationship management; commercial communication with customers through any means of communication",
+        "legalObligations": "Fulfillment of applicable legal obligations",
+        "communication": "Communication with public bodies/authorities/institutions or of public interest"
+      },
+      "yourRights": "What are your rights?",
+      "rightsDescription": "By reading this document, you have been informed about the rights you benefit from, according to applicable legal provisions, respectively: the right of access, the right to rectification, the right to data deletion, the right to restrict processing, the right to data portability, the right to opposition and automated individual processing.",
+      "exercisingRights": "How can you exercise your rights?",
+      "contactInfo": "To exercise these rights, you can address the Personal Data Specialist within \"EXPLOR TUR\" SRL with a written, dated and signed request at the email address: data.protection@explor.md or at the following correspondence address: \"EXPLOR TUR\" mun. Chisinau, sec. Center, str. 31 August 1989, 64."
+    },
+    "contact": {
+      "title": "Contact Information",
+      "company": "Company",
+      "address": "Address",
+      "email": "Email",
+      "dataProtectionEmail": "Data Protection Email"
+    },
+    "lastUpdated": "Last updated: September 2025"
+  },
+  "specialNeeds": {
+    "title": "Rules for People with Special Needs",
+    "subtitle": "Information about accessibility services and assistance for passengers with disabilities",
+    "limitedMobility": {
+      "title": "Passengers with Limited Mobility",
+      "servicesInfo": "All services published on the site, displayed in the office and/or through aviagrand.eusoftware, depend on the availability of Service Providers, transport conditions (including passenger transport rules established by airlines) and will apply additional Terms provided by ZBOR.MD.",
+      "supplierConditions": "Service Provider conditions may include provisions regarding various boarding procedures, obligations (if applicable) or other restrictions. aviagrand.euis not responsible for introducing these rules, but out of care for its customers, in order to prevent and eliminate discrimination and ensure equality for people with special needs, informs you of the following.",
+      "contractInfo": "Your transport contract with the airline that provides you with international, domestic or domestic part of international travel is governed by this notice, any notice or conditions of the individual carrier, applicable provisions, rules and policies.",
+      "carrierRights": "The carrier has the right to refuse transportation to passengers who do not comply with applicable legislation or do not provide in a timely manner all necessary travel documents and information about special needs.",
+      "acceptanceFactors": {
+        "title": "Acceptance of people with disabilities is based on the following factors:",
+        "handlingCapability": "Ability of the handling agent to offer such type of services (necessary equipment, trained staff).",
+        "limitations": "Restrictions (i.e. maximum PMR limitations on board for each type of aircraft, acceptance on board of certain PMR categories).",
+        "comfortFactors": "To ensure the comfort of travel for people with disabilities, a number of factors must be considered, such as the person's health condition, necessary equipment, involved air carriers, maximum restrictions by aircraft types."
+      },
+      "timeRequirement": {
+        "title": "72-Hour Notice Required",
+        "description": "In this regard, any special service for people with disabilities must be requested no later than 72 hours before departure, so that the carrier can organize and complete the necessary preparations. Usually these requests are declared to the agent when booking the ticket, who enters the necessary information into the passenger's booking. Failure to comply with this rule may result in the airline canceling the flight booking."
+      },
+      "medicalRequirements": "For people who suffer from certain diseases and are considered sick, airlines will request medical data about the passenger's health condition. The passenger's attending physician must fill out a special MEDIF form and send it to the company.",
+      "medifFormInfo": "Forms can be found on the official websites of the airlines operating the specific flight, or requested from the agent during ticket booking. After completion by the attending physician, the form must be sent to the email address that you can find on the official web pages of the airlines operating the specific flight, or sent through the agent who made the booking."
+    },
+    "wheelchairCategories": {
+      "title": "Wheelchair Categories",
+      "wchr": {
+        "title": "WCHR - Wheelchair Ramp",
+        "description": "Chair required by passenger only for long-distance travel; able to climb stairs without assistance."
+      },
+      "wchs": {
+        "title": "WCHS - Wheelchair Steps",
+        "description": "Passenger cannot climb stairs, but can walk short distances independently."
+      },
+      "wchc": {
+        "title": "WCHC - Wheelchair Cabin",
+        "description": "Passenger requires constant assistance, cannot move on board without help from another person - always requires own wheelchair."
+      }
+    },
+    "wheelchairTransport": {
+      "title": "Wheelchair Transportation",
+      "wheelchairInfo": "If you are traveling with a wheelchair, please inform us of its weight, dimensions and other features (e.g. folding/non-folding, sports/electric, etc.).",
+      "electricWheelchairs": {
+        "title": "Electric Wheelchairs:",
+        "spillProof": "Wheelchairs powered by electric battery are accepted for transport by airlines under special conditions. Spill-proof batteries (dry or gel) may remain attached to the chair, but must be secured and disconnected, and terminals isolated before boarding the aircraft.",
+        "wetLithium": "Wheelchairs with wet or lithium batteries are not accepted for transport."
+      },
+      "freeTransport": "Transportation of mobility aids (wheelchair, crutches, other assistive equipment) for people with limited mobility is free of charge. It is transported only in the luggage compartment."
+    },
+    "sensoryImpairments": {
+      "title": "Passengers with Partial Hearing or Vision Impairment",
+      "bookingNotification": "The passenger must inform during booking about their impairment, in order to transmit the information to the airline, which will organize the necessary assistance. Passengers with hearing and vision impairments are not required to present a medical certificate.",
+      "medicalCertificate": "Passengers with hearing and vision impairments are not required to present a medical certificate.",
+      "multipleSensory": "Passengers with multiple sensory impairments (vision and hearing) will need to be accompanied throughout the flight.",
+      "seatingPreferences": "Passengers with limited mobility or sensory impairments may express their seating preference on board, but for reasons related to flight safety, they may be restricted to certain rows or seats (e.g. rows with emergency exits)."
+    },
+    "serviceAnimals": {
+      "title": "Service Animals",
+      "introduction": "Passengers with vision and hearing impairments may be accompanied by guide animals (dogs). Service dogs are accepted free of charge. Passengers traveling with service dogs will be informed of this during booking.",
+      "conditions": {
+        "title": "Conditions for accepting service dogs on flights:",
+        "weightSize": "Weight and size may be limited",
+        "certificate": "Passenger must have a certificate confirming 'Guide Animal' status",
+        "noPlaneTravel": "Animal is not allowed to travel through the plane",
+        "noSeat": "Animal is not allowed to occupy a seat",
+        "muzzleLeash": "Animal must be muzzled and on a leash"
+      }
+    },
+    "importantNotices": {
+      "title": "Important Notices",
+      "zborResponsibility": "aviagrand.euis not responsible and cannot demand compensation because the passenger did not fly, was denied boarding in conditions where the passenger did not provide timely information about special needs.",
+      "multipleCarriers": "If your journey involves transportation by different carriers, you should check with each carrier for information on rules applicable to persons with special needs.",
+      "contactCarrier": "CONTACT THE CARRIER FOR ADDITIONAL INFORMATION"
+    },
+    "contact": {
+      "title": "Contact Information",
+      "company": "Company",
+      "email": "Email"
+    },
+    "lastUpdated": "Last updated: September 2025"
+  },
+  "tariffRules": {
+    "title": "Tariff Rules",
+    "close": "Close",
+    "bookingRules": {
+      "title": "Rules and Features of Booking a Ticket",
+      "features": {
+        "title": "This tariff includes:",
+        "noPower": "No power on board",
+        "handBaggageOnly": "The price of the ticket includes only hand baggage",
+        "noExchange": "The ticket cannot be exchanged or refunded",
+        "noSeatSelection": "Registration without the possibility of choosing a place"
+      }
+    },
+    "cancellation": {
+      "title": "Cancellation and Changes",
+      "before24h": {
+        "title": "Cancellation before 24 hours",
+        "description": "Free cancellation is allowed up to 24 hours before departure. Processing fees may apply for refunds."
+      },
+      "after24h": {
+        "title": "Cancellation after 24 hours",
+        "description": "Tickets are non-refundable after 24 hours before departure. Changes are not permitted."
+      },
+      "noShow": {
+        "title": "No Show",
+        "description": "If you do not show up for your flight, the ticket value is forfeited and no refund will be issued."
+      }
+    },
+    "baggage": {
+      "title": "Baggage Rules",
+      "handBaggage": {
+        "title": "Hand Baggage",
+        "weight": "Maximum 8kg weight",
+        "dimensions": "55cm x 40cm x 20cm maximum dimensions",
+        "included": "Included in ticket price"
+      },
+      "checkedBaggage": {
+        "title": "Checked Baggage",
+        "notIncluded": "Not included in ticket price",
+        "additionalFee": "Available for additional fee",
+        "airlineRules": "Subject to airline-specific rules and fees"
+      }
+    },
+    "additionalServices": {
+      "title": "Additional Services",
+      "seatSelection": "Seat selection available for additional fee",
+      "meals": "Meals and beverages available for purchase",
+      "priorityBoarding": "Priority boarding available for additional fee",
+      "insurance": "Travel insurance recommended but not included"
+    },
+    "importantNotes": {
+      "title": "Important Notes",
+      "nameChange": "Name changes are not permitted after booking",
+      "documentation": "Valid travel documents required (passport, visa if applicable)",
+      "checkinTime": "Check-in opens 2 hours before departure, closes 40 minutes before",
+      "airlineRules": "All services subject to airline terms and conditions"
+    },
+    "contact": {
+      "title": "Need Help?",
+      "helpText": "For questions about your booking or these tariff rules, contact our support team:",
+      "email": "Email",
+      "phone": "Phone"
     }
   }
 } 
