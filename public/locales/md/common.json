@@ -193,7 +193,7 @@
     "email": "Email",
     "phone": "Telefon",
     "continue": "Continuă",
-    "back": "← Înapoi",
+    "back": "Înapoi",
     "payment": "Plata biletului",
     "securePayment": "Plată securizată prin Stripe",
     "paymentDescription": "După plata prin Stripe, biletul dumneavoastră va fi cumpărat automat și trimis pe email.",
@@ -211,6 +211,7 @@
     "ticketBasePrice": "Bilet (preț de bază)",
     "total": "Total",
     "loadingPage": "Se încarcă pagina...",
+    "pay": "Finalizează plata",
     "placeholders": {
       "firstName": "Introduceți prenumele (minimum 2 litere în engleză)",
       "lastName": "Introduceți numele de familie (minimum 2 litere în engleză)",

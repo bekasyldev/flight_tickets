@@ -551,7 +551,7 @@ function CheckoutContent() {
                     onClick={() => setCurrentStep(1)}
                     className="px-6 py-3 text-gray-600 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors font-medium"
                   >
-                    ← {t('checkout.back')}
+                   {t('checkout.back')}
                   </button>
                   
                   <button
@@ -584,7 +584,7 @@ function CheckoutContent() {
           {/* Sidebar */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-2xl text-black shadow-sm border border-gray-100 p-6 sticky top-24">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">{t('checkout.orderDetails')}</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-4">{t('checkout.orderDetails')} </h3>
               
               {/* Flight Summary */}
               <div className="border-b border-gray-100 pb-4 mb-4">

@@ -193,7 +193,7 @@
     "email": "Email",
     "phone": "Phone",
     "continue": "Continue",
-    "back": "← Back",
+    "back": "Back",
     "payment": "Ticket Payment",
     "securePayment": "Secure payment through Stripe",
     "paymentDescription": "After payment through Stripe, your ticket will be automatically purchased and sent to your email.",
@@ -211,6 +211,7 @@
     "ticketBasePrice": "Ticket (base price)",
     "total": "Total",
     "loadingPage": "Loading page...",
+    "pay": "Checkout",
     "placeholders": {
       "firstName": "Enter first name (minimum 2 letters in English)",
       "lastName": "Enter last name (minimum 2 letters in English)",
