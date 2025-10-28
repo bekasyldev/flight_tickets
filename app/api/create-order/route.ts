@@ -58,10 +58,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Use the passenger data provided from the form
     const passengerData = passengers; 
 
-    // Get the selected offer
     const selectedOffer = sessionData.offers.find((offer: { 
       id: string; 
       total_amount: string; 
@@ -79,7 +77,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate passenger data
     const isValidPassengerData = passengerData.every((passenger: PassengerData) => 
       passenger.given_name && 
       passenger.family_name && 

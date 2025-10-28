@@ -229,6 +229,7 @@
       "sessionValidationError": "❌ Session validation error. Please try again.",
       "missingFlightData": "Missing flight data or session is not valid",
       "fillAllFields": "Please fill in all required fields correctly",
+      "ageRequirement": "All passengers must be at least 18 years old to purchase tickets",
       "orderCreationError": "Error creating order: {error}",
       "paymentSessionError": "Error creating payment session: {error}",
       "paymentProcessingError": "Error processing payment: {error}",

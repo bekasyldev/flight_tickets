@@ -70,11 +70,26 @@ function CheckoutContent() {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
+  const validateAge = (birthDate: string): boolean => {
+    const today = new Date();
+    const birth = new Date(birthDate);
+    const age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+    
+    // Adjust age if birthday hasn't occurred this year
+    const actualAge = monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate()) 
+      ? age - 1 
+      : age;
+    
+    return actualAge >= 18;
+  };
+
   const isPassengerValid = (passenger: PassengerInfo): boolean => {
     return validateName(passenger.given_name) &&
            validateName(passenger.family_name) &&
            validateEmail(passenger.email) &&
            passenger.born_on.trim() !== '' &&
+           validateAge(passenger.born_on) &&
            passenger.phone_number.trim() !== '';
   };
 
@@ -162,7 +177,16 @@ function CheckoutContent() {
     }
 
     if (!areAllPassengersValid()) {
-      alert('Пожалуйста, заполните все обязательные поля корректно');
+      const hasUnderagePassenger = passengers.some(passenger => 
+        passenger.born_on.trim() !== '' && !validateAge(passenger.born_on)
+      );
+      
+      if (hasUnderagePassenger) {
+        alert(t('checkout.errors.ageRequirement'));
+        return;
+      }
+      
+      alert(t('checkout.errors.fillAllFields'));
       return;
     }
 
@@ -340,8 +364,15 @@ function CheckoutContent() {
                           type="date"
                           value={passenger.born_on}
                           onChange={(e) => handlePassengerUpdate(index, 'born_on', e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                            passenger.born_on && !validateAge(passenger.born_on) 
+                              ? 'border-red-500 bg-red-50' 
+                              : 'border-gray-300'
+                          }`}
                         />
+                        {passenger.born_on && !validateAge(passenger.born_on) && (
+                          <p className="text-red-500 text-xs mt-1">{t('checkout.errors.ageRequirement')}</p>
+                        )}
                       </div>
                       
                       <div>

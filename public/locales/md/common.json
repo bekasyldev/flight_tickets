@@ -229,6 +229,7 @@
       "sessionValidationError": "❌ Eroare de validare a sesiunii. Vă rugăm să încercați din nou.",
       "missingFlightData": "Lipsesc datele zborului sau sesiunea nu este validă",
       "fillAllFields": "Vă rugăm să completați toate câmpurile obligatorii corect",
+      "ageRequirement": "Toți pasagerii trebuie să aibă cel puțin 18 ani pentru a cumpăra bilete",
       "orderCreationError": "Eroare la crearea comenzii: {error}",
       "paymentSessionError": "Eroare la crearea sesiunii de plată: {error}",
       "paymentProcessingError": "Eroare la procesarea plății: {error}",
