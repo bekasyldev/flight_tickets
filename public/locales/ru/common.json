@@ -29,7 +29,8 @@
     "searchFlights": "Найти билеты",
     "adult": "Взрослый",
     "adults": "Взрослых",
-    "returnTicketNotNeeded": "Обратный билет не нужен"
+    "returnTicketNotNeeded": "Обратный билет не нужен",
+    "searching": "Идет поиск рейсов..."
   },
   "calendar": {
     "months": {

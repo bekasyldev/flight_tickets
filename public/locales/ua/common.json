@@ -29,7 +29,8 @@
     "searchFlights": "Знайти квитки",
     "adult": "Дорослий",
     "adults": "Дорослих",
-    "returnTicketNotNeeded": "Зворотний квиток не потрібен"
+    "returnTicketNotNeeded": "Зворотний квиток не потрібен",
+    "searching": "Пошук рейсів..."
   },
   "calendar": {
     "months": {

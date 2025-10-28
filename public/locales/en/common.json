@@ -29,7 +29,8 @@
     "searchFlights": "Search flights",
     "adult": "Adult",
     "adults": "Adults",
-    "returnTicketNotNeeded": "Return ticket not needed"
+    "returnTicketNotNeeded": "Return ticket not needed",
+    "searching": "Searching for flights..."
   },
   "calendar": {
     "months": {

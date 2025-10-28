@@ -29,7 +29,8 @@
     "searchFlights": "Căutați bilete",
     "adult": "Adult",
     "adults": "Adulți",
-    "returnTicketNotNeeded": "Biletul de întoarcere nu este necesar"
+    "returnTicketNotNeeded": "Biletul de întoarcere nu este necesar",
+    "searching": "Se caută zboruri..."
   },
   "calendar": {
     "months": {

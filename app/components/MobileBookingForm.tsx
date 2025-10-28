@@ -223,7 +223,7 @@ const MobileBookingForm: React.FC<MobileBookingFormProps> = ({
         {loading ? (
           <>
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-2"></div>
-            {t('bookingForm.searching')}
+            {t('search.searching')}
           </>
         ) : (
           t('search.searchFlights')
