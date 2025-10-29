@@ -230,6 +230,7 @@
       "missingFlightData": "Missing flight data or session is not valid",
       "fillAllFields": "Please fill in all required fields correctly",
       "ageRequirement": "All passengers must be at least 18 years old to purchase tickets",
+      "offerUnavailable": "This offer is no longer available. Please select another offer or start a new search to get the latest availability.",
       "orderCreationError": "Error creating order: {error}",
       "paymentSessionError": "Error creating payment session: {error}",
       "paymentProcessingError": "Error processing payment: {error}",

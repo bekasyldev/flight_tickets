@@ -230,6 +230,7 @@
       "missingFlightData": "Lipsesc datele zborului sau sesiunea nu este validă",
       "fillAllFields": "Vă rugăm să completați toate câmpurile obligatorii corect",
       "ageRequirement": "Toți pasagerii trebuie să aibă cel puțin 18 ani pentru a cumpăra bilete",
+      "offerUnavailable": "Această ofertă nu mai este disponibilă. Vă rugăm să selectați o altă ofertă sau să începeți o căutare nouă pentru a obține disponibilitatea actualizată.",
       "orderCreationError": "Eroare la crearea comenzii: {error}",
       "paymentSessionError": "Eroare la crearea sesiunii de plată: {error}",
       "paymentProcessingError": "Eroare la procesarea plății: {error}",

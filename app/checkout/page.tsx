@@ -157,22 +157,22 @@ function CheckoutContent() {
           setSessionValidated(true);
         } else {
           console.error('❌ Session validation failed');
-          alert('❌ Сессия истекла. Пожалуйста, начните поиск заново.');
+          alert(t('checkout.errors.sessionExpired'));
           window.location.href = '/';
         }
       } catch (error) {
         console.error('❌ Session validation error:', error);
-        alert('❌ Ошибка проверки сессии. Пожалуйста, попробуйте снова.');
+        alert(t('checkout.errors.sessionValidationError'));
         window.location.href = '/';
       }
     };
 
     validateSessionAndFetchData();
-  }, [sessionToken, offerId, transformOfferToFlightData]);
+  }, [sessionToken, offerId, transformOfferToFlightData, t]);
 
   const createStripePayment = async () => {
     if (!sessionToken || !offerId || !flightData || !sessionValidated) {
-      alert('Отсутствуют данные рейса или сессия не валидна');
+      alert(t('checkout.errors.missingFlightData'));
       return;
     }
 
@@ -207,7 +207,16 @@ function CheckoutContent() {
       if (!orderResponse.ok) {
         const orderError = await orderResponse.json();
         console.error('Duffel order creation failed:', orderError);
-        alert(`Ошибка при создании заказа: ${orderError.error || 'Неизвестная ошибка'}`);
+        const errorMessage = orderError.error || orderError.errors?.[0]?.message || 'Unknown error';
+        if (errorMessage.includes('select another offer') || 
+            errorMessage.includes('create a new offer request') || 
+            errorMessage.includes('latest availability') ||
+            orderError.errors?.[0]?.code === 'offer_no_longer_available') {
+          alert(t('checkout.errors.offerUnavailable'));
+        } else {
+          alert(`${t('checkout.errors.orderCreationError').replace('{error}', '')}: ${errorMessage}`);
+        }
+        
         setIsPaymentProcessing(false);
         return;
       }
@@ -233,14 +242,14 @@ function CheckoutContent() {
       } else {
         const errorData = await stripeResponse.json();
         console.error('Stripe checkout creation failed:', errorData);
-        alert(`Ошибка при создании платежной сессии: ${errorData.error || 'Неизвестная ошибка'}`);
+        alert(`${t('checkout.errors.paymentSessionError').replace('{error}', '')}: ${errorData.error || t('checkout.errors.paymentRejected')}`);
       }
 
     } catch (error) {
       console.error('Payment processing error:', error);
       
-      const errorMessage = error instanceof Error ? error.message : 'Платеж отклонен';
-      alert(`Ошибка при обработке платежа: ${errorMessage}`);
+      const errorMessage = error instanceof Error ? error.message : t('checkout.errors.paymentRejected');
+      alert(`${t('checkout.errors.paymentProcessingError').replace('{error}', '')}: ${errorMessage}`);
       
     } finally {
       setIsPaymentProcessing(false);
