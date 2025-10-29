@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from '../components/Header';
 import TariffRulesModal from '../components/TariffRulesModal';
+import DateInput from '../components/DateInput';
 import { Offer, Airline, Segment } from '../types';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
@@ -369,10 +370,9 @@ function CheckoutContent() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           {t('checkout.dateOfBirth')} <span className="text-red-500">*</span>
                         </label>
-                        <input
-                          type="date"
+                        <DateInput
                           value={passenger.born_on}
-                          onChange={(e) => handlePassengerUpdate(index, 'born_on', e.target.value)}
+                          onChange={(value) => handlePassengerUpdate(index, 'born_on', value)}
                           className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                             passenger.born_on && !validateAge(passenger.born_on) 
                               ? 'border-red-500 bg-red-50' 
