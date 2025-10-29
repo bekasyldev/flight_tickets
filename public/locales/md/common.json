@@ -497,6 +497,12 @@
       "helpText": "Pentru întrebări despre rezervarea ta sau aceste reguli tarifare, contactează echipa noastră de suport:",
       "email": "Email",
       "phone": "Telefon"
+    },
+    "notAvailable": {
+      "title": "Ups! Această ofertă nu mai este disponibilă.",
+      "description": "Ne pare rău, dar se pare că această ofertă de zbor a expirat. Vă rugăm să reveniți la rezultatele căutării pentru a găsi alte oferte avantajoase.",
+      "backToSearch": "Înapoi la rezultatele căutării",
+      "imageAlt": "Zborul nu este disponibil"
     }
   }
 } 

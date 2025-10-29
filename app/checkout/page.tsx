@@ -9,6 +9,7 @@ import { Offer, Airline, Segment } from '../types';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 import { useTranslation } from '../lib/i18n';
+import NotAvailable from '../components/NotAvailable';
 
 interface PassengerInfo {
   given_name: string;
@@ -55,7 +56,7 @@ function CheckoutContent() {
   const [travelRequirementsAccepted, setTravelRequirementsAccepted] = useState(false);
   const [sessionValidated, setSessionValidated] = useState(false);
   const [isTariffModalOpen, setIsTariffModalOpen] = useState(false);
-
+  const [isNotAvailable, setIsNotAvailable] = useState(false); 
   const [flightData, setFlightData] = useState<FlightData | null>(null);
 
   const handlePassengerUpdate = (index: number, field: keyof PassengerInfo, value: string) => {
@@ -213,7 +214,7 @@ function CheckoutContent() {
             errorMessage.includes('create a new offer request') || 
             errorMessage.includes('latest availability') ||
             orderError.errors?.[0]?.code === 'offer_no_longer_available') {
-          alert(t('checkout.errors.offerUnavailable'));
+            setIsNotAvailable(true);
         } else {
           alert(`${t('checkout.errors.orderCreationError').replace('{error}', '')}: ${errorMessage}`);
         }
@@ -279,19 +280,22 @@ function CheckoutContent() {
     <div className="min-h-screen bg-gray-50">
       <Header />
       
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-600 via-blue-600 to-blue-700 py-8">
-        <div className="max-w-6xl mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            {flightData ? 
-              `${t('checkout.title')} ${flightData.departure.code} → ${flightData.arrival.code}` :
-              t('checkout.title')
-            }
-          </h1>
-        </div>
-      </div>
 
-      {/* Main Content */}
+      {isNotAvailable ? (
+        <NotAvailable />
+      ) : (
+        <>
+          <div className="bg-gradient-to-br from-blue-600 via-blue-600 to-blue-700 py-8">
+            <div className="max-w-6xl mx-auto px-4">
+              <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                {flightData ? 
+                  `${t('checkout.title')} ${flightData.departure.code} → ${flightData.arrival.code}` :
+                  t('checkout.title')
+                }
+              </h1>
+            </div>
+          </div>
+
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
@@ -688,9 +692,12 @@ function CheckoutContent() {
         flightRoute={flightData ? `${flightData.departure.code} → ${flightData.arrival.code}` : undefined}
       />
     </div>
+    </>)}
     </div>
   );
 }
+
+
 
 export default function CheckoutPage() {
   return (
