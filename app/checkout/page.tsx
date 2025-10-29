@@ -56,7 +56,7 @@ function CheckoutContent() {
   const [travelRequirementsAccepted, setTravelRequirementsAccepted] = useState(false);
   const [sessionValidated, setSessionValidated] = useState(false);
   const [isTariffModalOpen, setIsTariffModalOpen] = useState(false);
-  const [isNotAvailable, setIsNotAvailable] = useState(false); 
+  const [isNotAvailable, setIsNotAvailable] = useState(true); 
   const [flightData, setFlightData] = useState<FlightData | null>(null);
 
   const handlePassengerUpdate = (index: number, field: keyof PassengerInfo, value: string) => {

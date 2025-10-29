@@ -1,4 +1,10 @@
 {
+  "notAvailable": {
+    "title": "Oops! This offer is no longer available.",
+    "description": "We're sorry, but it seems that this flight deal has expired. Please return to the search results to find other great offers.",
+    "backToSearch": "Back to Search Results",
+    "imageAlt": "Flight not available"
+  },
   "header": {
     "support": "Support",
     "settings": "Settings"
@@ -497,12 +503,6 @@
       "helpText": "For questions about your booking or these tariff rules, contact our support team:",
       "email": "Email",
       "phone": "Phone"
-    },
-    "notAvailable": {
-      "title": "Oops! This offer is no longer available.",
-      "description": "We're sorry, but it seems that this flight deal has expired. Please return to the search results to find other great offers.",
-      "backToSearch": "Back to Search Results",
-      "imageAlt": "Flight not available"
     }
   }
 } 

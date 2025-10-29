@@ -7,13 +7,13 @@ export default function NotAvailable() {
     const { t } = useTranslation();
 
     return (
-        <div className="p-4  rounded flex items-center">
-            <div className="flex-1 pl-20">
-                <h2 className="text-lg font-semibold mb-2">{t('notAvailable.title')}</h2>
+        <div className="rounded flex items-center p-10 gap-20">
+            <div className="flex-1 pl-20 max-w-xl space-y-6">
+                <h2 className="text-2xl font-semibold mb-2">{t('notAvailable.title')}</h2>
                 <p>
                     {t('notAvailable.description')}
                 </p>
-                <button className="bg-orange-400  rounded-2xl mt-4 text-white py-2 px-4" onClick={() => {window.history.back();}}>
+                <button className="bg-orange-400 font-semibold  rounded-2xl mt-4 text-white py-2 px-4" onClick={() => {window.history.back();}}>
                     {t('notAvailable.backToSearch')}
                 </button>
             </div>
